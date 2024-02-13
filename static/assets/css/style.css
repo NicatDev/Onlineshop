@@ -7195,6 +7195,10 @@ ul.filter-main-nav > li:hover > a {
   background: #f95636 !important;
   border:1px solid black !important;
 }
+.basketclick:hover{
+  background: #f95636 !important;
+  border:1px solid black !important;
+}
 .icon-quick-view:before{
   content: "\e910" ;
   color: #030303;

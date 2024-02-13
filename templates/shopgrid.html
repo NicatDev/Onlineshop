@@ -323,10 +323,12 @@
                                         <div class="thumb">
                                             <img src="{{product.get_main_image.url}}" alt="">
                                             
-                                            <span class="out">{% if product.new %}Yeni{% elif product.best_seller %}Çox satılan{% elif product.most_searched %} Çox axtarılan {% endif%}</span>
+                                            <span class="out">{% if product.new %}Yeni{% elif product.best_seller %}Çox satılan{% elif product.most_searched %} Çox axtarılan {% endif %}</span>
                                             
                                             <ul class="cart-action-02" style="background-color:rgba(255, 255, 255, 0.705);padding:6px 2px 0px 0px" >
-                                                <li><a href="#"><i  class="fa-regular fa-heart"></i></a></li>
+                                                <li><a class="wishclick" data-target="{{ product.id }}" >
+                                                    <i {% if request.user in product.wishlist.all %} style="color:red;font-weight:900;cursor:pointer" {% else %} style="color:rgb(11, 11, 11)(0, 0, 0);font-weight:400;cursor:pointer" {% endif %} class="fa-regular fa-heart"></i>
+                                                </a></li>
                                                 <li><a href="#"><i class="icon-quick-view"></i></a></li>
                                             </ul>
                                         </div>
@@ -335,11 +337,13 @@
                                           
                                             <h6 class="title"><a href="#">{{ product.name }}</a></h6>
                                             <div class="d-flex position-relative">
-                                                <div class="content-hover-cart"><a class="basketclick" id="{{ product.id }}"><i class="icon-add-to-cat"></i>
+                                                <div style="cursor:pointer" class="content-hover-cart"><a href="{% url 'shopSingle' product.slug %}"><i class="icon-add-to-cat"></i>
                                                     
-                                                    {% if request.user.is_authenticated %}
-                                                    Səbətə əlavə et
-                                                    {% endif %}
+                                                    <!-- {% if request.user.is_authenticated %} -->
+                                                 
+                                                   Daha ətraflı
+                                         
+                                                    <!-- {% endif %} -->
 
                                                     </a></div>
                                                 <div class="content-cart"><a href="#"><i class="icon-add-to-cat"></i></a></div>
@@ -748,24 +752,21 @@
     <script src="{% static 'assets/js/main.js' %}"></script>
     
 </body>
+
 <script>
+
     const csrfToken = "{{ csrf_token }}";
-    const quantity = 0
-    const action = 'add'
+ 
     $(document).ready(function() {
-        $(".basketclick").on("click", function(e) {
+        $(".wishclick").on("click", function(e) {
             e.preventDefault();
-            const product_id = e.target.id
-            console.log(product_id)
-            // Capture form data
-            const formData = {
-                quantity:quantity
+            const product_id = $(this).data('target');
+            console.log(product_id,'--------------')
+    
+            const formData = {   
             };
 
-
-      
-                // If not empty, send data to the backend
-                fetch(`manage_basket/${action}/${product_id}/`, {
+                fetch(`manage_wishlist/${product_id}/`, {
                     method: 'POST',
                     body: JSON.stringify(formData),
                     headers: {
@@ -774,6 +775,22 @@
                     }
                 })
                 .then(response => {
+                    
+                    var elementsWithDataTarget = $(`[data-target="${product_id}"]`);
+                    if(response.status===200){
+                    elementsWithDataTarget.each(function() {
+                        console.log($(this),response.status,'--200')
+                        $(this).find('i').css('font-weight', '900');
+                        $(this).find('i').css('color','red')
+                      });
+                    }
+                    else if(response.status===201){
+                        elementsWithDataTarget.each(function() {
+                            console.log($(this),response.status,'--201')
+                            $(this).find('i').css('font-weight', '400');
+                            $(this).find('i').css('color','black') 
+                          });
+                    }
                     if (!response.ok) {
                         Swal.fire({
                             icon: 'error',
@@ -786,6 +803,7 @@
                     return response.json();
                 })
                 .then(data => {
+          
                     Swal.fire({
                         title: "",
                         text: data.message,
@@ -800,7 +818,6 @@
         });
     });
 </script>
-
 
 
 <script>

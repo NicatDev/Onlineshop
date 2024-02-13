@@ -83,8 +83,8 @@ def shop(request):
         product_list = product_list.filter(size__slug=request.GET.get('size'))
     if request.GET.get('order'):
         product_list = product_list.order_by(request.GET.get('order'))
-    
-    paginator = Paginator(product_list, 1)
+
+    paginator = Paginator(product_list, 12)
     page = request.GET.get("page", 1)
     products = paginator.get_page(page)
     total_pages = [x+1 for x in range(paginator.num_pages)]    

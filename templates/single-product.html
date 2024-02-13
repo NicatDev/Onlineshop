@@ -9,7 +9,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Stooon - Fashion eCommerce HTML Template</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- favicon -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel=icon href={% static 'assets/img/favicon.png' %} sizes="20x20" type="image/png">
     <!-- Vendor Stylesheet -->
     <link rel="stylesheet" href="{% static 'assets/css/vendor.css' %}">
@@ -325,18 +328,25 @@
                                 <div class="d-flex">
                                     <span class="specifications">Ölçü: </span>
                                     <ul class="size-list align-self-center pl-3">
+                                        <select name="size" id="sizeselect">
                                         {% for size in product.size.all %}
-                                        <li>{{ size.name }}</li>
+                                        <option value="{{ size.id }}">{{ size.name }}</option>
                                         {% endfor %}
-                          
+                                    </select>
                                     </ul>
                                 </div>
                                 <div class="d-flex">
                                     <span class="specifications">Rəng: </span>
                                     <ul style="display: flex;flex-flow:nowrap" class="size-list align-self-center pl-3">
-                                        {% for color in product.color.all %}
-                                        <li style="width: 100%;padding:0px 3px">{{ color.name }}</li>
-                                        {% endfor %}
+                                        <select name="color" id="colorselect">
+                                            {% for color in product.color.all %}
+                                            <option value="{{ color.id }}">{{ color.name }}</option>
+                                            {% endfor %}
+                                     
+                                        </select>
+                                     
+                            
+                                        
                                     </ul>
                                 </div>
                                 {% if product.material %}
@@ -347,13 +357,14 @@
                                         <div class="input-group-prepend align-self-center">
                                             <a class="btn btn-sm" id="minus-btn"><i class="fa fa-minus"></i></a>
                                         </div>
-                                        <input type="number" id="qty_input" class="form-control text-right form-control-sm" value="1" min="1">
+                                        <input type="number" id="qty_input" class="form-control text-center form-control-sm" value="1" min="1">
                                         <div class="input-group-prepend align-self-center">
                                             <a class="btn btn-sm" id="plus-btn"><i class="fa fa-plus"></i></a>
                                         </div>
                                     </div>
-                                    <div class="add-to-cart">
-                                        <a href="#"><i class="icon-add-to-cat"></i>Səbətə əlavə et</a>
+                                    <div style="cursor: pointer;" class="add-to-cart basketclick">
+                                        <a  ><i class="icon-add-to-cat"></i> Səbətə əlavə et</a>
+
                                     </div>
                                 </div>
                                 <div class="btn-wrapper">
@@ -714,6 +725,66 @@
             </div>
         </div>
     </footer>
+
+
+<script>
+   
+    const csrfToken = "{{ csrf_token }}";
+    const product_id = "{{ product.id }}";
+
+    $(document).ready(function() {
+        $(".basketclick").on("click", function(e) {
+            e.preventDefault();
+
+            console.log(product_id)
+         
+            const formData = {
+           
+            };
+
+
+      
+                // If not empty, send data to the backend
+                fetch(`/manage_basket/add/${product_id}/`, {
+                    method: 'POST',
+                    body: JSON.stringify(formData),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                       
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Xəta',
+                            text: 'Zəhmət olmasa formun düzgünlüyünü yoxlayın',
+                        });
+                        throw new Error('Network response was not ok');
+                    }
+                   
+                    return response.json();
+                })
+                .then(data => {
+       
+                    Swal.fire({
+                        title: "",
+                        text: data.message,
+                        icon: "success"
+                      });
+                })
+                .catch(error => {
+                    // Handle error if needed
+                    console.log()
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+          
+        });
+    });
+</script>
+
+
     <!-- footer area end -->
 <style>
     
@@ -728,6 +799,11 @@
     .size-list li:hover{
         color: black;
         background-color: rgb(230, 231, 233);
+    }
+    select{
+        padding: 2px 5px;
+        border-radius: 5px;
+        background-color: #fbffff;
     }
 </style>
     <!-- back to top area start -->

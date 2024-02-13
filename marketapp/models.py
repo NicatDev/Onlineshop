@@ -159,13 +159,23 @@ class ProductImages(models.Model):
         return f'{self.product.name}-{self.pk}'
     
     
-class Basket(models.Model):
-    quantity = models.PositiveSmallIntegerField()
-    user = models.ForeignKey("auth.User",on_delete=models.CASCADE,related_name='myproducts')
-    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+class Order(models.Model):
+    status = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey("auth.User",on_delete=models.SET_NULL,null=True,blank=True,related_name='myproducts')
     
     def __str__(self):
-        return self.user.username + '-' + self.product.name 
+        return  f'{self.created_at}'
+    
+class OrderItem(models.Model):
+    quantity = models.PositiveSmallIntegerField()
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+    order = models.ForeignKey(Order,on_delete=models.SET_NULL,null=True)
+    color = models.ForeignKey(Color,on_delete=models.CASCADE,null=True,blank=True)
+    size = models.ForeignKey(Size,on_delete=models.CASCADE,null=True,blank=True)
+        
+    def __str__(self):
+        return f'{self.product.name}' 
     
     
 class Comment(BaseMixin):
