@@ -731,18 +731,23 @@
    
     const csrfToken = "{{ csrf_token }}";
     const product_id = "{{ product.id }}";
-
+ 
+    
     $(document).ready(function() {
         $(".basketclick").on("click", function(e) {
             e.preventDefault();
 
             console.log(product_id)
-         
+            const color = document.getElementById('colorselect').value
+            const size = document.getElementById('sizeselect').value
+            const quantity = document.getElementById('qty_input').value
+            
             const formData = {
-           
+                quantity:quantity,
+                color:color,
+                size:size
+
             };
-
-
       
                 // If not empty, send data to the backend
                 fetch(`/manage_basket/add/${product_id}/`, {

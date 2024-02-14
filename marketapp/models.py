@@ -126,7 +126,7 @@ class Product(MetaMixin,BaseMixin):
     new = models.BooleanField(default=False)
     best_seller = models.BooleanField(default=False)
     most_searched = models.BooleanField(default=False)
-    wishlist = models.ManyToManyField("auth.User",blank=True)
+    wishlist = models.ManyToManyField("auth.User",blank=True,related_name='wishproducts')
     material = models.CharField(max_length = 200,null=True,blank=True)
     
     def __str__(self):
@@ -148,7 +148,10 @@ class Product(MetaMixin,BaseMixin):
         return main_image.image if main_image else None
     
     def get_discount_price(self):
-        discounted = self.price * (100-self.discount_percent) /100
+        if self.discount_percent>0:
+            discounted = self.price * (100-self.discount_percent) /100
+        else:
+            discounted = self.price
         return discounted
         
 class ProductImages(models.Model):

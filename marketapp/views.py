@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.db.models import Count
 from django.conf import settings
-import json
+
 # from marketapp.forms import Messageform
 
 # def home(request):
@@ -75,6 +75,8 @@ def shop(request):
         product_list = product_list.filter(name__icontains=request.GET.get('search'))
     if request.GET.get('category'):
         product_list = product_list.filter(category__slug=request.GET.get('category'))
+    if request.GET.get('collection'):
+        product_list = product_list.filter(collection__slug=request.GET.get('collection'))
     if request.GET.get('brand'):
         product_list = product_list.filter(brand__slug=request.GET.get('brand'))
     if request.GET.get('color'):
@@ -92,6 +94,7 @@ def shop(request):
     colors = Color.objects.all()
     sizes = Size.objects.all()
     brands = Brand.objects.all()
+    collections = Collection.objects.all()
     context = {
         'products':products,
         'total_pages':total_pages,
@@ -99,6 +102,7 @@ def shop(request):
         'colors':colors,
         'sizes':sizes,
         'brands':brands,
+        'collections':collections,
     }
     return render(request,'shopgrid.html',context)
 

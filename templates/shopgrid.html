@@ -161,7 +161,7 @@
                                     <a href="#" id="search"><i class="icon-search"></i></a>
                                 </li>
                                 <li>
-                                    <a href="#"><i class="icon-heart"></i><span class="badge">2</span></a>
+                                    <a href="#"><i class="icon-heart"></i><span class="badge">{% if request.user.is_authenticated %} {{ request.user.wishproducts.all.count }} {% endif %}</span></a>
                                 </li>
                                 <li class="has-dropdown">
                                     <a href="#"><i class="icon-add-to-cat"></i><span class="badge">3</span></a>
@@ -404,6 +404,30 @@
                             <button type="submit"><i class="icon-search"></i></button>
                             <input name="search" onkeyup="handleSubmit(event)" id="searchInput" type="text" placeholder="Məhsullarda axtar...">
                         
+                        </div>
+                    </div>
+                    <div class="widget collections-widget">
+                        <div class="accordion-style-2" id="accordionExample8">
+                            <div class="card">
+                                <div class="card-header" id="headingEight">
+                                    <p class="mb-0">
+                                        <a href="#" role="button" data-toggle="collapse" data-target="#collapseEight" aria-expanded="true" aria-controls="collapseOne">Kolleksiyalar</a>
+                                    </p>
+                                </div>
+                                <div id="collapseEight" class="collapse show" aria-labelledby="headingEight" data-parent="#accordionExample8">
+                                    <div class="card-body">
+                                        <div >
+                                            {% for collection in collections %}
+                                    
+                                            <label style="font-size:20px" class="checkcontainer">{{collection.name}}
+                                                <input onclick="clickfunction(event)" name="collection" id="{{collection.id}}-{{collection.slug}}" value="{{collection.slug}}" type="checkbox">
+                                                <span class="checkmark"></span>
+                                              </label>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="widget categories-widget">
@@ -754,9 +778,41 @@
 </body>
 
 <script>
-
     const csrfToken = "{{ csrf_token }}";
+    const myuser = "{{ request.user }}"
+    const url = "{% url 'fetchwish' %}"
+    
+    function fetchData() {
+        return fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); // response.json() bir Promise döndürüyor
+            })
+            .then(data => {
+                console.log(data, 'data');
+    
+                // data.count'i kullanarak işlemleri gerçekleştirin
+                var badgeElements = $('i.icon-heart').next('.badge');
+                console.log(badgeElements, '------------badges');
+                badgeElements.each(function () {
+                    console.log(data.count, '------------');
+                    $(this).text(data.count.toString());
+                    console.log($(this));
+                });
+    
+                // Elde edilen data değerini dışarıya da döndürebilirsiniz (isteğe bağlı)
+                return data;
+            })
+            .catch(error => {
+                // Hataları burada işleyebilirsiniz
+                console.error('Error:', error.message);
+                throw error; // Hata durumunu yöneten yerlere iletebilirsiniz
+            });
+    }
  
+
     $(document).ready(function() {
         $(".wishclick").on("click", function(e) {
             e.preventDefault();
@@ -783,6 +839,7 @@
                         $(this).find('i').css('font-weight', '900');
                         $(this).find('i').css('color','red')
                       });
+                      fetchData()
                     }
                     else if(response.status===201){
                         elementsWithDataTarget.each(function() {
@@ -790,6 +847,7 @@
                             $(this).find('i').css('font-weight', '400');
                             $(this).find('i').css('color','black') 
                           });
+                          fetchData()    
                     }
                     if (!response.ok) {
                         Swal.fire({

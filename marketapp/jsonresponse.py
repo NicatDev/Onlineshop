@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from marketapp.models import Order,OrderItem, Product
-
+import json
 
 def manage_basket(request, action, product_id):
 
@@ -13,16 +13,24 @@ def manage_basket(request, action, product_id):
     else:
     
         user = request.user
+  
+    data = json.loads(request.body)
+    print(data,'-0000000000000000000000000000000000000')
     order, created = Order.objects.get_or_create(user=user, status=False)
-    basket = OrderItem.objects.filter(order=order,product=product)
+  
+    basket = OrderItem.objects.filter(order=order,product=product,color_id=data.get('color'),size_id=data.get('size'))
+  
     if action == 'add':
-        
+
         if not basket.exists():
-            basketitem = OrderItem.objects.create(product=product,order=order,quantity=1)
+            data = json.loads(request.body)
+            basketitem = OrderItem.objects.create(product=product,order=order,quantity=data.get('quantity'),color_id=data.get('color'),size_id=data.get('size'))
+            
             message = 'Product added to basket successfully'
         else:
-            basketitem = OrderItem.objects.get(product=product,order=order)
-            basketitem.quantity += 1
+            basketitem = OrderItem.objects.get(product=product,order=order,color_id=data.get('color'),size_id=data.get('size'))
+            basketitem.quantity += int(data.get('quantity'))
+            print(data.get('quantity'))
             basketitem.save()
             message = 'Product quantity increased in basket successfully'
 
@@ -59,3 +67,13 @@ def manage_wishlist(request, product_id):
         print(200)
 
     return JsonResponse({'message': message},status = status)
+
+def fetchwish(request):
+
+    if not request.user.is_authenticated:
+        return JsonResponse("You are not authenticated. Please log in.", status=401)
+    else:
+        count = request.user.wishproducts.all().count()
+        print(count,'------------')
+    return JsonResponse({'count':str(count)})
+

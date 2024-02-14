@@ -4848,7 +4848,7 @@ ul {
 .categories-widget, .brand-widget, .price-widget, .ptype-widget, .color-widget, .size-widget {
   border: 1px solid #F5F5F5; }
 
-.search-widget form {
+.search-widget  {
   border: 1px solid #CFCFCF;
   padding: 10px 10px; }
 
