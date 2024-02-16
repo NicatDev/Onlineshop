@@ -108,37 +108,49 @@ def shop(request):
 
 
 
-# def blogs(request):
+def blogs(request):
     
-#     blog_list = Blog.objects.all().only('mainimage','title','content_without_ck','category__name')
-#     recent_blogs = Blog.objects.all()[:: -1]
-#     categories = Category.objects.all().only('name','id')
-#     tags = Tag.objects.all()
+    blog_list = Blog.objects.all()
+    recent_blogs = Blog.objects.all()[:: -1]
+    tags = BlogTag.objects.all().only('name','id')
     
-#     if request.GET.get('blog'):
-#         name = request.GET.get('blog')
-#         blog_list = blog_list.filter(Q(title__icontains=name) | Q(content_without_ck__icontains=name))
+    if request.GET.get('blog'):
+        name = request.GET.get('blog')
+        blog_list = blog_list.filter(Q(title__icontains=name) | Q(content_without_ck__icontains=name))
         
-#     if request.GET.get('category'):
-#         category = request.GET.get('category')
-#         blog_list = blog_list.filter(category__id=category)
+    if request.GET.get('tag'):
+        tag = request.GET.get('tag')
+        blog_list = blog_list.filter(tag__name=tag)
     
-#     if request.GET.get('tag'):
-#         tag = request.GET.get('tag')
-#         blog_list = blog_list.filter(tag__id__in=tag)
         
-#     paginator = Paginator(blog_list, 4)
-#     page = request.GET.get("page", 1)
-#     blogs = paginator.get_page(page)
-#     total_pages = [x+1 for x in range(paginator.num_pages)]
-    
-#     context = {
-#         'blogs':blogs,
-#         'total_pages':total_pages,
-#         'categories':categories,
-#         'recent_blogs':recent_blogs,
-#         'tags':tags
-#     }
-    
-#     return render(request,'bloglist.html',context)
+    paginator = Paginator(blog_list, 1)
+    page = request.GET.get("page", 1)
+    blogs = paginator.get_page(page)
+    total_pages = [x+1 for x in range(paginator.num_pages)]
+    blogs_not_in_current_page = Blog.objects.exclude(id__in=[x.id for x in blogs])[:3]
 
+    context = {
+        'blogs':blogs,
+        'total_pages':total_pages,
+        'tags':tags,
+        'recent_blogs2':recent_blogs,
+        'recent_blogs':blogs_not_in_current_page
+    }
+    
+    return render(request,'blog.html',context)
+
+
+def blogSingle(request,slug):
+    
+    blog = get_object_or_404(Blog,slug=slug)
+    tags = BlogTag.objects.all()
+    pre = Blog.objects.exclude(id=blog.id).first()
+    next = Blog.objects.exclude(id=blog.id).exclude(id=pre.id).first()
+    context = {
+        'tags':tags,
+        'blog':blog,
+        'pre':pre,
+        'next':next
+    }
+    
+    return render(request,'blog-details.html',context)

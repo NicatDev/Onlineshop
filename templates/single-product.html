@@ -746,10 +746,9 @@
                 quantity:quantity,
                 color:color,
                 size:size
-
             };
       
-                // If not empty, send data to the backend
+              
                 fetch(`/manage_basket/add/${product_id}/`, {
                     method: 'POST',
                     body: JSON.stringify(formData),
@@ -768,7 +767,7 @@
                         });
                         throw new Error('Network response was not ok');
                     }
-                   
+                    
                     return response.json();
                 })
                 .then(data => {

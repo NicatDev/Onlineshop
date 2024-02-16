@@ -162,18 +162,29 @@ class ProductImages(models.Model):
         return f'{self.product.name}-{self.pk}'
     
     
-class Order(models.Model):
+class Order(BaseMixin):
     status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey("auth.User",on_delete=models.SET_NULL,null=True,blank=True,related_name='myproducts')
     
     def __str__(self):
-        return  f'{self.created_at}'
+        return  f'{self.created_at}-{self.id}'
+    
+    def save(self, *args, **kwargs):
+        new_slug = get_slug(f"{get_slug(self.status)}-{self.id}")
+        
+        if Order.objects.filter(slug=new_slug).exists():
+            count = 0
+            while Order.objects.filter(slug=new_slug).exists():
+                new_slug = f"{get_slug(self.status)}-{self.id}"
+                count += 1
+        self.slug = new_slug
+        super(Order, self).save(*args, **kwargs)
     
 class OrderItem(models.Model):
     quantity = models.PositiveSmallIntegerField()
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
-    order = models.ForeignKey(Order,on_delete=models.SET_NULL,null=True)
+    order = models.ForeignKey(Order,on_delete=models.SET_NULL,null=True,related_name='orderitems')
     color = models.ForeignKey(Color,on_delete=models.CASCADE,null=True,blank=True)
     size = models.ForeignKey(Size,on_delete=models.CASCADE,null=True,blank=True)
         
@@ -200,6 +211,8 @@ class Blog(BaseMixin,MetaMixin):
     tag = models.ForeignKey(BlogTag,on_delete=models.CASCADE,null=True,blank=True)
     title = models.CharField(max_length=200)
     content = models.TextField()
+    content_without_ck = models.CharField(max_length=200)
+    content2 = models.TextField()
     image = models.ImageField()
     
     def __str__(self):

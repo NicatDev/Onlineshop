@@ -8,5 +8,6 @@ urlpatterns = [
     path('manage_basket/<str:action>/<int:product_id>/', manage_basket, name='manage_basket'),
     path('manage_wishlist/<int:product_id>/', manage_wishlist, name='manage_wishlist'),
     path('fetchwish/', fetchwish, name='fetchwish'),
-    
+    path('bloqlar',blogs,name='blogs'),
+    path('bloqlar/<slug>',blogSingle,name='blogSingle')
 ]

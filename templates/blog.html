@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load custom_filters %}
 <html lang="zxx">
 
 <!-- Mirrored from zwin.io/html/stooon/blog.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:44 GMT -->
@@ -285,57 +286,35 @@
             <div class="row flex-row-reverse">
                 <div class="col-lg-9 col-md-12 margin-top-20">
                     <div class="row">
+                        {% for blog in blogs %}
                         <div class="col-md-12">
                             <div class="single-blog">
                                 <div class="thumb">
-                                    <img src="{% static 'assets/img/blog/10.png' %}" alt="">
+                                    <img src="{{ blog.image.url }}" alt="">
                                     <span class="tag">lifestyle</span>
                                 </div>
                                 <div class="content">
-                                    <span class="date">June 24, 2020</span>
-                                    <h2><a href="#">7 Things You Can’t Wear After Labor Day Read</a></h2>
-                                    <p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                                    <a href="#" class="btn btn-read">Read more</a>
+                                    <span class="date">{{ blog.created_at }}</span>
+                                    <h2><a href="{% url 'blogSingle' blog.slug %}">{{ blog.title }}</a></h2>
+                                    <p>{{ blog.content_without_ck }}...</p>
+                                    <a href="{% url 'blogSingle' blog.slug %}" class="btn btn-read">Daha ətraflı</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="single-blog">
-                                <div class="thumb">
-                                    <img src="{% static 'assets/img/blog/11.png' %}" alt="">
-                                    <span class="tag">lifestyle</span>
-                                </div>
-                                <div class="content">
-                                    <span class="date">June 24, 2020</span>
-                                    <h2><a href="#">7 Things You Can’t Wear After Labor Day Read</a></h2>
-                                    <p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                                    <a href="#" class="btn btn-read">Read more</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="single-blog">
-                                <div class="thumb">
-                                    <img src="{% static 'assets/img/blog/12.png' %}" alt="">
-                                    <span class="tag">lifestyle</span>
-                                </div>
-                                <div class="content">
-                                    <span class="date">June 24, 2020</span>
-                                    <h2><a href="#">7 Things You Can’t Wear After Labor Day Read</a></h2>
-                                    <p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                                    <a href="#" class="btn btn-read">Read more</a>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="d-flex justify-content-center pagination border-0 mt-0">
+                          
                                 <ul>
-                                    <li><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
+                                    <li><a {% if not blogs.has_previous %} style="cursor:not-allowed;font-weight: 700;font-size:20px" {% else %} style="font-weight: 700;font-size:20px"  href="?{{ request.GET.urlencode|removetag:'page' }}&page={{ blogs.previous_page_number }}" {% endif %}><</a></li>
+                                 
+                                    {% for page in total_pages %}
+
+                                    <li class="page-item {% if blogs.number == page %} liactive {% endif %}" ><a href="?{{ request.GET.urlencode|removetag:'page' }}&page={{ page }}">{{ page }}</a></li>
+                                    {% endfor %}
+                                    <li><a {% if not blogs.has_next %} style="cursor:not-allowed;font-weight: 700;font-size:20px" {% else %} style="font-weight: 700;font-size:20px"  href="?{{ request.GET.urlencode|removetag:'page' }}&page={{ blogs.next_page_number }}" {% endif %}>></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -343,24 +322,14 @@
                 </div>
                 <div class="col-lg-3 col-md-12">
                     <div class="post-widget margin-top-20">
-                        <h4 class="widget-title2">Recent Posts</h4>
+                        <h4 class="widget-title2">Əlaqəli bloqlar</h4>
                         <div class="post-content">
+                            {% for blog in recent_blogs %}
                             <div class="single-post-item">
-                                <h6><a href="#">Lorem ipsum dolor sit amet</a></h6>
-                                <span>August 08, 2020</span>
+                                <h6><a href="{% url 'blogSingle' blog.slug %}">{{ blog.title }}</a></h6> 
+                                <span>{{ blog.created_at }}</span>
                             </div>
-                            <div class="single-post-item">
-                                <h6><a href="#">You can’t wear after read</a></h6>
-                                <span>August 08, 2020</span>
-                            </div>
-                            <div class="single-post-item">
-                                <h6><a href="#">Lorem ipsum dolor sit amet</a></h6>
-                                <span>August 08, 2020</span>
-                            </div>
-                            <div class="single-post-item">
-                                <h6><a href="#">You can’t wear after read</a></h6>
-                                <span>August 08, 2020</span>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="about-widget margin-top-20">
@@ -371,18 +340,12 @@
                         </div>
                     </div>
                     <div class="tag-widget margin-top-20">
-                        <h4 class="widget-title2">Tags</h4>
+                        <h4 class="widget-title2">Teqlər</h4>
                         <div class="tag-content">
                             <ul>
-                                <li><a href="#">Crafts</a></li>
-                                <li><a href="#">Design</a></li>
-                                <li><a href="#">Fashion</a></li>
-                                <li><a href="#">Homemade</a></li>
-                                <li><a href="#">Ideas</a></li>
-                                <li><a href="#">Art</a></li>
-                                <li><a href="#">Newtork</a></li>
-                                <li><a href="#">Lifestyle</a></li>
-                                <li><a href="#">Social</a></li>
+                                {% for tag in tags %}
+                                <li {% if request.GET.tag == tag.name %} style="background:#FF8E78 !important;" {% endif %}><a {% if request.GET.tag == tag.name %} style="color:white !important;" {% endif %} href="{% url 'blogs' %}?tag={{tag.name}}">{{ tag.name }}</a></li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -580,6 +543,11 @@
     <script src="{% static 'assets/js/main.js' %}"></script>
     
 </body>
-
+<style>
+    .liactive{
+        background:#000000 !important;
+        color:white !important
+    }
+</style>
 <!-- Mirrored from zwin.io/html/stooon/blog.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:45 GMT -->
 </html>

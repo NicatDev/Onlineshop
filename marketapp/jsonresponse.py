@@ -2,24 +2,43 @@ from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from marketapp.models import Order,OrderItem, Product
 import json
+def update_basket(request):
+    if request.user.is_authenticated:
+        order, created = Order.objects.get_or_create(user=request.user, status=False)
+        orderitems = order.orderitems.all()
+    else:
+        cart = request.session.get('cart', [])
+    return JsonResponse({'orderitems':orderitems})
+
 
 def manage_basket(request, action, product_id):
 
     product = get_object_or_404(Product, pk=product_id)
   
+    data = json.loads(request.body)
     if not request.user.is_authenticated:
+        cart = request.session.get('cart', [])
+        existing_item = next((item for item in cart if item['product_id'] == product.id and item['color_id'] == data.get('color') and item['size_id'] == data.get('size')), None)
         
-        return JsonResponse("You are not authenticated. Please log in.", status=401)
+        if existing_item:
+            existing_item['quantity'] = int(existing_item['quantity']) + int(data.get('quantity'))
+        else:
+            product_data = {'product_id': product.id,'product_quantity':product.quantity,'product_image':product.image.url,'product_name':product.name, 'quantity': data.get('quantity'), 'color_id': data.get('color'), 'size_id': data.get('size')}
+            cart.append(product_data)
+        request.session['cart'] = cart
+        for key, value in request.session.items():
+            print(f"{key}: {value}")
+
+        return JsonResponse({'message':'sessionda saxlanildi+'}, status=401)
     else:
     
         user = request.user
   
-    data = json.loads(request.body)
-    print(data,'-0000000000000000000000000000000000000')
+
     order, created = Order.objects.get_or_create(user=user, status=False)
   
     basket = OrderItem.objects.filter(order=order,product=product,color_id=data.get('color'),size_id=data.get('size'))
-  
+    
     if action == 'add':
 
         if not basket.exists():
