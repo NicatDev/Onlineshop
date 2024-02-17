@@ -184,7 +184,7 @@ class Order(BaseMixin):
 class OrderItem(models.Model):
     quantity = models.PositiveSmallIntegerField()
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
-    order = models.ForeignKey(Order,on_delete=models.SET_NULL,null=True,related_name='orderitems')
+    order = models.ForeignKey(Order,on_delete=models.SET_NULL,null=True,related_name='orderitems',blank=True)
     color = models.ForeignKey(Color,on_delete=models.CASCADE,null=True,blank=True)
     size = models.ForeignKey(Size,on_delete=models.CASCADE,null=True,blank=True)
         
@@ -229,6 +229,16 @@ class Blog(BaseMixin,MetaMixin):
         self.slug = new_slug
         super(Blog, self).save(*args, **kwargs)
     
+
+class Message(models.Model):
+    name = models.CharField(max_length = 200)
+    phone = models.CharField(max_length = 200)
+    subject = models.CharField(max_length = 200)
+    email = models.EmailField()
+    message = models.TextField()
+
+    def __str__(self):
+        return self.email
     
 # class Services(BaseMixin):
 #     name = models.CharField(max_length = 800)

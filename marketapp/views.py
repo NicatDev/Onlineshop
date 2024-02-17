@@ -106,14 +106,17 @@ def shop(request):
     }
     return render(request,'shopgrid.html',context)
 
-
+def contact(request):
+    
+    context = {}
+    return render(request,'contact.html',context)
 
 def blogs(request):
     
     blog_list = Blog.objects.all()
     recent_blogs = Blog.objects.all()[:: -1]
     tags = BlogTag.objects.all().only('name','id')
-    
+    products = Product.objects.all()[:3]
     if request.GET.get('blog'):
         name = request.GET.get('blog')
         blog_list = blog_list.filter(Q(title__icontains=name) | Q(content_without_ck__icontains=name))
@@ -131,6 +134,7 @@ def blogs(request):
 
     context = {
         'blogs':blogs,
+        'products':products,
         'total_pages':total_pages,
         'tags':tags,
         'recent_blogs2':recent_blogs,
@@ -154,3 +158,5 @@ def blogSingle(request,slug):
     }
     
     return render(request,'blog-details.html',context)
+
+
