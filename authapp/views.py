@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from authapp.forms import SignUpForm
 from django.http import JsonResponse
+
 def register(request):
     if request.method == 'POST':
         data = request.POST.copy()

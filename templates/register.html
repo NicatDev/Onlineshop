@@ -412,7 +412,11 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Success!',
-                    text: 'Form submitted successfully!',
+                    text: 'Qeydiyyatdan uğurla çəkdiniz !',
+                    confirmButtonText: 'Ana səhifəyə qayıt',
+                    preConfirm: () => {
+                        window.location.href = '{% url "home" %}';
+                        }
                 });
             } else {
          

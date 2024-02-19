@@ -4,18 +4,26 @@ from marketapp.models import Order,OrderItem, Product
 import json
 from marketapp.forms import Messageform
 from django.http import HttpResponse
+from django.core.serializers import serialize
+
+# [{'product': {'id': 2, 'image': '/media/09f75f7dc5b6976da26e049dd2defff2_bnAlD6v.jpg', 'name': 'Pijama'}, 'quantity': 2, 'color': '1', 'size': '2'}]
+# [{"model": "marketapp.orderitem", "pk": 7, "fields": {"quantity": 2, "product": 1, "order": 1, "color": 2, "size": 1}}, {"model": "marketapp.orderitem", "pk": 8, "fields": {"quantity": 4, "product": 2, "order": 1, "color": 1, "size": 2}}, {"model": "marketapp.orderitem", "pk": 9, "fields": {"quantity": 1, "product": 1, "order": 1, "color": 1, "size": 1}}]
+
 
 def update_basket(request):
     # request.session['cart'] = []
     if request.user.is_authenticated:
         order, created = Order.objects.get_or_create(user=request.user, status=False)
         orderitems = order.orderitems.all()
+        serialized_orderitems = serialize('json', orderitems)
         count = len(orderitems)
     else:
         cart = request.session.get('cart', [])
         orderitems = cart
         count = len(cart)
-    return JsonResponse({'orderitems':orderitems,'count':count})
+        serialized_orderitems = orderitems
+    print(serialized_orderitems)
+    return JsonResponse({'orderitems':serialized_orderitems,'count':count})
 
 
 def manage_basket(request, action, product_id):
@@ -71,13 +79,6 @@ def manage_basket(request, action, product_id):
         else:
             message = 'Product doesnt exists'
 
-    # elif action == 'quantity':
-    #     basket = Basket.objects.filter(product=product,user=user)
-    #     if basket.exists():
-    #         basket.quantity = request.POST.get('quantity')
-    #         basket.save()
-    #         message = 'Product quantity has changed'
-    # print(message)
     return JsonResponse({'message': message})
 
 def manage_wishlist(request, product_id):
