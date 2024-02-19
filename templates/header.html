@@ -153,6 +153,36 @@
         </div>
     </nav>
 </div>
+
 <script>
-    console.log(window.innerWidth)
+    function updateBasket() {
+        const csrfToken = "{{ csrf_token }}";
+        const url = "{% url 'update_basket' %}";
+        const formData = {};  // Define your formData object
+
+        fetch(url, {
+            method: 'POST',  // Change method to 'GET' or 'POST' based on your needs
+            body: JSON.stringify(formData),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            }
+        })
+        .then(response => {
+            console.log(response);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data,'----------------');
+            // Handle the data as needed
+        })
+        .catch(error => {
+            // Handle error if needed
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+    updateBasket()
 </script>

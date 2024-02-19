@@ -19,6 +19,7 @@ urlpatterns = [
 
 urlpatterns += i18n_patterns(
     path('', include("marketapp.urls")),
+    path('auth/', include("authapp.urls")),
     # path(
     #     'sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'
     # ),
