@@ -93,8 +93,8 @@
                 <div class="banner__bg d-flex align-items-center" style="background: url('{{collection.image.url}}') no-repeat center center/cover">
                     <div class="container-fluid px-5">
                         <div class="banner-content">
-                            <h3 class="subtitle" data-animation-in="fadeInLeft">{{ collection.feature }}</h3>
-                            <h2 class="title" style="color:white" data-animation-in="fadeInRight">{{ collection.name }}</h2>
+                            <h3 class="subtitle" style="opacity: 1 !important;" data-animation-in="fadeInLeft">{{ collection.feature }}</h3>
+                            <h2 class="title" style="color:white;opacity:1 !important" data-animation-in="fadeInRight">{{ collection.name }}</h2>
                             <div class="margin-top-50 pl-1">
                                 <div class="btn-wrapper" data-animation-in="fadeInDown">
                                     <a class="btn btn-white" href="{% url 'shop' %}?collection={{ collection.slug }}">Ətraflı bax <i class="icon-arrow-buttom"></i></a>
@@ -406,10 +406,10 @@
                         </div>
                         <div class="content">
                             <span class="date">{{ blog.created_at }}</span>
-                            <h3><a href="#">{{ blog.title|slice:50 }}</a></h3>
+                            <h3><a href="{% url 'blogSingle' blog.slug %}">{{ blog.title|slice:50 }}</a></h3>
                             <p>{{ blog.content_without_ck|slice:100 }}...</p>
                             <div class="btn-wrapper">
-                                <a href="#" class="btn">Daha ətraflı</a>
+                                <a href="{% url 'blogSingle' blog.slug %}" class="btn">Daha ətraflı</a>
                             </div>
                         </div>
                     </div>
@@ -677,6 +677,7 @@
     <script src="{% static 'assets/js/main.js' %}"></script>
     
 </body>
+
 
 <!-- Mirrored from zwin.io/html/stooon/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:04 GMT -->
 </html>

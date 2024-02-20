@@ -90,7 +90,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="breadcrumb-inner d-flex justify-content-between">
-                        <h1 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" class="page-title">QEYDİYYAT</h1>
+                        <h1 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" class="page-title">DAXİL OL</h1>
                   
                     </div>
                 </div>
@@ -104,7 +104,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="section-title text-center">
-                        <h3>Qeydiyyat</h3>
+                        <h3>Daxil ol</h3>
                     </div>
                 </div>
             </div>
@@ -117,31 +117,21 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <form id="myform" method="POST" action="{% url 'register' %}">
+                    <form id="myform" method="POST" action="{% url 'login' %}">
                         {% csrf_token %}
                         <div class="form-row">
                           <div class="form-group col-md-12">
-                            <input type="email" class="form-control" name="email" placeholder="email">
+                            <input type="email" class="form-control" name="username" placeholder="email">
                           </div>
                       
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-6">
-                              <input type="text" class="form-control" name="first_name" placeholder="first_name">
+                            <div class="form-group col-md-12">
+                              <input type="password" class="form-control" name="password" placeholder="password">
                             </div>
-                            <div class="form-group col-md-6">
-                              <input type="text" class="form-control" name="last_name" placeholder="last_name">
-                            </div>
+                        
                           </div>
-                          <div class="form-row">
-                            <div class="form-group col-md-6">
-                              <input type="password" minlength="8" class="form-control" name="password1" placeholder="password1">
-                            </div>
-                            <div class="form-group col-md-6">
-                              <input type="password" minlength="8"  class="form-control" name="password2" placeholder="password2">
-                            </div>
-                          </div>
-                        <button id="submitmessage" type="submit"  class="btn btn-contact">QEYDİYYATDAN KEÇ</button>
+                        <button id="submitmessage" type="submit"  class="btn btn-contact">DAXİL OL</button>
                     </form>
                 </div>
             </div>
@@ -303,17 +293,78 @@
     
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
-<script>
-    function validateInput(input) {
-        input.value = input.value.replace(/[^0-9()\-/+]/g, '');
-    }
-</script>
-<script>
-    const csrfToken = "{{ csrf_token }}";
-    const messageUrl = "{% url 'message' %}";
-    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const a = emailRegex.test()    
+{% if request.user.is_authenticated %}
+  <script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Siz artıq daxil olmusunuz',
     
+        confirmButtonText: 'Ana səhifəyə qayıt',
+        preConfirm: () => {
+            window.location.href = '{% url "home" %}';
+            }
+    }).then((result) => {
+        // This block is executed even if the user clicks outside the modal
+        window.location.href = '{% url "home" %}';
+    });
+  </script>
+{% endif %}
+<script>
+    // Form submit edildiğinde
+    document.getElementById('myform').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var form = this;
+
+        // Fetch API kullanarak formu sunucuya gönder
+        fetch(form.action, {
+            method: form.method,
+            body: new FormData(form),
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+    
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Uğurlu əməliyyat !',
+                    text: 'Uğurla daxil oldunuz !',
+                    confirmButtonText: 'Ana səhifəyə qayıt',
+                    preConfirm: () => {
+                        window.location.href = '{% url "home" %}';
+                        }
+                }).then((result) => {
+                    // This block is executed even if the user clicks outside the modal
+                    window.location.href = '{% url "home" %}';
+                });
+            } else {
+         
+                var errorsHtml = '<ul style="padding-left:25px;padding-right:25px;list-style-type:none;">';
+                for (var key in data.errors) {
+                    if (key==='username'){
+                        errorsHtml += '<li>' + 'email' + ' - ' + data.errors[key][0] + '</li>';
+                    }
+                    else{
+                        errorsHtml += '<li>' + key + ' - ' + data.errors[key][0] + '</li>';
+                    }
+                    
+                }
+                errorsHtml += '</ul>';
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    html: errorsHtml,
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
 </script>
 <style>
     .contact-info{
@@ -389,59 +440,5 @@
         }
     }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script>
-    // Form submit edildiğinde
-    document.getElementById('myform').addEventListener('submit', function (e) {
-        e.preventDefault();
-        var form = this;
-
-        // Fetch API kullanarak formu sunucuya gönder
-        fetch(form.action, {
-            method: form.method,
-            body: new FormData(form),
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-    
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: 'Qeydiyyatdan uğurla çəkdiniz !',
-                    confirmButtonText: 'Ana səhifəyə qayıt',
-                    preConfirm: () => {
-                        window.location.href = '{% url "home" %}';
-                        }
-                });
-            } else {
-         
-                var errorsHtml = '<ul style="padding-left:25px;padding-right:25px">';
-                for (var key in data.errors) {
-                    if (key==='username'){
-                        errorsHtml += '<li>' + 'email' + ' - ' + data.errors[key][0] + '</li>';
-                    }
-                    else{
-                        errorsHtml += '<li>' + key + ' - ' + data.errors[key][0] + '</li>';
-                    }
-                }
-                errorsHtml += '</ul>';
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: errorsHtml,
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
-</script>
 <!-- Mirrored from zwin.io/html/stooon/contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:50 GMT -->
 </html>

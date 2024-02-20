@@ -130,11 +130,21 @@
                             <li>
                                 <a href="#"><i class="icon-user"></i></a>
                                 <ul class="user-dropdown">
-                                    <li><a href="#">Sign In | Join</a></li>
-                                    <li><a href="#"><i class="icon-user"></i> My Account</a></li>
-                                    <li><a href="#"><i class="fa fa-briefcase"></i> My Orders</a></li>
-                                    <li><a href="#"><i class="fa fa-reply"></i> Returns Information</a></li>
-                                    <li><a href="#"><i class="fa fa-commenting-o"></i> Contact Preferences</a></li>
+
+                                    {% if request.user.is_authenticated %}
+
+                                    <li><a >{{ request.user }}</a></li>
+                                    <li><a href="#"><i class="icon-user"></i>Sirfarişlərim</a></li>
+                                    <li><a href="{% url 'logout' %}"><i class="fa fa-briefcase"></i> Çıxış et</a></li>
+                 
+                                    {% else %}
+
+                                    <li><a ></a></li>
+                                    <li><a href="{% url 'login' %}"><i class="icon-user"></i>Daxil ol</a></li>
+                                    <li><a href="{% url 'register' %}"><i class="fa fa-briefcase"></i>Qeydiyyat</a></li>
+
+                                    {% endif %}
+
                                 </ul>
                             </li>
                             <li class="d-none d-lg-block">

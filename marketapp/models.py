@@ -171,7 +171,7 @@ class Order(BaseMixin):
         return  f'{self.created_at}-{self.id}'
     
     def save(self, *args, **kwargs):
-        new_slug = get_slug(f"{get_slug(self.status)}-{self.id}")
+        new_slug = get_slug(f"{self.status}-{self.id}")
         
         if Order.objects.filter(slug=new_slug).exists():
             count = 0

@@ -1,7 +1,7 @@
 from django.urls import path
-from authapp.views import register
-from django.contrib.auth.views import LoginView
+from authapp.views import register,login_view,logout_view
 urlpatterns = [
     path('qeydiyyat',register,name='register'),
-    path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('giris',login_view,name='login'),
+    path('logout/', logout_view, name='logout'),
 ]

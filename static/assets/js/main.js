@@ -190,6 +190,8 @@
            arrows: true,
            infinite: true,
            autoplay: false,
+           prevArrow: '<button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="display: block;" fdprocessedid="klzsh"> </button>',
+           nextArrow: '<button class="slick-next slick-arrow" aria-label="Next" type="button" style="display: block;" fdprocessedid="4fy82a"> </button>',
            responsive: [
                 {
                     breakpoint: 1024,
