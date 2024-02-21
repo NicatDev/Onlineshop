@@ -45,6 +45,7 @@ def home(request):
     products = Product.objects.filter(discount_percent__gte=0).order_by('-discount_percent')[:6]
     all_collections = Collection.objects.all().exclude(pk__in=slider_collections.values('pk')).exclude(pk__in=three_collections.values('pk'))
     blogs = Blog.objects.all()[0:3]
+    partners = Partner.objects.all()
     context = {
         'slider_collections':slider_collections,
         'three_collections':three_collections,
@@ -53,7 +54,8 @@ def home(request):
         'most_searched':most_searched,
         'best_seller':best_seller,
         'all_collections':all_collections,
-        'blogs':blogs
+        'blogs':blogs,
+        'partners':partners,
     }
     
     return render(request,'index-2.html',context)

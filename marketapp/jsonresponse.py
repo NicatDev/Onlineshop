@@ -6,22 +6,9 @@ from marketapp.forms import Messageform
 from django.http import HttpResponse
 from django.core.serializers import serialize
 from django.forms.models import model_to_dict
-from rest_framework import serializers
 # [{'product': {'id': 2, 'image': '/media/09f75f7dc5b6976da26e049dd2defff2_bnAlD6v.jpg', 'name': 'Pijama'}, 'quantity': 2, 'color': '1', 'size': '2'}]
 # [{"model": "marketapp.orderitem", "pk": 7, "fields": {"quantity": 2, "product": 1, "order": 1, "color": 2, "size": 1}}, {"model": "marketapp.orderitem", "pk": 8, "fields": {"quantity": 4, "product": 2, "order": 1, "color": 1, "size": 2}}, {"model": "marketapp.orderitem", "pk": 9, "fields": {"quantity": 1, "product": 1, "order": 1, "color": 1, "size": 1}}]
 
-class ProductSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Product
-        fields = '__all__' 
-
-class OrderItemSerializer(serializers.ModelSerializer):
-    product = ProductSerializer()
-
-    class Meta:
-        model = OrderItem
-        fields = '__all__'
 
 def update_basket(request):
     # request.session['cart'] = []
@@ -29,8 +16,20 @@ def update_basket(request):
     if request.user.is_authenticated:
         order, created = Order.objects.get_or_create(user=request.user, status=False)
         orderitems = order.orderitems.all()
-        orderitem_serializer = OrderItemSerializer(orderitems, many=True)
-        serialized_orderitems = orderitem_serializer.data
+        
+        serialized_orderitems = []
+
+        for orderitem in orderitems:
+            product_data = {
+                'product':{
+                'id':orderitem.product.id,
+                'image':orderitem.product.get_main_image().url,
+                'name': orderitem.product.name,},
+                'quantity': orderitem.quantity,
+                'color':orderitem.color.id,
+                'size':orderitem.size.id
+            }
+            serialized_orderitems.append(product_data)
 
         count = len(orderitems)
     else:
@@ -39,7 +38,7 @@ def update_basket(request):
         count = len(cart)
         serialized_orderitems = orderitems
     print(serialized_orderitems)
-    return JsonResponse({'orderitems':serialized_orderitems,'count':count})
+    return JsonResponse({'orderitems':serialized_orderitems,'count':count}, safe=False)
 
 
 def manage_basket(request, action, product_id):

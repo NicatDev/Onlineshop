@@ -240,6 +240,14 @@ class Message(models.Model):
     def __str__(self):
         return self.email
     
+
+class Partner(models.Model):
+    image = models.ImageField()
+    title = models.CharField(max_length = 200 )
+    href = models.CharField(max_length = 200,null=True,blank=True)
+    
+    def __str__(self):
+        return self.title
 # class Services(BaseMixin):
 #     name = models.CharField(max_length = 800)
 #     description = models.TextField()

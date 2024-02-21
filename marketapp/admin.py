@@ -1,7 +1,7 @@
 from django.contrib import admin
 from ckeditor.widgets import CKEditorWidget
 from django.db import models
-from marketapp.models import Product,Category,Brand,Color,Size,Order,OrderItem,Comment,BlogTag,Blog,Collection,ProductImages,Message
+from marketapp.models import Product,Category,Brand,Color,Size,Order,OrderItem,Comment,BlogTag,Blog,Collection,ProductImages,Message,Partner
 
 # class MyModelAdmin(admin.ModelAdmin):
 #     formfield_overrides = {
@@ -29,5 +29,6 @@ admin.site.register(OrderItem)
 admin.site.register(Collection)
 admin.site.register(Message)
 admin.site.register(BlogTag)
+admin.site.register(Partner)
 # admin.site.register(Training)
 # admin.site.register(Team)

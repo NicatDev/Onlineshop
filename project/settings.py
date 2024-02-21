@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'authapp',
     #third party apps
     'ckeditor',
-
     'ckeditor_uploader',
 ]
 MIDDLEWARE = [
