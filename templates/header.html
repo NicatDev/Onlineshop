@@ -58,7 +58,7 @@
                             </li>
                             <li class="has-dropdown">
                                 <a href="#"><i class="icon-add-to-cat"></i><span class="badge">0</span></a>
-                                <ul>
+                                <ul id="orderitems">
                                     <li>
                                         <div class="d-flex">
                                             <div class="thumb">
@@ -74,57 +74,7 @@
                                             </div>
                                         </div>
                                     </li>
-                                    <li>
-                                        <div class="d-flex">
-                                            <div class="thumb">
-                                                <img src="{% static 'assets/img/shop/c2.png' %}" alt="">
-                                            </div>
-                                            <div class="content">
-                                                <h6 class="title"><a href="single-product.html">Comfortable chair in the scandinavian</a></h6>
-                                                <span class="price">$29.00</span>
-                                            </div>
-                                            <div class="action">
-                                                <input type="number" value="1">
-                                                <a href="#" class="remove">Remove</a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="d-flex">
-                                            <div class="thumb">
-                                                <img src="{% static 'assets/img/shop/c3.png' %}" alt="">
-                                            </div>
-                                            <div class="content">
-                                                <h6 class="title"><a href="single-product.html">Comfortable chair in the scandinavian</a></h6>
-                                                <span class="price">$29.00</span>
-                                            </div>
-                                            <div class="action">
-                                                <input type="number" value="1">
-                                                <a href="#" class="remove">Remove</a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="d-flex">
-                                            <div class="thumb">
-                                                <img src="{% static 'assets/img/shop/c4.png' %}" alt="">
-                                            </div>
-                                            <div class="content">
-                                                <h6 class="title"><a href="single-product.html">Comfortable chair in the scandinavian</a></h6>
-                                                <span class="price">$29.00</span>
-                                            </div>
-                                            <div class="action">
-                                                <input type="number" value="1">
-                                                <a href="#" class="remove">Remove</a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <h6 class="tprice"><span>Total price: </span>$3210.00</h6>
-                                        <div class="btn-wrapper">
-                                            <a href="shoping-cart.html" class="btn btn-cart">Go to cart</a>
-                                        </div>
-                                    </li>
+                            
                                 </ul>
                             </li>
                             <li>
@@ -168,10 +118,10 @@
     function updateBasket() {
         const csrfToken = "{{ csrf_token }}";
         const url = "{% url 'update_basket' %}";
-        const formData = {};  // Define your formData object
+        const formData = {};  
 
         fetch(url, {
-            method: 'POST',  // Change method to 'GET' or 'POST' based on your needs
+            method: 'POST', 
             body: JSON.stringify(formData),
             headers: {
                 'Content-Type': 'application/json',
@@ -186,11 +136,34 @@
             return response.json();
         })
         .then(data => {
-            console.log(data,'----------------');
-            // Handle the data as needed
+            var ulElement = document.getElementById('orderitems');
+            ulElement.innerHTML = ''
+            console.log(data)
+            data.orderitems.forEach(function(item) {
+                // Create li element
+                var liElement = document.createElement('li');
+            
+            
+                liElement.innerHTML = `
+                    <div class="d-flex">
+                        <div style="width:30%" class="thumb">
+                            <img  src="${item.product.image}" alt="${item.product.name}">
+                        </div>
+                        <div style="width:60%" class="content">
+                            <h6  class="title"><a href="single-product.html" >${item.product.name} </a></h6>
+                            <span class="price">$29.00</span>
+                        </div>
+                        <div class="action">
+                            <input type="number" value="${item.quantity}">
+                            <a href="#" class="remove">Remove</a>
+                        </div>
+                    </div>
+                `;
+            
+                ulElement.appendChild(liElement);
+            });
         })
         .catch(error => {
-            // Handle error if needed
             console.error('There was a problem with the fetch operation:', error);
         });
     }
