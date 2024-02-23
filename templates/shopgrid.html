@@ -10,6 +10,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Victoria's sirri</title>
     <!-- favicon -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Vendor Stylesheet -->
@@ -583,44 +585,21 @@
     <script src="{% static 'assets/js/vendor.js' %}"></script>
     <!-- main js  -->
     <script src="{% static 'assets/js/main.js' %}"></script>
-    
+    <script src="{% static 'assets/js/functions.js' %}"></script>
 </body>
 
 <script>
-    const csrfToken = "{{ csrf_token }}";
+
     const myuser = "{{ request.user }}"
-    const url = "{% url 'fetchwish' %}"
+    const myurl = "{% url 'fetchwish' %}"
+   
+    fetchData(myurl)
     
-    function fetchData() {
-        return fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json(); 
-            })
-            .then(data => {
-                console.log(data, 'data');
-    
-                var badgeElements = $('i.icon-heart').next('.badge');
-                console.log(badgeElements, '------------badges');
-                badgeElements.each(function () {
-                    console.log(data.count, '------------');
-                    $(this).text(data.count.toString());
-                    console.log($(this));
-                });
-    
-                return data;
-            })
-            .catch(error => {
-                console.error('Error:', error.message);
-                throw error; 
-            });
-    }
- 
 
     $(document).ready(function() {
+        console.log('2')
         $(".wishclick").on("click", function(e) {
+            console.log('4')
             e.preventDefault();
             const product_id = $(this).data('target');
             console.log(product_id,'--------------')
@@ -645,7 +624,7 @@
                         $(this).find('i').css('font-weight', '900');
                         $(this).find('i').css('color','red')
                       });
-                      fetchData()
+                      fetchData(myurl)
                     }
                     else if(response.status===201){
                         elementsWithDataTarget.each(function() {
@@ -653,13 +632,26 @@
                             $(this).find('i').css('font-weight', '400');
                             $(this).find('i').css('color','black') 
                           });
-                          fetchData()    
+                          fetchData(myurl)    
                     }
                     if (!response.ok) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Xəta',
-                            text: 'Zəhmət olmasa formun düzgünlüyünü yoxlayın',
+                            text: 'Hesaba daxil olmağınız xahiş olunur',
+                            showCancelButton: true,
+                            confirmButtonText: 'Qeydiyyat',
+                            cancelButtonText: 'Daxil ol',
+                            showCloseButton: true,
+                       
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '{% url 'register' %}';
+                            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                window.location.href = '{% url 'login' %}';
+                            } else if (result.dismiss === Swal.DismissReason.close) {
+                           
+                            }
                         });
                         throw new Error('Network response was not ok');
                     }

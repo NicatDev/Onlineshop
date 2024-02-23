@@ -57,7 +57,7 @@
                                 <a href="#"><i class="icon-heart"></i>{% if request.user.is_authenticated %} <span class="badge">{{request.user.wishproducts.all.count}}  </span>{% endif %}</a>
                             </li>
                             <li class="has-dropdown">
-                                <a href="#"><i class="icon-add-to-cat"></i><span class="badge">0</span></a>
+                                <a href="#"><i class="icon-add-to-cat"></i><span class="badge basketbadge">0</span></a>
                                 <ul id="orderitems">
                                     <li>
                                         <div class="d-flex">
@@ -114,58 +114,65 @@
     </nav>
 </div>
 
+<script src="{% static 'assets/js/functions.js' %}"></script>
 <script>
-    function updateBasket() {
-        const csrfToken = "{{ csrf_token }}";
-        const url = "{% url 'update_basket' %}";
-        const formData = {};  
+    const csrfToken = "{{ csrf_token }}";
+    const myurll = "{% url 'update_basket' %}";
+    updateBasket(csrfToken,myurll)
+</script>
 
-        fetch(url, {
-            method: 'POST', 
-            body: JSON.stringify(formData),
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken
-            }
-        })
-        .then(response => {
-            console.log(response);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            var ulElement = document.getElementById('orderitems');
-            ulElement.innerHTML = ''
-            console.log(data)
-            data.orderitems.forEach(function(item) {
-                // Create li element
-                var liElement = document.createElement('li');
+<script>
+ 
+
+
+  
+ 
+    $(document).ready(function(e) {
+        $(".remove").on("click", function(e) {
+            e.preventDefault();
+
             
-            
-                liElement.innerHTML = `
-                    <div class="d-flex">
-                        <div style="width:30%" class="thumb">
-                            <img  src="${item.product.image}" alt="${item.product.name}">
-                        </div>
-                        <div style="width:60%" class="content">
-                            <h6  class="title"><a href="single-product.html" >${item.product.name} </a></h6>
-                            <span class="price">$29.00</span>
-                        </div>
-                        <div class="action">
-                            <input type="number" value="${item.quantity}">
-                            <a href="#" class="remove">Remove</a>
-                        </div>
-                    </div>
-                `;
-            
-                ulElement.appendChild(liElement);
-            });
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
+            const formData = {
+        
+            };
+            console.log(e.target,'target')
+            const productId = e.target.id
+            console.log(e.target.id,'123617263123')
+                fetch(`/manage_basket/remove/${productId}/`, {
+                    method: 'POST',
+                    body: JSON.stringify(formData),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                       
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Xəta',
+                            text: 'Zəhmət olmasa formun düzgünlüyünü yoxlayın',
+                        });
+                        throw new Error('Network response was not ok');
+                    }
+                    updateBasket(csrfToken,myurll)
+                    return response.json();
+                })
+                .then(data => {
+                   
+                    Swal.fire({
+                        title: "",
+                        text: data.message,
+                        icon: "success"
+                      });
+                })
+                .catch(error => {
+                    // Handle error if needed
+                    console.log()
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+          
         });
-    }
-    updateBasket()
+    });
 </script>

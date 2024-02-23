@@ -542,14 +542,22 @@
             </div>
         </div>
     </footer>
+    <script src="{% static 'assets/js/functions.js' %}"></script>
 
 
 <script>
-   
-    const csrfToken = "{{ csrf_token }}";
+  
+    const url = "{% url 'update_basket' %}";
+    
+</script>
+
+</script>
+<script>
+ 
+
+
     const product_id = "{{ product.id }}";
  
-    
     $(document).ready(function() {
         $(".basketclick").on("click", function(e) {
             e.preventDefault();
@@ -584,11 +592,11 @@
                         });
                         throw new Error('Network response was not ok');
                     }
-                    
+                    updateBasket(csrfToken,url)
                     return response.json();
                 })
                 .then(data => {
-       
+                   
                     Swal.fire({
                         title: "",
                         text: data.message,

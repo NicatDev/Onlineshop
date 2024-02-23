@@ -31,12 +31,13 @@ def update_basket(request):
             }
             serialized_orderitems.append(product_data)
 
-        count = len(orderitems)
+        count = sum(int(orderitem['quantity']) for orderitem in serialized_orderitems)
     else:
         cart = request.session.get('cart', [])
         orderitems = cart
         count = len(cart)
         serialized_orderitems = orderitems
+        count = sum(int(orderitem['quantity']) for orderitem in serialized_orderitems)
     print(serialized_orderitems)
     return JsonResponse({'orderitems':serialized_orderitems,'count':count}, safe=False)
 
@@ -115,7 +116,7 @@ def manage_wishlist(request, product_id):
 
 def fetchwish(request):
     if not request.user.is_authenticated:
-        return JsonResponse("You are not authenticated. Please log in.", status=401)
+        return JsonResponse({'message':"You are not authenticated. Please log in."}, status=401)
     else:
         count = request.user.wishproducts.all().count()
         print(count,'------------')
