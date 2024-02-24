@@ -119,6 +119,7 @@ def blogs(request):
     recent_blogs = Blog.objects.all()[:: -1]
     tags = BlogTag.objects.all().only('name','id')
     products = Product.objects.all()[:3]
+    
     if request.GET.get('blog'):
         name = request.GET.get('blog')
         blog_list = blog_list.filter(Q(title__icontains=name) | Q(content_without_ck__icontains=name))

@@ -28,6 +28,8 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
+
+
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -39,14 +41,9 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 orderhead, created = Order.objects.get_or_create(user=user, status=False)
-               
                 cart = request.session.get('cart', [])
-                print(cart,'+++++++++++++++=')
-                print(cart)
                 if cart:
                     for order in cart:
-                        print(order)
-                        print(order['product'])
                         check = OrderItem.objects.filter(product_id=order['product']['id'],size_id=order['size'],color_id=order['color']).exists()
                         if check:
                             myorder = OrderItem.objects.get(product_id=order['product']['id'],size_id=order['size'],color_id=order['color'],order=orderhead)
@@ -54,9 +51,8 @@ def login_view(request):
                             myorder.save()
                         else:
                             OrderItem.objects.create(product_id=order['product']['id'],size_id=order['size'],color_id=order['color'],quantity=order['quantity'],order=orderhead)
-                        
-                
-                messages.success(request, 'Logged in successfully')
+
+
                 return JsonResponse({'success': True})
             else:
                 return JsonResponse({'success': False,'errors':{'Xəta':["Yanlış ad və ya şifrə"]}})
@@ -100,9 +96,9 @@ def shopping(request):
     else:
         cart = request.session.get('cart', [])
         orderitems = cart
-        print(orderitems,'----------')
         count = len(cart)
         serialized_orderitems = orderitems
         count = sum(int(orderitem['quantity']) for orderitem in serialized_orderitems)
-    print(serialized_orderitems,'999')
+        
+    
     return render(request, 'shoping-cart.html',context={'data':serialized_orderitems,'count':count})

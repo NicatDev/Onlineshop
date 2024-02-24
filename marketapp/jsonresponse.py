@@ -11,7 +11,6 @@ from django.forms.models import model_to_dict
 
 
 def update_basket(request):
-    # request.session['cart'] = []
     
     if request.user.is_authenticated:
         order, created = Order.objects.get_or_create(user=request.user, status=False)
@@ -38,15 +37,29 @@ def update_basket(request):
         count = len(cart)
         serialized_orderitems = orderitems
         count = sum(int(orderitem['quantity']) for orderitem in serialized_orderitems)
-    print(serialized_orderitems)
     return JsonResponse({'orderitems':serialized_orderitems,'count':count}, safe=False)
 
 
-def manage_basket(request, action, product_id):
+def remove_basket(request):
+    data = json.loads(request.body)
+    if not request.user.is_authenticated:
+
+        cart = request.session.get('cart', [])
+        existing_item = next((item for item in cart if item['product']['id'] == data.get('product') and item['color'] == data.get('color') and item['size'] == data.get('size')), None)  
+        removed_item = cart.pop(existing_item)
+        request.session['cart'] = cart
+    else:
+        user = request.user
+        order, created = Order.objects.get_or_create(user=user, status=False)
+        basketitem = OrderItem.objects.get(product=data.get('product'),order=order,color_id=data.get('color'),size_id=data.get('size'))
+        return JsonResponse({'message':'data silindi'})
+
+def manage_basket(request,  product_id):
 
     product = get_object_or_404(Product, pk=product_id)
   
     data = json.loads(request.body)
+    
     if not request.user.is_authenticated:
         cart = request.session.get('cart', [])
         
@@ -61,42 +74,29 @@ def manage_basket(request, action, product_id):
             product_data = {'product':{'id':product.id,'image':product.get_main_image().url,'name':product.name,'price':float(product.get_discount_price())},'total':int(data.get('quantity'))*float(product.get_discount_price()) , 'quantity': data.get('quantity'), 'color': data.get('color'), 'size': data.get('size')}
             cart.append(product_data)
             request.session['cart'] = cart
-        for key, value in request.session.items():
-            print(f"{key}: {value}")
+        
 
             return JsonResponse({'message':'sessionda saxlanildi'})
-    else:
+  
     
-        user = request.user
-  
-
+    user = request.user
     order, created = Order.objects.get_or_create(user=user, status=False)
-  
     basket = OrderItem.objects.filter(order=order,product=product,color_id=data.get('color'),size_id=data.get('size'))
     
-    if action == 'add':
-
-        if not basket.exists():
-            data = json.loads(request.body)
-            basketitem = OrderItem.objects.create(product=product,order=order,quantity=data.get('quantity'),color_id=data.get('color'),size_id=data.get('size'))
-            
-            message = 'Product added to basket successfully'
-        else:
-            basketitem = OrderItem.objects.get(product=product,order=order,color_id=data.get('color'),size_id=data.get('size'))
-            basketitem.quantity += int(data.get('quantity'))
-            print(data.get('quantity'))
-            basketitem.save()
-            message = 'Product quantity increased in basket successfully'
-
-    elif action == 'remove':
-        if basket.exists():
-            basketitem = OrderItem.objects.get(product=product,order=order)
-            basketitem.delete()
-            message = 'Product removed from basket successfully'
-        else:
-            message = 'Product doesnt exists'
+    if not basket.exists():
+        data = json.loads(request.body)
+        basketitem = OrderItem.objects.create(product=product,order=order,quantity=data.get('quantity'),color_id=data.get('color'),size_id=data.get('size'))
+        
+        message = 'Product added to basket successfully'
+    else:
+        basketitem = OrderItem.objects.get(product=product,order=order,color_id=data.get('color'),size_id=data.get('size'))
+        basketitem.quantity += int(data.get('quantity'))
+        basketitem.save()
+        message = 'Product quantity increased in basket successfully'
+  
 
     return JsonResponse({'message': message})
+
 
 def manage_wishlist(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -106,12 +106,11 @@ def manage_wishlist(request, product_id):
         product.wishlist.remove(user)
         message = "Product removed from wishlist."
         status = 201
-        print(201)
     else:
         product.wishlist.add(user)
         message = "Product added to wishlist."
         status = 200
-        print(200)
+ 
 
     return JsonResponse({'message': message},status = status)
 
@@ -137,5 +136,4 @@ def message(request):
         return JsonResponse(data)
     else:
         return HttpResponse(status=405) 
-    
     
