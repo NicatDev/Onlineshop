@@ -4596,7 +4596,7 @@ ul {
 
 .breadcrumb-inner .page-title {
   color: #fff;
-  font-family: var(--secondary-font);
+  font-family: serif;
   font-weight: 700;
   text-transform: uppercase;
   font-size: 24px;

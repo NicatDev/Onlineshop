@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.shortcuts import redirect
-from marketapp.models import Order,OrderItem
+from marketapp.models import Order,OrderItem,Product
 def register(request):
     if request.method == 'POST':
         data = request.POST.copy()
@@ -47,7 +47,13 @@ def login_view(request):
                     for order in cart:
                         print(order)
                         print(order['product'])
-                        OrderItem.objects.create(product_id=order['product']['id'],size_id=order['size'],color_id=order['color'],quantity=order['quantity'],order=orderhead)
+                        check = OrderItem.objects.filter(product_id=order['product']['id'],size_id=order['size'],color_id=order['color']).exists()
+                        if check:
+                            myorder = OrderItem.objects.get(product_id=order['product']['id'],size_id=order['size'],color_id=order['color'],order=orderhead)
+                            myorder.quantity += int(order['quantity'])
+                            myorder.save()
+                        else:
+                            OrderItem.objects.create(product_id=order['product']['id'],size_id=order['size'],color_id=order['color'],quantity=order['quantity'],order=orderhead)
                         
                 
                 messages.success(request, 'Logged in successfully')
@@ -80,7 +86,9 @@ def shopping(request):
                 'product':{
                 'id':orderitem.product.id,
                 'image':orderitem.product.get_main_image().url,
-                'name': orderitem.product.name,},
+                'name': orderitem.product.name,
+                'price':orderitem.product.get_discount_price()},
+                'total':orderitem.quantity*orderitem.product.get_discount_price(),
                 'quantity': orderitem.quantity,
                 'color':orderitem.color.id,
                 'size':orderitem.size.id
@@ -92,6 +100,7 @@ def shopping(request):
     else:
         cart = request.session.get('cart', [])
         orderitems = cart
+        print(orderitems,'----------')
         count = len(cart)
         serialized_orderitems = orderitems
         count = sum(int(orderitem['quantity']) for orderitem in serialized_orderitems)

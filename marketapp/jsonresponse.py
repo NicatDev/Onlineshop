@@ -53,11 +53,12 @@ def manage_basket(request, action, product_id):
         existing_item = next((item for item in cart if item['product']['id'] == product.id and item['color'] == data.get('color') and item['size'] == data.get('size')), None)    
         if existing_item:
             existing_item['quantity'] = int(existing_item['quantity']) + int(data.get('quantity'))
+            existing_item['total'] = int(data.get('quantity'))*float(product.get_discount_price())
             request.session['cart'] = cart 
             request.session.modified = True
             return JsonResponse({'message':'sessionda sayi artirildi'})
         else:
-            product_data = {'product':{'id':product.id,'image':product.get_main_image().url,'name':product.name} , 'quantity': data.get('quantity'), 'color': data.get('color'), 'size': data.get('size')}
+            product_data = {'product':{'id':product.id,'image':product.get_main_image().url,'name':product.name,'price':float(product.get_discount_price())},'total':int(data.get('quantity'))*float(product.get_discount_price()) , 'quantity': data.get('quantity'), 'color': data.get('color'), 'size': data.get('size')}
             cart.append(product_data)
             request.session['cart'] = cart
         for key, value in request.session.items():
