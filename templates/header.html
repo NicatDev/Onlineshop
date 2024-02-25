@@ -58,10 +58,30 @@
                                 <a href="#"><i class="icon-heart"></i>{% if request.user.is_authenticated %} <span class="badge">{{request.user.wishproducts.all.count}}  </span>{% endif %}</a>
                             </li>
                             <li class="has-dropdown">
-                                <a href="#"><i class="icon-add-to-cat"></i><span class="badge basketbadge">0</span></a>
+                                <a href="#"><i class="icon-add-to-cat"></i><span class="badge basketbadge">{{ orderitems|length }}</span></a>
                                 <ul id="orderitems">
-                           
-                            
+                                    {% for item in orderitems %}
+                                    <li>
+                                    <div class="d-flex">
+                                        <div  class="thumb">
+                                            <img  src="{{item.product.get_main_image.url}}" alt="{{item.product.name}}">
+                                        </div>
+                                        <div  class="content">
+                                            <h6  class="title"><a href="#" >{{item.product.name}} </a> </h6>
+                                            <span class="price">{{item.product.get_discount_price}}</span>
+                                        </div>
+                                        <div class="action" >
+                                            <input type="number" value="{{item.quantity}}" >
+                                            <a href="#" id="{{item.product.id}}" class="remove"><i  class="fa-solid fa-trash-can"></i></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                    {% endfor %}
+                                    <li >
+                                    <div class="d-flex">
+                                        <a href="{% url 'shopping' %}" style="width:100%;padding:10px 50px;color:white;" class="btn btn-contact" style="color:white">Ətraflı</a>
+                                    </div>
+                                </li>
                                 </ul>
                             </li>
                             <li>
@@ -102,11 +122,6 @@
 </div>
 
 <script src="{% static 'assets/js/functions.js' %}"></script>
-<script>
-    const csrfToken = "{{ csrf_token }}";
-    const myurll = "{% url 'update_basket' %}";
-    updateBasket(csrfToken,myurll)
-</script>
 
 
 <style>

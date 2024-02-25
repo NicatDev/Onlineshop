@@ -545,73 +545,10 @@
     <script src="{% static 'assets/js/functions.js' %}"></script>
 
 
-<script>
-  
-    const url = "{% url 'update_basket' %}";
-    
+
+
 </script>
 
-</script>
-<script>
- 
-
-
-    const product_id = "{{ product.id }}";
- 
-    $(document).ready(function() {
-        $(".basketclick").on("click", function(e) {
-            e.preventDefault();
-
-            console.log(product_id)
-            const color = document.getElementById('colorselect').value
-            const size = document.getElementById('sizeselect').value
-            const quantity = document.getElementById('qty_input').value
-            
-            const formData = {
-                quantity:quantity,
-                color:color,
-                size:size
-            };
-      
-              
-                fetch(`/manage_basket/add/${product_id}/`, {
-                    method: 'POST',
-                    body: JSON.stringify(formData),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': csrfToken
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                       
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Xəta',
-                            text: 'Zəhmət olmasa formun düzgünlüyünü yoxlayın',
-                        });
-                        throw new Error('Network response was not ok');
-                    }
-                    updateBasket(csrfToken,url)
-                    return response.json();
-                })
-                .then(data => {
-                   
-                    Swal.fire({
-                        title: "",
-                        text: data.message,
-                        icon: "success"
-                      });
-                })
-                .catch(error => {
-                    // Handle error if needed
-                    console.log()
-                    console.error('There was a problem with the fetch operation:', error);
-                });
-          
-        });
-    });
-</script>
 
 
     <!-- footer area end -->

@@ -8,32 +8,20 @@ from django.http import JsonResponse
 from django.db.models import Count
 from django.conf import settings
 
-# from marketapp.forms import Messageform
 
-# def home(request):
-#     portfolio_categories = Portfolio_category.objects.all()
-#     portfolio = Portfolio.objects.all().select_related('category')
-#     services = Services.objects.all().order_by('ordering')
-#     if len(services)>6:
-#         services = services[0:6]
-#     blogs = Blog.objects.all().select_related('category').only('category','category__name','title','content_without_ck','mainimage','backimage')
-#     if len(blogs)>3:
-#         blogs = blogs[0:3]
-#     partners = Partners.objects.all()
-#     faq = Faq.objects.all()
-#     trainings = Training.objects.all()
-#     if len(trainings)>3:
-#         trainings = trainings[0:3]
-#     context = {
-#         'trainings':trainings,
-#         'partners':partners,
-#         'faq':faq,
-#         'blogs':blogs,
-#         'portfolio':portfolio,
-#         'services':services,
-#         'portfolio_categories':portfolio_categories
-#     }
-#     return render(request,'home.html',context)
+
+def get_order_items(request):
+  
+    orderitems = []
+    if request.user.is_authenticated:
+        order, created = Order.objects.get_or_create(user=request.user, status=False)
+        if created:
+            orderitems = []
+        else:
+            orderitems = OrderItem.objects.filter(order=order)
+    return orderitems
+
+
 
 def home(request):
     products = Product.objects.all().order_by('-created_at')[0:6]
@@ -46,7 +34,11 @@ def home(request):
     all_collections = Collection.objects.all().exclude(pk__in=slider_collections.values('pk')).exclude(pk__in=three_collections.values('pk'))
     blogs = Blog.objects.all()[0:3]
     partners = Partner.objects.all()
+    
+    orderitems = get_order_items(request)
+    
     context = {
+        'orderitems':orderitems,
         'slider_collections':slider_collections,
         'three_collections':three_collections,
         'new':new,
@@ -61,9 +53,11 @@ def home(request):
     return render(request,'index-2.html',context)
 
 def shopSingle(request,slug):
+    orderitems = get_order_items(request)
     product = get_object_or_404(Product,slug=slug)
     context = {
-        'product':product
+        'product':product,
+        'orderitems':orderitems
     }
     return render(request,'single-product.html',context)
 
@@ -87,7 +81,7 @@ def shop(request):
         product_list = product_list.filter(size__slug=request.GET.get('size'))
     if request.GET.get('order'):
         product_list = product_list.order_by(request.GET.get('order'))
-
+    orderitems = get_order_items(request)
     paginator = Paginator(product_list, 12)
     page = request.GET.get("page", 1)
     products = paginator.get_page(page)
@@ -105,12 +99,15 @@ def shop(request):
         'sizes':sizes,
         'brands':brands,
         'collections':collections,
+        'orderitems':orderitems
     }
     return render(request,'shopgrid.html',context)
 
 def contact(request):
-    
-    context = {}
+    orderitems = get_order_items(request)
+    context = {
+        'orderitems':orderitems
+    }
     return render(request,'contact.html',context)
 
 def blogs(request):
@@ -134,8 +131,9 @@ def blogs(request):
     blogs = paginator.get_page(page)
     total_pages = [x+1 for x in range(paginator.num_pages)]
     blogs_not_in_current_page = Blog.objects.exclude(id__in=[x.id for x in blogs])[:3]
-
+    orderitems = get_order_items(request)
     context = {
+        'orderitems':orderitems,
         'blogs':blogs,
         'products':products,
         'total_pages':total_pages,
@@ -153,7 +151,9 @@ def blogSingle(request,slug):
     tags = BlogTag.objects.all()
     pre = Blog.objects.exclude(id=blog.id).first()
     next = Blog.objects.exclude(id=blog.id).exclude(id=pre.id).first()
+    orderitems = get_order_items(request)
     context = {
+        'orderitems':orderitems,
         'tags':tags,
         'blog':blog,
         'pre':pre,
