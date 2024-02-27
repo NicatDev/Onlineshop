@@ -1,6 +1,6 @@
 from django.urls import path,include
 from .views import *
-from marketapp.jsonresponse import message
+from marketapp.jsonresponse import message,add_wish,add_basket
 urlpatterns = [
     path('',home,name='home'),
     path('mehsullar',shop,name='shop'),
@@ -8,5 +8,7 @@ urlpatterns = [
     path('bloqlar',blogs,name='blogs'),
     path('elaqe',contact,name='contact'),
     path('message',message,name='message'),
-    path('bloqlar/<slug>',blogSingle,name='blogSingle')
+    path('bloqlar/<slug>',blogSingle,name='blogSingle'),
+    path('add_wish',add_wish,name='add_wish'),
+    path('add_basket',add_basket,name='add_basket'),
 ]

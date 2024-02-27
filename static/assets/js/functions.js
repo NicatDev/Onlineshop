@@ -1,0 +1,43 @@
+function addWish(id,url,csrftoken) {
+  console.log(id,'----------',url)
+ 
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: {
+            'id':id,
+        },
+
+        headers: {
+            'X-CSRFToken': csrftoken  
+        },
+        dataType: 'json',
+        success: function (data) {
+            if (data.status === 'success') {
+                if (data.action === 'added') {
+                    $(`.product-${id}`).css('font-weight', '900');
+                }
+                else if(data.action === 'removed'){
+                    $(`.product-${id}`).css('font-weight', '400');
+                }
+                $('.wishbadge').text(data.len);
+            
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Uğurla tamamlandı'
+                })
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'Bu özəllikdən istifadə etmək üçün hesaba daxil olmalısınız    !',
+                    confirmButtonText: 'Tamam'
+                })
+            }
+        },
+        error: function () {
+            alert('An unexpected error occurred.');
+        }
+    });
+}

@@ -7,6 +7,10 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from marketapp.models import Order,OrderItem,Product
+from django.db import transaction
+from django.urls import reverse
+from django.db import close_old_connections
+
 def register(request):
     if request.method == 'POST':
         data = request.POST.copy()
@@ -28,9 +32,9 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
-
-
+@transaction.atomic 
 def login_view(request):
+
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -40,28 +44,16 @@ def login_view(request):
 
             if user is not None:
                 login(request, user)
-                orderhead, created = Order.objects.get_or_create(user=user, status=False)
-                cart = request.session.get('cart', [])
-                if cart:
-                    for order in cart:
-                        check = OrderItem.objects.filter(product_id=order['product']['id'],size_id=order['size'],color_id=order['color']).exists()
-                        if check:
-                            myorder = OrderItem.objects.get(product_id=order['product']['id'],size_id=order['size'],color_id=order['color'],order=orderhead)
-                            myorder.quantity += int(order['quantity'])
-                            myorder.save()
-                        else:
-                            OrderItem.objects.create(product_id=order['product']['id'],size_id=order['size'],color_id=order['color'],quantity=order['quantity'],order=orderhead)
-
-
-                return JsonResponse({'success': True})
+                close_old_connections()
+                home_url = reverse('home') + '?auth=True'
+                return redirect(home_url)
             else:
-                return JsonResponse({'success': False,'errors':{'Xəta':["Yanlış ad və ya şifrə"]}})
+                return redirect('login')
         else:
-            return JsonResponse({'success': False, 'errors': form.errors})
+            return redirect('login')
 
     else:
         form = LoginForm()
-
     return render(request, 'login.html', {'form': form})
 
 

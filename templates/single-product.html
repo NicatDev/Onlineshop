@@ -549,7 +549,37 @@
 
 </script>
 
+<script>
+    function addToCart() {
 
+        var selectedSize = $("#sizeselect").val();
+        var selectedColor = $("#colorselect").val();
+        var quantity = $("#qty_input").val();
+  
+        var csrfToken = '{{ csrf_token }}'
+    
+        var postData = {
+            'size': selectedSize,
+            'color': selectedColor,
+            'quantity': quantity,
+        };
+    
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'basket' %}', 
+            data: postData,
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
+    }
+    </script>
 
     <!-- footer area end -->
 <style>

@@ -138,7 +138,10 @@
                                             
                                             <ul class="cart-action-02" style="background-color:rgba(255, 255, 255, 0.705);padding:6px 2px 0px 0px" >
                                                 <li><a class="wishclick" data-target="{{ product.id }}" >
-                                                    <i {% if request.user in product.wishlist.all %} style="color:red;font-weight:900;cursor:pointer" {% else %} style="color:rgb(11, 11, 11)(0, 0, 0);font-weight:400;cursor:pointer" {% endif %} class="fa-regular fa-heart"></i>
+                                                    <i onclick="addWish('{{ product.id }}', '{% url 'add_wish' %}','{{csrf_token}}' )" 
+                                                    {% if request.user in product.wishlist.all %} style=" font-weight:900; cursor:pointer;" {% else %} style=" font-weight:400; cursor:pointer;" {% endif %} 
+                                                    class="fa-regular fa-heart product-{{product.id}}">
+                                                 </i> 
                                                 </a></li>
                                                 <li><a href="{% url 'shopSingle' product.slug %}"><i class="icon-quick-view"></i></a></li>
                                             </ul>

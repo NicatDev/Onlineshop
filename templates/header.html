@@ -55,7 +55,7 @@
                                 <a href="#" id="search"><i class="icon-search"></i></a>
                             </li>
                             <li>
-                                <a href="#"><i class="icon-heart"></i>{% if request.user.is_authenticated %} <span class="badge">{{request.user.wishproducts.all.count}}  </span>{% endif %}</a>
+                                <a href="#"><i class="icon-heart"></i>{% if request.user.is_authenticated %} <span class="badge wishbadge">{{request.user.wishproducts.all.count}}  </span>{% endif %}</a>
                             </li>
                             <li class="has-dropdown">
                                 <a href="#"><i class="icon-add-to-cat"></i><span class="badge basketbadge">{{ orderitems|length }}</span></a>

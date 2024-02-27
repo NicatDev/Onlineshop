@@ -11,6 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Stooon - Fashion eCommerce HTML Template</title>
     <!-- favicon -->
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
@@ -26,6 +27,7 @@
     <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
      
 </head>
+
 <body>
 
     <!-- preloader area start -->
@@ -159,8 +161,11 @@
                             </div>
                             <ul class="cart-action" style="background-color:rgba(255, 255, 255, 0.705);padding:6px 6px 0px 4px;text-align:center">
                                 <li style="text-align:center;margin-bottom:5px !important" ><a style="text-align:center" class="wishclick" data-target="{{ product.id }}" >
-                                    <i {% if request.user in product.wishlist.all %} style="color:red;font-weight:900;cursor:pointer" {% else %} style="color:rgb(11, 11, 11)(0, 0, 0);font-weight:400;cursor:pointer" {% endif %} class="fa-regular fa-heart"></i>
-                                </a></li>
+                                    <i onclick="addWish('{{ product.id }}', '{% url 'add_wish' %}','{{csrf_token}}' )" 
+                                    {% if request.user in product.wishlist.all %} style=" font-weight:900; cursor:pointer;" {% else %} style=" font-weight:400; cursor:pointer;" {% endif %} 
+                                    class="fa-regular fa-heart product-{{product.id}}">
+                                 </i>
+                                          </a></li>
                                 <li style="text-align:center"><a  style="font-size:22px;text-align:center" href="{% url 'shopSingle' product.slug %}"><i class="icon-quick-view"></i></a></li>
                             </ul>
                         </div>
@@ -240,7 +245,10 @@
                    
                                     <ul class="cart-action-02" style="background-color:rgba(255, 255, 255, 0.705);padding:6px 6px 0px 4px">
                                         <li><a class="wishclick" data-target="{{ product.id }}" >
-                                            <i {% if request.user in product.wishlist.all %} style="color:red;font-weight:900;cursor:pointer" {% else %} style="color:rgb(11, 11, 11)(0, 0, 0);font-weight:400;cursor:pointer" {% endif %} class="fa-regular fa-heart"></i>
+                                            <i onclick="addWish('{{ product.id }}', '{% url 'add_wish' %}','{{csrf_token}}' )" 
+                                            {% if request.user in product.wishlist.all %} style=" font-weight:900; cursor:pointer;" {% else %} style=" font-weight:400; cursor:pointer;" {% endif %} 
+                                            class="fa-regular fa-heart product-{{product.id}}">
+                                         </i>
                                         </a></li>
                                         <li><a href="{% url 'shopSingle' product.slug %}"><i class="icon-quick-view"></i></a></li>
                                     </ul>
@@ -272,7 +280,10 @@
                                     <img src="{{ product.get_main_image.url }}" alt="">
                                     <ul class="cart-action-02" style="background-color:rgba(255, 255, 255, 0.705);padding:6px 6px 0px 4px">
                                         <li><a class="wishclick" data-target="{{ product.id }}" >
-                                            <i {% if request.user in product.wishlist.all %} style="color:red;font-weight:900;cursor:pointer" {% else %} style="color:rgb(11, 11, 11)(0, 0, 0);font-weight:400;cursor:pointer" {% endif %} class="fa-regular fa-heart"></i>
+                                            <i onclick="addWish('{{ product.id }}', '{% url 'add_wish' %}','{{csrf_token}}' )" 
+                                            {% if request.user in product.wishlist.all %} style=" font-weight:900; cursor:pointer;" {% else %} style=" font-weight:400; cursor:pointer;" {% endif %} 
+                                            class="fa-regular fa-heart product-{{product.id}}">
+                                         </i> 
                                         </a></li>
                                         <li><a href="{% url 'shopSingle' product.slug %}"><i class="icon-quick-view"></i></a></li>
                                     </ul>
@@ -305,7 +316,10 @@
                                     <span class="sale">Çox satılan</span>
                                     <ul class="cart-action-02" style="background-color:rgba(255, 255, 255, 0.705);padding:6px 6px 0px 4px">
                                         <li><a class="wishclick" data-target="{{ product.id }}" >
-                                            <i {% if request.user in product.wishlist.all %} style="color:red;font-weight:900;cursor:pointer" {% else %} style="color:rgb(11, 11, 11)(0, 0, 0);font-weight:400;cursor:pointer" {% endif %} class="fa-regular fa-heart"></i>
+                                            <i onclick="addWish('{{ product.id }}', '{% url 'add_wish' %}','{{csrf_token}}' )" 
+                                            {% if request.user in product.wishlist.all %} style=" font-weight:900; cursor:pointer;" {% else %} style=" font-weight:400; cursor:pointer;" {% endif %} 
+                                            class="fa-regular fa-heart product-{{product.id}}">
+                                         </i> 
                                         </a></li>
                                         <li><a href="{% url 'shopSingle' product.slug %}"><i class="icon-quick-view"></i></a></li>
                                     </ul>
@@ -647,6 +661,21 @@
         </div>
     </footer>
 
+    <script>
+
+        const currentUrl = window.location.href;
+        console.log(currentUrl);
+        console.log(currentUrl.includes('auth=True'))
+
+            if (currentUrl.includes('auth=True')) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Uğurla daxil oldunuz',
+            confirmButtonText: 'Tamam'
+        })
+        }
+
+    </script>
     <!-- back to top area start -->
     <div class="back-to-top">
         <span class="back-top"><i class="fa fa-angle-up"></i></span>

@@ -310,63 +310,7 @@
     });
   </script>
 {% endif %}
-<script>
-    // Form submit edildiğinde
-    document.getElementById('myform').addEventListener('submit', function (e) {
-        e.preventDefault();
-        var form = this;
 
-        // Fetch API kullanarak formu sunucuya gönder
-        fetch(form.action, {
-            method: form.method,
-            body: new FormData(form),
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-    
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Uğurlu əməliyyat !',
-                    text: 'Uğurla daxil oldunuz !',
-                    confirmButtonText: 'Ana səhifəyə qayıt',
-                    preConfirm: () => {
-                        window.location.href = '{% url "home" %}';
-                        }
-                }).then((result) => {
-                    // This block is executed even if the user clicks outside the modal
-                    window.location.href = '{% url "home" %}';
-                });
-            } else {
-         
-                var errorsHtml = '<ul style="padding-left:25px;padding-right:25px;list-style-type:none;">';
-                for (var key in data.errors) {
-                    if (key==='username'){
-                        errorsHtml += '<li>' + 'email' + ' - ' + data.errors[key][0] + '</li>';
-                    }
-                    else{
-                        errorsHtml += '<li>' + key + ' - ' + data.errors[key][0] + '</li>';
-                    }
-                    
-                }
-                errorsHtml += '</ul>';
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Xəta',
-                    html: errorsHtml,
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
-</script>
 <style>
     .contact-info{
         width: 100%;
