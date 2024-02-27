@@ -33,8 +33,9 @@ def register(request):
 
 
 @transaction.atomic 
-def login_view(request):
 
+def login_view(request):
+    form = LoginForm(request.POST)
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -44,7 +45,7 @@ def login_view(request):
 
             if user is not None:
                 login(request, user)
-                close_old_connections()
+        
                 home_url = reverse('home') + '?auth=True'
                 return redirect(home_url)
             else:
@@ -52,8 +53,7 @@ def login_view(request):
         else:
             return redirect('login')
 
-    else:
-        form = LoginForm()
+
     return render(request, 'login.html', {'form': form})
 
 

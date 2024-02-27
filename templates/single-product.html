@@ -37,14 +37,7 @@
 
     <!-- search Popup -->
     <div class="body-overlay" id="body-overlay"></div>
-    <div class="search-popup" id="search-popup">
-        <form action="https://zwin.io/html/stooon/index.html" class="search-form">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search.....">
-            </div>
-            <button type="submit" class="submit-btn"><i class="fa fa-search"></i></button>
-        </form>
-    </div>
+
     <!-- search Popup end -->
 
     <!--sidebar menu start-->
@@ -179,7 +172,7 @@
                                             <a class="btn btn-sm" id="plus-btn"><i class="fa fa-plus"></i></a>
                                         </div>
                                     </div>
-                                    <div style="cursor: pointer;" class="add-to-cart basketclick">
+                                    <div style="cursor: pointer;" onclick="addToCart()" class="add-to-cart basketclick">
                                         <a  ><i class="icon-add-to-cat"></i> Səbətə əlavə et</a>
 
                                     </div>
@@ -550,8 +543,8 @@
 </script>
 
 <script>
+    const product = '{{product.id}}'
     function addToCart() {
-
         var selectedSize = $("#sizeselect").val();
         var selectedColor = $("#colorselect").val();
         var quantity = $("#qty_input").val();
@@ -562,23 +555,76 @@
             'size': selectedSize,
             'color': selectedColor,
             'quantity': quantity,
-        };
+            'product':product,
     
-        $.ajax({
-            type: 'POST',
-            url: '{% url 'basket' %}', 
-            data: postData,
-            headers: {
-                'X-CSRFToken': csrfToken
-            },
-            success: function(response) {
-                console.log(response);
-            },
-            error: function(error) {
-                console.error(error);
-            }
-        });
-    }
+        };
+       console.log(postData)
+          $.ajax({
+              type: 'POST',
+              url: "{% url 'add_basket' %}",
+              data: postData,
+      
+              headers: {
+                  'X-CSRFToken': csrfToken  
+              },
+              dataType: 'json',
+              success: function (data) {
+                  if (data.status === 'success') {
+                    mydata = data.data
+              
+               
+            
+                    var ul = document.getElementById("orderitems");
+                    ul.innerHTML = "";
+                    
+                    mydata.forEach(function(newItemData) {
+                        var li = document.createElement("li");
+                        console.log(newItemData,'aaa')
+                        li.innerHTML = `
+                            <div class="d-flex">
+                                <div class="thumb">
+                                    <img src="${newItemData.image}" alt="${newItemData.name}">
+                                </div>
+                                <div class="content">
+                                    <h6 class="title"><a href="#">${newItemData.name}</a></h6>
+                                    <span class="price">${newItemData.price}</span>
+                                </div>
+                                <div class="action">
+                                    <input type="number" value="${newItemData.quantity}">
+                                    <a href="#" id="${newItemData.id}" class="remove"><i class="fa-solid fa-trash-can"></i></a>
+                                </div>
+                            </div>
+                        `;
+                        ul.appendChild(li);
+                    });
+                    var li = document.createElement('li')
+                    li.innerHTML = `
+                        <div class="d-flex">
+                            <a href="/mehsullar" style="width:100%;padding:10px 50px;color:white;" class="btn btn-contact" style="color:white">Ətraflı</a>
+                        </div>`
+                  
+                        ul.appendChild(li);
+                        $('.basketbadge').text(data.quantity);
+                        
+
+                      Swal.fire({
+                          icon: 'success',
+                          title: 'Uğurla tamamlandı'
+                      })
+                  } else {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Xəta',
+                          text: 'Bu özəllikdən istifadə etmək üçün hesaba daxil olmalısınız    !',
+                          confirmButtonText: 'Tamam'
+                      })
+                  }
+              },
+              error: function () {
+                  alert('An unexpected error occurred.');
+              }
+          });
+      }
     </script>
 
     <!-- footer area end -->

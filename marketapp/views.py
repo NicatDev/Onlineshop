@@ -17,9 +17,11 @@ def get_order_items(request):
         order, created = Order.objects.get_or_create(user=request.user, status=False)
         if created:
             orderitems = []
+            leng = 0
         else:
             orderitems = OrderItem.objects.filter(order=order)
-    return orderitems
+            leng = sum([int(x.quantity) for x in orderitems])
+        return {'orderitems':orderitems,'leng':leng}
 
 
 
