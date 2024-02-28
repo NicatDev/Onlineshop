@@ -7,6 +7,9 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.db.models import Count
 from django.conf import settings
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+
 
 
 
@@ -23,9 +26,13 @@ def get_order_items(request):
             leng = sum([int(x.quantity) for x in orderitems])
         return {'orderitems':orderitems,'leng':leng}
 
+def get_instagram_photos():
+    images = İnstagramPhoto.objects.all()[:6]
+    return images
 
 
 def home(request):
+    
     products = Product.objects.all().order_by('-created_at')[0:6]
     best_seller = Product.objects.filter(best_seller=True)[:6]
     most_searched = Product.objects.filter(most_searched=True)[:6]
@@ -38,8 +45,11 @@ def home(request):
     partners = Partner.objects.all()
     
     orderitems = get_order_items(request)
-    
+    categories = Category.objects.all()
+    instas = get_instagram_photos()
     context = {
+        'categories':categories,
+        'instas':instas,
         'orderitems':orderitems,
         'slider_collections':slider_collections,
         'three_collections':three_collections,
@@ -57,7 +67,11 @@ def home(request):
 def shopSingle(request,slug):
     orderitems = get_order_items(request)
     product = get_object_or_404(Product,slug=slug)
+    categories = Category.objects.all()
+    instas = get_instagram_photos()
     context = {
+        'categories':categories,
+        'instas':instas,
         'product':product,
         'orderitems':orderitems
     }
@@ -93,7 +107,11 @@ def shop(request):
     sizes = Size.objects.all()
     brands = Brand.objects.all()
     collections = Collection.objects.all()
+
+    instas = get_instagram_photos()
     context = {
+        'categories':categories,
+        'instas':instas,
         'products':products,
         'total_pages':total_pages,
         'categories':categories,
@@ -107,7 +125,11 @@ def shop(request):
 
 def contact(request):
     orderitems = get_order_items(request)
+    categories = Category.objects.all()
+    instas = get_instagram_photos()
     context = {
+        'categories':categories,
+        'instas':instas,
         'orderitems':orderitems
     }
     return render(request,'contact.html',context)
@@ -134,7 +156,11 @@ def blogs(request):
     total_pages = [x+1 for x in range(paginator.num_pages)]
     blogs_not_in_current_page = Blog.objects.exclude(id__in=[x.id for x in blogs])[:3]
     orderitems = get_order_items(request)
+    categories = Category.objects.all()
+    instas = get_instagram_photos()
     context = {
+        'categories':categories,
+        'instas':instas,
         'orderitems':orderitems,
         'blogs':blogs,
         'products':products,
@@ -151,17 +177,24 @@ def blogSingle(request,slug):
     
     blog = get_object_or_404(Blog,slug=slug)
     tags = BlogTag.objects.all()
-    pre = Blog.objects.exclude(id=blog.id).first()
-    next = Blog.objects.exclude(id=blog.id).exclude(id=pre.id).first()
+    
     orderitems = get_order_items(request)
+    categories = Category.objects.all()
+    instas = get_instagram_photos()
     context = {
+        'categories':categories,
+        'instas':instas,
         'orderitems':orderitems,
         'tags':tags,
         'blog':blog,
-        'pre':pre,
-        'next':next
+       
     }
-    
+    if len(Blog.objects.all())>2:
+        pre = Blog.objects.exclude(id=blog.id).first()
+        
+        next = Blog.objects.exclude(id=blog.id).exclude(id=pre.id).first()
+        context['pre'] = pre
+        context['next'] = next
     return render(request,'blog-details.html',context)
 
 

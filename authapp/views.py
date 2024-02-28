@@ -6,10 +6,12 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.shortcuts import redirect
-from marketapp.models import Order,OrderItem,Product
+from marketapp.models import Order,OrderItem,Product,Category
 from django.db import transaction
 from django.urls import reverse
 from django.db import close_old_connections
+from marketapp.views import get_instagram_photos,get_order_items
+from django.core.paginator import Paginator
 
 def register(request):
     if request.method == 'POST':
@@ -32,29 +34,40 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
-@transaction.atomic 
+import logging
+
+logger = logging.getLogger(__name__)
 
 def login_view(request):
-    form = LoginForm(request.POST)
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
+    logger.info("Login view started.")
+    try:
+        with transaction.atomic():
+            if request.method == 'POST':
+      
+                form = LoginForm(request.POST)
+                if form.is_valid():
+                    username = form.cleaned_data['username']
+                    password = form.cleaned_data['password']
+                    user = authenticate(request, username=username, password=password)
 
-            if user is not None:
-                login(request, user)
-        
-                home_url = reverse('home') + '?auth=True'
-                return redirect(home_url)
+                    if user is not None:
+                        login(request, user)
+                        home_url = reverse('home') + '?auth=True'
+                        return redirect(home_url)
+                    else:
+                        return redirect('login')
             else:
-                return redirect('login')
-        else:
-            return redirect('login')
+
+                form = LoginForm()
+
+            return render(request, 'login.html', {'form': form})
+    except Exception as e:
+        transaction.set_rollback(True)
+        logger.error(f"Hata: {e}")
+    logger.info("Login view finished.")
 
 
-    return render(request, 'login.html', {'form': form})
+
 
 
 def logout_view(request):
@@ -63,6 +76,13 @@ def logout_view(request):
 
 
 def shopping(request):
+    if request.method == 'POST':
+        order, created = Order.objects.get_or_create(user=request.user, status=False)
+        basket = OrderItem.objects.filter(order=order)
+        for item in basket:
+            item.delete()
+        return redirect('shopping')
+    
     if request.user.is_authenticated:
         order, created = Order.objects.get_or_create(user=request.user, status=False)
         orderitems = order.orderitems.all()
@@ -84,6 +104,7 @@ def shopping(request):
             serialized_orderitems.append(product_data)
 
         count = sum(orderitem['quantity'] for orderitem in serialized_orderitems)
+        total = sum(orderitem['total'] for orderitem in serialized_orderitems)
         
     else:
         cart = request.session.get('cart', [])
@@ -91,6 +112,31 @@ def shopping(request):
         count = len(cart)
         serialized_orderitems = orderitems
         count = sum(int(orderitem['quantity']) for orderitem in serialized_orderitems)
-        
-    
-    return render(request, 'shoping-cart.html',context={'data':serialized_orderitems,'count':count})
+        total = 0
+    categories = Category.objects.all()
+    instas = get_instagram_photos()
+
+
+    return render(request, 'shoping-cart.html',context={'data':serialized_orderitems,'count':count,'total':total,'categories':categories,'instas':instas,})
+
+
+def wish(request):
+    product_list = Product.objects.filter(wishlist=request.user)
+    orderitems = get_order_items(request)
+    paginator = Paginator(product_list, 12)
+    page = request.GET.get("page", 1)
+    products = paginator.get_page(page)
+    total_pages = [x+1 for x in range(paginator.num_pages)]    
+    categories = Category.objects.all()
+
+
+    instas = get_instagram_photos()
+    context = {
+        'categories':categories,
+        'instas':instas,
+        'products':products,
+        'total_pages':total_pages,
+        'categories':categories,
+        'orderitems':orderitems
+    }
+    return render(request,'wishlist.html',context)

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from ckeditor.widgets import CKEditorWidget
 from django.db import models
-from marketapp.models import Product,Category,Brand,Color,Size,Order,OrderItem,Comment,BlogTag,Blog,Collection,ProductImages,Message,Partner
+from marketapp.models import Product,Category,Brand,Color,Size,Order,OrderItem,Comment,BlogTag,Blog,Collection,ProductImages,Message,Partner,İnstagramPhoto
 
 # class MyModelAdmin(admin.ModelAdmin):
 #     formfield_overrides = {
@@ -14,7 +14,7 @@ class ProductImagesInline(admin.TabularInline):  # or use admin.StackedInline fo
 
 class ImagesAdmin(admin.ModelAdmin):
     inlines = [ProductImagesInline]
-
+admin.site.register(İnstagramPhoto)
 admin.site.register(Product, ImagesAdmin)    
     
 admin.site.register(Category)

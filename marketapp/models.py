@@ -4,7 +4,7 @@ from marketapp.utils import *
 from datetime import datetime
 from django.utils.text import slugify
 from django.urls import reverse
-from django.contrib.auth.models import User
+from django_ckeditor_5.fields import CKEditor5Field
 
 class BaseMixin(models.Model):
     slug = models.SlugField(unique=True,editable=False,blank=True,null=True)
@@ -162,7 +162,7 @@ class ProductImages(models.Model):
         return f'{self.product.name}-{self.pk}'
     
     
-class Order(BaseMixin):
+class Order(models.Model):
     status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey("auth.User",on_delete=models.SET_NULL,null=True,blank=True,related_name='myproducts')
@@ -170,16 +170,7 @@ class Order(BaseMixin):
     def __str__(self):
         return  f'{self.created_at}-{self.id}'
     
-    def save(self, *args, **kwargs):
-        new_slug = get_slug(f"5426-{self.id}-12923")
-        
-        if Order.objects.filter(slug=new_slug).exists():
-            count = 0
-            while Order.objects.filter(slug=new_slug).exists():
-                new_slug = get_slug(f"5426-{self.id}-12923")
-                count += 1
-        self.slug = new_slug
-        super(Order, self).save(*args, **kwargs)
+
     
 class OrderItem(models.Model):
     quantity = models.PositiveSmallIntegerField()
@@ -210,14 +201,17 @@ class BlogTag(models.Model):
 class Blog(BaseMixin,MetaMixin):
     tag = models.ForeignKey(BlogTag,on_delete=models.CASCADE,null=True,blank=True)
     title = models.CharField(max_length=200)
-    content = models.TextField()
+    content = CKEditor5Field('Text', config_name='extends')
     content_without_ck = models.CharField(max_length=200)
-    content2 = models.TextField()
+    content2 = CKEditor5Field('Text', config_name='extends')
     image = models.ImageField()
     
     def __str__(self):
         return self.title
 
+    class META:
+        ordering = ['-created_at']
+        
     def save(self, *args, **kwargs):
         new_slug = get_slug(self.title)
         
@@ -248,6 +242,15 @@ class Partner(models.Model):
     
     def __str__(self):
         return self.title
+    
+    
+class İnstagramPhoto(models.Model):
+    image = models.ImageField()
+    href = models.CharField(max_length=500)
+    
+    def __str__(self):
+        return self.href
+    
 # class Services(BaseMixin):
 #     name = models.CharField(max_length = 800)
 #     description = models.TextField()

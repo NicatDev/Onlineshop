@@ -21,17 +21,12 @@
                 </div>
                 <div class="col-lg-4 d-none d-lg-block">
                     <div class="shipping text-center">
-                        <p>FREE SHIPPING - <span>on all orders over $35*</span></p>
+                        <p>Ödənişsiz çatdırılma - <span>100 azn-dən daha çox sifarişlərə</span></p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-4">
                     <div class="social">
-                        <ul class="nav-social justify-content-end">
-                            <li><a href="#"><i class="icon-facebook"></i></a></li>
-                            <li><a href="#"><i class="icon-instagram"></i></a></li>
-                            <li><a href="#"><i class="icon-pinterest"></i></a></li>
-                            <li><a href="#"><i class="icon-youtube"></i></a></li>
-                        </ul>
+                 
                     </div>
                 </div>
             </div>
@@ -64,10 +59,10 @@
                                 <a href="#" id="search"><i class="icon-search"></i></a>
                             </li>
                             <li>
-                                <a href="#"><i class="icon-heart"></i>{% if request.user.is_authenticated %} <span class="badge wishbadge">{{request.user.wishproducts.all.count}}  </span>{% endif %}</a>
+                                <a href="{% url 'wish' %}"><i class="icon-heart"></i>{% if request.user.is_authenticated %} <span class="badge wishbadge">{{request.user.wishproducts.all.count}}  </span>{% endif %}</a>
                             </li>
                             <li class="has-dropdown">
-                                <a href="#"><i class="icon-add-to-cat"></i><span class="badge basketbadge">{{ orderitems.leng }}</span></a>
+                                <a ><i class="icon-add-to-cat"></i><span class="badge basketbadge">{{ orderitems.leng }}</span></a>
                                 <ul id="orderitems">
                                     {% for item in orderitems.orderitems %}
                                     <li>
@@ -100,7 +95,7 @@
                                     {% if request.user.is_authenticated %}
 
                                     <li><a >{{ request.user }}</a></li>
-                                    <li><a href="#"><i class="icon-user"></i>Sirfarişlərim</a></li>
+                                    <li><a href="{% url 'shopping' %}"><i class="icon-user"></i>Sifarişlərim</a></li>
                                     <li><a href="{% url 'logout' %}"><i class="fa fa-briefcase"></i> Çıxış et</a></li>
                  
                                     {% else %}

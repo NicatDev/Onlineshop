@@ -14,19 +14,27 @@ function addWish(id,url,csrftoken) {
         dataType: 'json',
         success: function (data) {
             if (data.status === 'success') {
+    
+        
+          
                 if (data.action === 'added') {
+                  
                     $(`.product-${id}`).css('font-weight', '900');
                 }
                 else if(data.action === 'removed'){
+                    
                     $(`.product-${id}`).css('font-weight', '400');
                 }
                 $('.wishbadge').text(data.len);
-            
+                console.log(window.location.href)
+                if (window.location.href.includes("/mehsullar")) {
                 
                 Swal.fire({
                     icon: 'success',
                     title: 'Uğurla tamamlandı'
-                })
+                })}else{
+                    window.location.reload()
+                }
             } else {
                 Swal.fire({
                     icon: 'error',
