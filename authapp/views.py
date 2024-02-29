@@ -115,9 +115,9 @@ def shopping(request):
         total = 0
     categories = Category.objects.all()
     instas = get_instagram_photos()
+    orderitems = get_order_items(request)
 
-
-    return render(request, 'shoping-cart.html',context={'data':serialized_orderitems,'count':count,'total':total,'categories':categories,'instas':instas,})
+    return render(request, 'shoping-cart.html',context={'data':serialized_orderitems,'count':count,'total':total,'categories':categories,'instas':instas,'orderitems':orderitems})
 
 
 def wish(request):

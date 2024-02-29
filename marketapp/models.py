@@ -213,14 +213,15 @@ class Blog(BaseMixin,MetaMixin):
         ordering = ['-created_at']
         
     def save(self, *args, **kwargs):
-        new_slug = get_slug(self.title)
-        
-        if Blog.objects.filter(slug=new_slug).exists():
-            count = 0
-            while Blog.objects.filter(slug=new_slug).exists():
-                new_slug = f"{get_slug(self.title)}-{count}"
-                count += 1
-        self.slug = new_slug
+        if not self.slug:
+            new_slug = get_slug(self.title)
+            
+            if Blog.objects.filter(slug=new_slug).exists():
+                count = 0
+                while Blog.objects.filter(slug=new_slug).exists():
+                    new_slug = f"{get_slug(self.title)}-{count}"
+                    count += 1
+            self.slug = new_slug
         super(Blog, self).save(*args, **kwargs)
     
 
