@@ -1,5 +1,5 @@
 from django.contrib import admin
-from ckeditor.widgets import CKEditorWidget
+
 from django.db import models
 from marketapp.models import Product,Category,Brand,Color,Size,Order,OrderItem,Comment,BlogTag,Blog,Collection,ProductImages,Message,Partner,İnstagramPhoto
 
