@@ -78,6 +78,7 @@ def shopSingle(request,slug):
     return render(request,'single-product.html',context)
 
 def shop(request):
+    collection = {}
     product_list = Product.objects.all()
     if request.GET.get('min_price'):
         product_list = product_list.filter(price__gte=request.GET.get('min_price'))
@@ -89,6 +90,7 @@ def shop(request):
         product_list = product_list.filter(category__slug=request.GET.get('category'))
     if request.GET.get('collection'):
         product_list = product_list.filter(collection__slug=request.GET.get('collection'))
+        collection = Collection.objects.get(slug=request.GET.get('collection'))
     if request.GET.get('brand'):
         product_list = product_list.filter(brand__slug=request.GET.get('brand'))
     if request.GET.get('color'):
@@ -119,7 +121,8 @@ def shop(request):
         'sizes':sizes,
         'brands':brands,
         'collections':collections,
-        'orderitems':orderitems
+        'orderitems':orderitems,
+        'collection':collection
     }
     return render(request,'shopgrid.html',context)
 
