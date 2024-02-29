@@ -33,13 +33,13 @@ def get_instagram_photos():
 
 def home(request):
     
-    products = Product.objects.all().order_by('-created_at')[0:6]
-    best_seller = Product.objects.filter(best_seller=True)[:6]
-    most_searched = Product.objects.filter(most_searched=True)[:6]
+    products = Product.objects.all().order_by('-created_at')[0:3]
+    best_seller = Product.objects.filter(best_seller=True)[:3]
+    most_searched = Product.objects.filter(most_searched=True)[:3]
     new = Product.objects.filter(new=True)[:6]
     slider_collections = Collection.objects.filter(in_slide=True)[:2]
     three_collections = Collection.objects.filter(in_slide=False)[:3]   
-    products = Product.objects.filter(discount_percent__gte=0).order_by('-discount_percent')[:6]
+    products = Product.objects.filter(discount_percent__gte=0).order_by('-discount_percent')[:3]
     all_collections = Collection.objects.all().exclude(pk__in=slider_collections.values('pk')).exclude(pk__in=three_collections.values('pk'))
     blogs = Blog.objects.all()[0:3]
     partners = Partner.objects.all()

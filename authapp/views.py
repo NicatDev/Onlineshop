@@ -96,10 +96,12 @@ def shopping(request):
                 'image':orderitem.product.get_main_image().url,
                 'name': orderitem.product.name,
                 'price':orderitem.product.get_discount_price()},
+                
                 'total':orderitem.quantity*orderitem.product.get_discount_price(),
                 'quantity': orderitem.quantity,
-                'color':orderitem.color.id,
-                'size':orderitem.size.id
+                'color':orderitem.color.name,
+                'size':orderitem.size.name,
+                'id':orderitem.id
             }
             serialized_orderitems.append(product_data)
 

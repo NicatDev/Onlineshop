@@ -26,8 +26,8 @@ function addWish(id,url,csrftoken) {
                     $(`.product-${id}`).css('font-weight', '400');
                 }
                 $('.wishbadge').text(data.len);
-                console.log(window.location.href)
-                if (window.location.href.includes("/mehsullar")) {
+          
+                if (!window.location.href.includes("/wish")) {
                 
                 Swal.fire({
                     icon: 'success',
@@ -49,3 +49,39 @@ function addWish(id,url,csrftoken) {
         }
     });
 }
+
+
+function remove_basket(id,url,csrftoken) {
+   
+      $.ajax({
+          type: 'POST',
+          url: url,
+          data: {
+              'id':id,
+          },
+  
+          headers: {
+              'X-CSRFToken': csrftoken  
+          },
+          dataType: 'json',
+          success: function (data) {
+              if (data.status === 'success') {
+                $(`basket-div-${id}`).remove();
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Uğurla tamamlandı'
+                  })
+              } else {
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Xəta',
+                      text: 'Bu özəllikdən istifadə etmək üçün hesaba daxil olmalısınız    !',
+                      confirmButtonText: 'Tamam'
+                  })
+              }
+          },
+          error: function () {
+              alert('An unexpected error occurred.');
+          }
+      });
+  }
