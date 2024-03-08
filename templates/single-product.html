@@ -105,27 +105,34 @@
                                 <div class="d-flex">
                                     <span class="specifications">Ölçü: </span>
                                     <ul class="size-list align-self-center pl-3">
-                                        <select name="size" id="sizeselect">
+                                       
+                                
+                                
+                                   
                                         {% for size in product.size.all %}
-                                        <option value="{{ size.id }}">{{ size.name }}</option>
+
+                                        <input type="radio" id="s-{{size.id}}" name="size-select" value="s-{{size.id}}">
+                                        <label for="s-{{size.id}}">{{ size.name }}</label>
                                         {% endfor %}
+
                                     </select>
                                     </ul>
                                 </div>
+                                
                                 <div class="d-flex">
                                     <span class="specifications">Rəng: </span>
-                                    <ul style="display: flex;flex-flow:nowrap" class="size-list align-self-center pl-3">
-                                        <select name="color" id="colorselect">
-                                            {% for color in product.color.all %}
-                                            <option value="{{ color.id }}">{{ color.name }}</option>
-                                            {% endfor %}
-                                     
-                                        </select>
-                                     
-                            
-                                        
+                                    <ul class="color-list align-self-center">
+
+                                        {% for color in product.color.all %}
+                                        <input class="color-select" type="checkbox" id="c-{{ color.id }}" value="c-{{color.id}}" name="c-{{color.id}}"  >
+                                        <label class="color-label" id="{{color.color}}" for="c-{{ color.id }}"></label>
+                                          {% endfor %}
+                                      
+                               
                                     </ul>
                                 </div>
+
+
                                 {% if product.material %}
                                 <p class="specifications">Material: {{ product.material }}</p>
                                 {% endif %}
@@ -374,16 +381,49 @@
 <script>
     const product = '{{product.id}}'
     function addToCart(arg) {
-  
-        var selectedSize = $("#sizeselect").val();
-        var selectedColor = $("#colorselect").val();
+        const checkboxes = document.querySelectorAll('.color-select');
+        var checkedValue;
+    $('.color-select').each(function() {
+        if ($(this).prop('checked')) {
+            checkedValue = $(this).val().substring(2);
+        }
+    });
+    var radioButtons = document.getElementsByName("size-select");
+
+    var selectedSize;
+
+    for (var i = 0; i < radioButtons.length; i++) {
+        if (radioButtons[i].checked) {
+
+            selectedSize = radioButtons[i].value.substring(2);
+            break; 
+        }
+    }
+    console.log(selectedSize)
+    if(selectedSize === undefined || selectedSize === null){
+        console.log('ttt')
+        Swal.fire({
+        icon: 'error',
+        title: 'Xəta',
+        text: 'Ölçü seçilməyib !',
+        confirmButtonText: 'Tamam'
+    })
+return;}
+    if(checkedValue === undefined || checkedValue === null){Swal.fire({
+        icon: 'error',
+        title: 'Xəta',
+        text: 'Rəng seçilməyib !',
+        confirmButtonText: 'Tamam'
+    });
+return;}
+
         var quantity = $("#qty_input").val();
   
         var csrfToken = '{{ csrf_token }}'
     
         var postData = {
             'size': selectedSize,
-            'color': selectedColor,
+            'color': checkedValue,
             'quantity': quantity,
             'product':product,
     
@@ -457,7 +497,25 @@
       }
     </script>
 
-    <!-- footer area end -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const checkboxes = document.querySelectorAll('.color-select');
+    
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+      
+                        checkboxes.forEach(function(otherCheckbox) {
+                            if (otherCheckbox !== checkbox) {
+                                otherCheckbox.checked = false;
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
 <style>
     
     .hoverable-item:hover img{
@@ -477,7 +535,109 @@
         border-radius: 5px;
         background-color: #fbffff;
     }
+   
+    input[type=checkbox] + label {
+        display: block;
+        margin: 0.2em;
+        cursor: pointer;
+        padding: 0.2em;
+        font-family: 'Arial'
+      }
+      
+      input[type=checkbox] {
+        display: none;
+      }
+      
+      input[type=checkbox] + label:before {
+        content: "\2714";
+       
+        border-radius: 0.2em;
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        padding-left: 0.2em;
+        padding-bottom: 0.3em;
+        margin-right: 0.2em;
+        vertical-align: bottom;
+        color: transparent;
+        transition: .2s;
+        box-sizing:content-box;
+        background-color: var(--before-bg);
+      }
+      
+      input[type=checkbox] + label:active:before {
+        transform: scale(0);
+      }
+      
+      input[type=checkbox]:checked + label:before {
+
+        color: #fff;
+      }
+      
+      input[type=checkbox]:disabled + label:before {
+        transform: scale(1);
+        border-color: #aaa;
+      }
+      
+      input[type=checkbox]:checked:disabled + label:before {
+        transform: scale(1);
+        background-color: #F7C28F;
+        border-color: #F7C28F;
+      }
+      /* Style for Radio Buttons */
+input[type="radio"] {
+  /* Hide the default radio button */
+  display: none;
+}
+
+/* Style for Radio Button Label */
+input[type="radio"] + label {
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  padding-left: 25px; /* Adjust as needed for spacing */
+  position: relative;
+  margin-right: 15px; /* Adjust as needed for spacing */
+}
+
+/* Style for Radio Button Indicator (Dot or Circle) */
+input[type="radio"] + label::before {
+  content: '';
+  display: inline-block;
+  width: 16px; /* Adjust as needed for size */
+  height: 16px; /* Adjust as needed for size */
+  border-radius: 50%;
+  border: 2px solid #3498db; /* Change the color as needed */
+  background-color: white; /* Background color when not selected */
+  position: absolute;
+  left: 0;
+  top: 3px; /* Adjust as needed for vertical alignment */
+}
+
+
+input[type="radio"]:checked + label::before {
+  background-color: #3498db; /* Change the color as needed */
+  border-color: #3498db; /* Change the color as needed */
+
+  color: white; /* Color of the dot when selected */
+  text-align: center;
+  line-height: 14px; /* Adjust as needed for vertical alignment */
+  font-size: 12px; /* Adjust as needed for size */
+}
+label{
+    margin-bottom:0px !important
+}
+
 </style>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var colorLabels = document.querySelectorAll('.color-label');
+        
+        colorLabels.forEach(function(label) {
+            var id = label.id;
+            label.style.setProperty('--before-bg',  id);
+        });
+    });
+</script>
     <!-- back to top area start -->
     <div class="back-to-top">
         <span class="back-top"><i class="fa fa-angle-up"></i></span>

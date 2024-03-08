@@ -82,3 +82,20 @@ def message(request):
     else:
         return HttpResponse(status=405) 
     
+from django.contrib.auth import authenticate, login
+
+def login_js(request):
+    if request.method == 'POST':
+        print(request.POST)
+        data = json.loads(request.body.decode('utf-8'))
+        username = data.get('username')
+        password = data.get('password')
+        print(username,password,'-----')
+        # Authenticate user
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return HttpResponse(status=200)
+     
+        return HttpResponse(status=400)

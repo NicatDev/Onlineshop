@@ -345,35 +345,19 @@
                         </div>
                     </div>
                     <div class="widget seller-widget">
-                        <h4 class="widget-title">Best sellers</h4>
+                        <h4 class="widget-title">Çox satılanlar</h4>
                         <div class="seller-content">
+                            {% for product in best_sellers %}
                             <div class="single-seller-content d-flex">
                                 <div class="thumb">
-                                    <img src="{% static 'assets/img/seller/1.png' %}" alt="">
+                                    <img style="max-width:100px" src="{{ product.get_main_image.url }}" alt="">
                                 </div>
                                 <div class="content">
-                                    <h6>Men's Crew T-shirt</h6>
-                                    <span>$35.00</span>
+                                    <h6>{{ product.name }}</h6>
+                                    <span>{{ product.get_discount_price }}</span>
                                 </div>
                             </div>
-                            <div class="single-seller-content d-flex">
-                                <div class="thumb">
-                                    <img src="{% static 'assets/img/seller/2.png' %}" alt="">
-                                </div>
-                                <div class="content">
-                                    <h6>Men's V-neck Pima</h6>
-                                    <span>$35.00</span>
-                                </div>
-                            </div>
-                            <div class="single-seller-content d-flex">
-                                <div class="thumb">
-                                    <img src="{% static 'assets/img/seller/3.png' %}" alt="">
-                                </div>
-                                <div class="content">
-                                    <h6>Men's Crew T-shirt</h6>
-                                    <span>$35.00</span>
-                                </div>
-                            </div>
+                        {% endfor %}
                         </div>
                     </div>
                     <div class="widget">

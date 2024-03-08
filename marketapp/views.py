@@ -11,8 +11,6 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
 
-
-
 def get_order_items(request):
   
     orderitems = []
@@ -109,8 +107,8 @@ def shop(request):
     sizes = Size.objects.all()
     brands = Brand.objects.all()
     collections = Collection.objects.all()
-
     instas = get_instagram_photos()
+    best_sellers = Product.objects.order_by('best_seller')[:3]
     context = {
         'categories':categories,
         'instas':instas,
@@ -122,7 +120,8 @@ def shop(request):
         'brands':brands,
         'collections':collections,
         'orderitems':orderitems,
-        'collection':collection
+        'collection':collection,
+        'best_sellers':best_sellers
     }
     return render(request,'shopgrid.html',context)
 
@@ -136,6 +135,12 @@ def contact(request):
         'orderitems':orderitems
     }
     return render(request,'contact.html',context)
+
+def about(request):
+    context = {
+
+    }
+    return render(request,'about.html',context)
 
 def blogs(request):
     

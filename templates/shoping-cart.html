@@ -91,7 +91,12 @@
                                     </div>
                                 </th>
                                 <td>{{ item.product.price }} azn</td>
-                                <td><input onchange="changeBasketQuantity({{item.product.id}},{{item.size}},{{item.color}})" type="text" value="{{ item.quantity }}"></td>
+                                
+                                <td>
+                                    <div class="divmybutton">
+                                <button  class="mybutton">-</button><div id="item-{{item.id}}">{{ item.quantity}}</div><button class="mybutton">+</button>
+                                    </div>
+                                </td>
                                 <td>{{ item.total }} azn</td>
                               
                               </tr>
@@ -160,6 +165,114 @@
         font-weight:700 !important;
         color:black !important
     }
+    .mybutton{
+   
+        cursor:pointer !important;
+        width:30px;
+        border:none;
+        font-weight:700;
+    }
+    .divmybutton{
+        display:flex;
+        gap:8px;
+        box-shadow: 0px 0px 1px 1px #cbcbcb;
+    }
 </style>
+
+<script>
+    const csrfToken = "{{ csrf_token }}";
+   
+
+   
+
+    $(document).ready(function() {
+        $("#submitmessage").on("click", function(e) {
+            e.preventDefault();
+            
+           
+            // Capture form data
+            const formData = {
+                username: $("#username").val(),
+                password: $("#password").val(),
+               
+            };
+
+            // Check if any field is empty
+            if (Object.values(formData).some(value => value === "")) {
+                // Display SweetAlert for empty fields
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'Zəhmət olmasa formun düzgünlüyünü yoxlayın',
+                });
+                return;
+            }else if (!emailRegex.test($("#username").val())){
+                console.log($("#username").val())
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'E-poçtun düzgünlüyünü yoxlayın',
+                });
+                return;
+              
+            } else {
+                // If not empty, send data to the backend
+                fetch(messageUrl, {
+                    method: 'POST',
+                    body: JSON.stringify(formData),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    }
+                })
+                .then(response => {
+                   if(response.ok){
+                    Swal.fire({
+                        icon: 'success',
+                       
+                        text: 'Uğurla daxil oldunuz !',
+                        confirmButtonText: 'Ana səhifəyə qayıt',
+                        preConfirm: () => {
+                            window.location.href = '{% url "home" %}';
+                            }
+                    }).then((result) => {
+                        // Check if the result.dismiss property is present, indicating a click outside the modal
+                        if (result.dismiss) {
+                          // Redirect to the homepage
+                          window.location.href = '{% url "home" %}';
+                        }
+                      });
+                
+                   }
+                  else{
+                    Swal.fire({
+                        icon: 'error',
+                       
+                        text: 'Yanlış ad və ya şifrə !',
+                        confirmButtonText: 'Təkrar yoxla',
+                        preConfirm: () => {
+                            window.location.href = '{% url "login" %}';
+                            }
+                    }).then((result) => {
+                        // Check if the result.dismiss property is present, indicating a click outside the modal
+                        if (result.dismiss) {
+                          // Redirect to the homepage
+                          window.location.href = '{% url "login" %}';
+                        }
+                      });
+                  } 
+                })
+                .then(data => {
+                    // Handle successful response if needed
+                  
+                })
+                .catch(error => {
+                    // Handle error if needed
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+            }
+        });
+    });
+</script>
 <!-- Mirrored from zwin.io/html/stooon/shoping-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:48 GMT -->
 </html>

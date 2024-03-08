@@ -10,7 +10,7 @@
 
         $(".video-btn-style-01").magnificPopup({
             items: {
-                src: "https://www.youtube.com/watch?v=AOXl0Ll_t9s"
+                src: "https://www.youtube.com/embed/Bn9cf4dT1TU"
             },
             type: "iframe",
             iframe: {
@@ -23,7 +23,7 @@
                     youtube: {
                         index: "youtube.com/",
                         id: "v=",
-                        src: "//www.youtube.com/embed/AOXl0Ll_t9s"
+                        src: "//www.youtube.com/embed/Bn9cf4dT1TU"
                     }
                 },
                 srcAction: "iframe_src"

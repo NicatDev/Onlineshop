@@ -34,40 +34,8 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
-import logging
-
-logger = logging.getLogger(__name__)
-
 def login_view(request):
-    logger.info("Login view started.")
-    try:
-        with transaction.atomic():
-            if request.method == 'POST':
-      
-                form = LoginForm(request.POST)
-                if form.is_valid():
-                    username = form.cleaned_data['username']
-                    password = form.cleaned_data['password']
-                    user = authenticate(request, username=username, password=password)
-
-                    if user is not None:
-                        login(request, user)
-                        home_url = reverse('home') + '?auth=True'
-                        return redirect(home_url)
-                    else:
-                        return redirect('login')
-            else:
-
-                form = LoginForm()
-
-            return render(request, 'login.html', {'form': form})
-    except Exception as e:
-        transaction.set_rollback(True)
-        logger.error(f"Hata: {e}")
-    logger.info("Login view finished.")
-
-
-
+    return render(request,'login.html',{})
 
 
 def logout_view(request):

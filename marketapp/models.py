@@ -22,7 +22,10 @@ class MetaMixin(models.Model):
     class Meta:
         abstract = True
 
+from colorfield.fields import ColorField
+
 class Color(BaseMixin):
+    color = ColorField()
     name = models.CharField(max_length=200)
     
     def __str__(self):

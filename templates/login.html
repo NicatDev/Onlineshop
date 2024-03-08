@@ -78,26 +78,28 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <form id="myform" method="POST" action="{% url 'login' %}">
-                        {% csrf_token %}
+                    <div id="myform" method="POST" action="{% url 'login' %}">
+                     
                         <div class="form-row">
                           <div class="form-group col-md-12">
-                            <input type="email" class="form-control" name="username" placeholder="email">
+                            <input type="email" class="form-control" name="username" id="username" placeholder="email">
                           </div>
                       
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                              <input type="password" class="form-control" name="password" placeholder="password">
+                              <input type="password" class="form-control" name="password" id="password" placeholder="password">
                             </div>
                         
                           </div>
                         <button id="submitmessage" type="submit"  class="btn btn-contact">DAXİL OL</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+
    
     
     {% include 'footer.html' %}
@@ -114,6 +116,103 @@
     
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
+
+<script>
+    const csrfToken = "{{ csrf_token }}";
+    const messageUrl = "{% url 'login_js' %}";
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+   
+
+    $(document).ready(function() {
+        $("#submitmessage").on("click", function(e) {
+            e.preventDefault();
+            
+           
+            // Capture form data
+            const formData = {
+                username: $("#username").val(),
+                password: $("#password").val(),
+               
+            };
+
+            // Check if any field is empty
+            if (Object.values(formData).some(value => value === "")) {
+                // Display SweetAlert for empty fields
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'Zəhmət olmasa formun düzgünlüyünü yoxlayın',
+                });
+                return;
+            }else if (!emailRegex.test($("#username").val())){
+                console.log($("#username").val())
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'E-poçtun düzgünlüyünü yoxlayın',
+                });
+                return;
+              
+            } else {
+                // If not empty, send data to the backend
+                fetch(messageUrl, {
+                    method: 'POST',
+                    body: JSON.stringify(formData),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    }
+                })
+                .then(response => {
+                   if(response.ok){
+                    Swal.fire({
+                        icon: 'success',
+                       
+                        text: 'Uğurla daxil oldunuz !',
+                        confirmButtonText: 'Ana səhifəyə qayıt',
+                        preConfirm: () => {
+                            window.location.href = '{% url "home" %}';
+                            }
+                    }).then((result) => {
+                        // Check if the result.dismiss property is present, indicating a click outside the modal
+                        if (result.dismiss) {
+                          // Redirect to the homepage
+                          window.location.href = '{% url "home" %}';
+                        }
+                      });
+                
+                   }
+                  else{
+                    Swal.fire({
+                        icon: 'error',
+                       
+                        text: 'Yanlış ad və ya şifrə !',
+                        confirmButtonText: 'Təkrar yoxla',
+                        preConfirm: () => {
+                            window.location.href = '{% url "login" %}';
+                            }
+                    }).then((result) => {
+                        // Check if the result.dismiss property is present, indicating a click outside the modal
+                        if (result.dismiss) {
+                          // Redirect to the homepage
+                          window.location.href = '{% url "login" %}';
+                        }
+                      });
+                  } 
+                })
+                .then(data => {
+                    // Handle successful response if needed
+                  
+                })
+                .catch(error => {
+                    // Handle error if needed
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+            }
+        });
+    });
+</script>
+
 {% if request.user.is_authenticated %}
   <script>
     Swal.fire({
@@ -122,10 +221,10 @@
     
         confirmButtonText: 'Ana səhifəyə qayıt',
         preConfirm: () => {
-            window.location.href = '{% url "home" %}';
+            window.location.href = '{% url "login" %}';
             }
     }).then((result) => {
-        // This block is executed even if the user clicks outside the modal
+     
         window.location.href = '{% url "home" %}';
     });
   </script>

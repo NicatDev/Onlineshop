@@ -68,7 +68,7 @@
             <div class="row">
                 <div class="col-lg-3 col-4 order-1 align-self-center">
                     <div class="logo">
-                        <a href="index-2.html"><img style="max-height:50px !important" src="{% static 'assets/1.png' %}" alt=""></a>
+                        <a href="{% url 'home' %}"><img style="max-height:50px !important" src="{% static 'assets/1.png' %}" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-6 order-3 order-lg-2">
@@ -120,7 +120,7 @@
                                 </ul>
                             </li>
                             <li>
-                                <a href="#"><i class="icon-user"></i></a>
+                                <a ><i class="icon-user"></i></a>
                                 <ul class="user-dropdown">
 
                                     {% if request.user.is_authenticated %}
