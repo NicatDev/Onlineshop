@@ -99,3 +99,13 @@ def login_js(request):
             return HttpResponse(status=200)
      
         return HttpResponse(status=400)
+    
+def delete_order_item(request):
+    print('11')
+    orderitem_id = request.POST.get('orderitem_id')
+    print('22')
+    print(orderitem_id)
+    order_item = get_object_or_404(OrderItem, id=orderitem_id)
+    print(order_item)
+    order_item.delete()
+    return JsonResponse({'status': 'success'})

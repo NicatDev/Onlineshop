@@ -85,3 +85,31 @@ function remove_basket(id,url,csrftoken) {
           }
       });
   }
+
+
+
+  function delete_order_item(id,url,csrftoken) {
+   
+   
+      $.ajax({
+          type: 'POST',
+          url: url,
+          data: {
+              'orderitem_id':id,
+          },
+  
+          headers: {
+              'X-CSRFToken': csrftoken  
+          },
+          dataType: 'json',
+          success: function (data) {
+             if (data.success = 'success'){
+                window.location.reload();
+             }
+          },
+          error: function () {
+              alert('An unexpected error occurred.');
+          }
+      });
+  }
+  

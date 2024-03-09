@@ -97,7 +97,7 @@
                                 <button  class="mybutton">-</button><div id="item-{{item.id}}">{{ item.quantity}}</div><button class="mybutton">+</button>
                                     </div>
                                 </td>
-                                <td style="position:relative">{{ item.total }} azn <img class="deleteicon" src="{% static 'assets/img/deleteicon.png' %}" ></td>
+                                <td  style="position:relative">{{ item.total }} azn <img style="cursor:pointer" onclick="delete_order_item('{{ item.id }}','{% url 'delete_order_item' %}','{{ csrf_token }}')" class="deleteicon" src="{% static 'assets/img/deleteicon.png' %}" ></td>
                               
                               </tr>
                               {% endfor %}

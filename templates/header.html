@@ -107,8 +107,8 @@
                                             <span class="price">{{item.product.get_discount_price}}</span>
                                         </div>
                                         <div class="action" >
-                                            <input type="number" value="{{item.quantity}}" >
-                                            <a href="#" id="{{item.product.id}}" class="remove"><i  class="fa-solid fa-trash-can"></i></a>
+                                            <input type="text" value="{{item.quantity}}" >
+                                            <a style="cursor:pointer" onclick="delete_order_item('{{ item.id }}','{% url 'delete_order_item' %}','{{ csrf_token }}')" id="{{item.product.id}}" class="remove"><i  class="fa-solid fa-trash-can"></i></a>
                                         </div>
                                     </div>
                                 </li>
