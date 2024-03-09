@@ -97,7 +97,7 @@
                                 <button  class="mybutton">-</button><div id="item-{{item.id}}">{{ item.quantity}}</div><button class="mybutton">+</button>
                                     </div>
                                 </td>
-                                <td>{{ item.total }} azn</td>
+                                <td>{{ item.total }} azn <img class="deleteicon" src="{% static 'img/deleteicon.png' %}" ></td>
                               
                               </tr>
                               {% endfor %}
@@ -182,14 +182,16 @@
         margin-left:46px !important;
         }
     }
+    .deleteicon{
+        position:absolute;
+        right:5px;
+        bottom:5px;
+    }
 </style>
 
 <script>
     const csrfToken = "{{ csrf_token }}";
    
-
-   
-
     $(document).ready(function() {
         $("#submitmessage").on("click", function(e) {
             e.preventDefault();
