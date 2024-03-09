@@ -127,7 +127,7 @@
                                         <div class="content text-left">
                                             <span class="brand">{{product.brand.name}}</span>
                                           
-                                            <h6 class="title"><a href="#">{{ product.name }}</a></h6>
+                                            <h6 class="title"><a href="{% url 'shopSingle' product.slug %}">{{ product.name }}</a></h6>
                                             <div class="d-flex position-relative">
                                                 <div style="cursor:pointer" class="content-hover-cart"><a href="{% url 'shopSingle' product.slug %}"><i class="icon-add-to-cat"></i>
                                                     

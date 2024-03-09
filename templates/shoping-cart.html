@@ -84,7 +84,7 @@
                                     <div style="max-width:22%" class="left">
                                         <img src="{{ item.product.image }}" alt="">
                                     </div>
-                                    <div class="right">
+                                    <div class="right responsivetitle">
                                         <h6 class="name">{{ item.product.name }}</h6>
                                         <h6 style="display:flex" class="title">Ölçü: <span class="values">&nbsp; {{ item.size }}</span></h6>
                                         <h6 style="display:flex" class="title">Rəng: <span class="values">&nbsp; {{ item.color }}</span></h6>
@@ -176,6 +176,11 @@
         display:flex;
         gap:8px;
         box-shadow: 0px 0px 1px 1px #cbcbcb;
+    }
+    @media screen and (max-width: 800px) {
+        .responsivetitle{
+        margin-left:46px !important;
+        }
     }
 </style>
 
