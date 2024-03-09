@@ -97,7 +97,7 @@
                                 <button  class="mybutton">-</button><div id="item-{{item.id}}">{{ item.quantity}}</div><button class="mybutton">+</button>
                                     </div>
                                 </td>
-                                <td>{{ item.total }} azn <img class="deleteicon" src="{% static 'assets/img/deleteicon.png' %}" ></td>
+                                <td style="position:relative">{{ item.total }} azn <img class="deleteicon" src="{% static 'assets/img/deleteicon.png' %}" ></td>
                               
                               </tr>
                               {% endfor %}
@@ -186,6 +186,7 @@
         position:absolute;
         right:5px;
         bottom:5px;
+        width:25px
     }
 </style>
 
