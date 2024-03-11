@@ -24,11 +24,17 @@ admin.site.register(Color)
 admin.site.register(Size)
 admin.site.register(Comment)
 admin.site.register(Blog)
-admin.site.register(Order)
-admin.site.register(OrderItem)
+
 admin.site.register(Collection)
 admin.site.register(Message)
 admin.site.register(BlogTag)
 admin.site.register(Partner)
 # admin.site.register(Training)
 # admin.site.register(Team)
+class BookInline(admin.TabularInline):  # veya StackedInline
+    model = OrderItem
+
+class AuthorAdmin(admin.ModelAdmin):
+    inlines = [BookInline]
+
+admin.site.register(Order, AuthorAdmin)

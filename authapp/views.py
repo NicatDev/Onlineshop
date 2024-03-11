@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
-from django.shortcuts import redirect
+from django.shortcuts import redirect,HttpResponse, HttpResponseRedirect, get_object_or_404
 from marketapp.models import Order,OrderItem,Product,Category
 from django.db import transaction
 from django.urls import reverse
@@ -43,13 +43,41 @@ def logout_view(request):
     return redirect('home')
 
 
-def shopping(request):
+def shopping(request,form_name=None):
     if request.method == 'POST':
-        order, created = Order.objects.get_or_create(user=request.user, status=False)
-        basket = OrderItem.objects.filter(order=order)
-        for item in basket:
-            item.delete()
-        return redirect('shopping')
+        
+        if form_name == 'change':
+            id = request.POST.get('item_id')
+            action = request.POST.get('action')
+            item = get_object_or_404(OrderItem,id=id)
+            if action == 'add':
+                item.quantity += 1
+            if action == 'subtract':
+                if item.quantity == 1:
+                    item.delete()
+                    return redirect('shopping')
+                else:
+                    item.quantity -= 1
+            item.save()
+            return redirect('shopping')
+        
+        elif form_name == 'order':
+            check = request.POST.get('check')
+            address = request.POST.get('address')
+            phone = request.POST.get('phone')
+            if check:
+                print(request.POST.get('order'))
+                order = get_object_or_404(Order,id=int(request.POST.get('order')))
+                order.address = address
+                order.phone_number = phone
+                order.status = True
+                order.save()
+        else:
+            order, created = Order.objects.get_or_create(user=request.user, status=False)
+            basket = OrderItem.objects.filter(order=order)
+            for item in basket:
+                item.delete()
+            return redirect('shopping')
     
     if request.user.is_authenticated:
         order, created = Order.objects.get_or_create(user=request.user, status=False)
@@ -87,7 +115,7 @@ def shopping(request):
     instas = get_instagram_photos()
     orderitems = get_order_items(request)
 
-    return render(request, 'shoping-cart.html',context={'data':serialized_orderitems,'count':count,'total':total,'categories':categories,'instas':instas,'orderitems':orderitems})
+    return render(request, 'shoping-cart.html',context={'data':serialized_orderitems,'count':count,'total':total,'categories':categories,'instas':instas,'orderitems':orderitems,'order':order.id})
 
 
 def wish(request):

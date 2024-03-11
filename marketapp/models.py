@@ -79,6 +79,7 @@ class Brand(BaseMixin):
 class Category(MetaMixin,BaseMixin):
     name = models.CharField(max_length = 200)
     image = models.ImageField(null=True,blank=True)
+    in_slide = models.BooleanField(default = False)
     
     def __str__(self):
         return self.name
@@ -131,7 +132,8 @@ class Product(MetaMixin,BaseMixin):
     most_searched = models.BooleanField(default=False)
     wishlist = models.ManyToManyField("auth.User",blank=True,related_name='wishproducts')
     material = models.CharField(max_length = 200,null=True,blank=True)
-    
+    product_code = models.CharField(max_length = 300,null=True,blank=True)
+
     def __str__(self):
         return self.name
 
@@ -169,7 +171,9 @@ class Order(models.Model):
     status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey("auth.User",on_delete=models.SET_NULL,null=True,blank=True,related_name='myproducts')
-    
+    phone_number = models.CharField(max_length=200,null=True,blank=True)
+    address = models.TextField(null=True,blank=True)
+
     def __str__(self):
         return  f'{self.created_at}-{self.id}'
     
