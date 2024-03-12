@@ -103,11 +103,15 @@
                                             <img  src="{{item.product.get_main_image.url}}" alt="{{item.product.name}}">
                                         </div>
                                         <div  class="content">
-                                            <h6  class="title"><a href="#" >{{item.product.name}} </a> </h6>
-                                            <span class="price">{{item.product.get_discount_price}}</span>
+                                            <h6 style="margin-bottom:0px"  class="title"><a href="#" >{{item.product.name}} </a></h6>
+                                            <div style="display:flex;font-size:12px;font-weight:600; gap:4px;margin-bottom:5px">
+                                                 <span>Rəng: {{item.color.name}}</span> , <span>Bədən: {{item.size.name}} </span> 
+                                            
+                                            </div>
+                                            <span class="price">{{item.product.get_discount_price}} azn</span>
                                         </div>
                                         <div class="action" >
-                                            <input type="text" value="{{item.quantity}}" >
+                                            <input readonly type="text" value="{{item.quantity}}" >
                                             <a style="cursor:pointer" onclick="delete_order_item('{{ item.id }}','{% url 'delete_order_item' %}','{{ csrf_token }}')" id="{{item.product.id}}" class="remove"><i  class="fa-solid fa-trash-can"></i></a>
                                         </div>
                                     </div>
