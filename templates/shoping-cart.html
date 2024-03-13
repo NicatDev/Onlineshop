@@ -18,7 +18,9 @@
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
     <!-- responsive Stylesheet -->
     <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
-     
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
 </head>
 <body>
     <a href="https://wa.me/+994513126599?text=Yardım%20lazımdır" class="float" target="_blank">
@@ -297,5 +299,28 @@
         });
     });
 </script>
-<!-- Mirrored from zwin.io/html/stooon/shoping-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:48 GMT -->
+
+<script>
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+              
+                Swal.fire({
+                    icon: 'success',
+                    title: '{{ message }}',
+                
+                });
+            {% elif message.tags == 'error' %}
+      
+                Swal.fire({
+                    icon: 'error',
+                    title: '{{ message }}',
+                  
+                });
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</script>
+
 </html>

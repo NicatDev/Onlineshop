@@ -9,7 +9,7 @@ from django.db.models import Count
 from django.conf import settings
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-
+from django.utils.translation import gettext as _
 
 def get_order_items(request):
   
@@ -41,11 +41,12 @@ def home(request):
     all_collections = Collection.objects.all().exclude(pk__in=slider_collections.values('pk'))
     blogs = Blog.objects.all()[0:3]
     partners = Partner.objects.all()
-    
+    a = _('aaa')
     orderitems = get_order_items(request)
     categories = Category.objects.all()
     instas = get_instagram_photos()
     context = {
+        'a':a,
         'categories':categories,
         'instas':instas,
         'orderitems':orderitems,
@@ -62,16 +63,24 @@ def home(request):
     
     return render(request,'index-2.html',context)
 
+def hello_world(request):
+    response_data = {'msg': _('This Url does not exist. Check spelling.')}
+    return HttpResponse(response_data)
+
 def shopSingle(request,slug):
+    trans = _('hello')
     orderitems = get_order_items(request)
     product = get_object_or_404(Product,slug=slug)
     categories = Category.objects.all()
     instas = get_instagram_photos()
+    products = Product.objects.all().order_by('-discount_percent')[:4]
     context = {
         'categories':categories,
         'instas':instas,
         'product':product,
-        'orderitems':orderitems
+        'orderitems':orderitems,
+        'products':products,
+        'trans':trans
     }
     return render(request,'single-product.html',context)
 

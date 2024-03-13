@@ -8,9 +8,8 @@ from django.core.serializers import serialize
 from django.contrib.auth.decorators import login_required
 from django.forms.models import model_to_dict
 from django.core.serializers import serialize
-# [{'product': {'id': 2, 'image': '/media/09f75f7dc5b6976da26e049dd2defff2_bnAlD6v.jpg', 'name': 'Pijama'}, 'quantity': 2, 'color': '1', 'size': '2'}]
-# [{"model": "marketapp.orderitem", "pk": 7, "fields": {"quantity": 2, "product": 1, "order": 1, "color": 2, "size": 1}}, {"model": "marketapp.orderitem", "pk": 8, "fields": {"quantity": 4, "product": 2, "order": 1, "color": 1, "size": 2}}, {"model": "marketapp.orderitem", "pk": 9, "fields": {"quantity": 1, "product": 1, "order": 1, "color": 1, "size": 1}}]
-
+from django.core.mail import send_mail
+from django.conf import settings
 
 def add_basket(request):
     if request.method == 'POST':
@@ -73,9 +72,16 @@ def message(request):
         print(data,'--------')
         newmessage = Messageform(data=data)
         if newmessage.is_valid():
-            newmessage.save()
+            message = newmessage.save()
+            send_mail(
+                    f'{message.name}-dən {message.subject} mövzusunda ismarıc',
+                    f'{message.name} - dən sizə ismarıc: {message.message} - Əlaqə üçün {message.phone},{message.email}',
+                    settings.EMAIL_HOST_USER,
+                    ['viktoriassirri@gmail.com'],
+                    fail_silently=False,
+                )
         else:
-            print(newmessage.errors)
+      
             return HttpResponse(status=405) 
         data = {'message': 'Data saved successfully'}
         return JsonResponse(data)

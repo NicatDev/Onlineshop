@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     #third_party
     'colorfield',
     'django_ckeditor_5',
+
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -88,7 +90,8 @@ DATABASES = {
     }
 }
 
-
+IS_MONOLINGUAL=False
+TRANSLATABLE_MODEL_MODULES = ["marketapp.models",]
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -111,30 +114,46 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'az'
+LANGUAGE_CODE = 'en'
 
-TIME_ZONE = 'Asia/Baku'
+from django.utils.translation import gettext_lazy as _
+
+
+
+
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
+
+LANGUAGES = (
+    ('en', 'English'),
+    ('az', 'azərbaycanca'),
+)
+
+
+TIME_ZONE = 'UTC'
 SITE_ID = 1
 USE_I18N = True
-USE_L10N = True
+
 USE_TZ = True
 
+print(LOCALE_PATHS)
 
 STATIC_URL = '/static/'
 
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
-
-
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
-TRANSLATABLE_MODEL_MODULES = ["marketapp.models", ]
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 customColorPalette = [
@@ -225,3 +244,10 @@ CKEDITOR_5_CONFIGS = {
         }
     }
 }
+
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = 'viktoriassirri@gmail.com'
+EMAIL_HOST_PASSWORD = 'uvtksuzdowzuahlh'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True

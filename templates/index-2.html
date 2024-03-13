@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
 
 <html lang="zxx">
 
@@ -29,7 +30,9 @@
 </head>
 
 <body>
-
+    <h1>{% trans "Merhaba Dünya" %}</h1>
+    <p> {% trans a %} </p>
+    <p> {{ a }} </p>
    
     <!-- preloader area start -->
     <div class="preloader" id="preloader">
@@ -119,7 +122,7 @@
                         <div class="thumb">
                             <div class="thumb-slider">
                                 {% for image in product.images.all %}
-                                <a href="{% url 'shopSingle' product.slug %}"><img src="{{ image.image.url }}" alt=""></a>
+                                <a href="{% url 'shopSingle' product.slug %}"><img src="{{ image.image.url }}" loading="lazy" alt=""></a>
                                 {% endfor %}
                             </div>
                             <ul class="cart-action" style="background-color:rgba(255, 255, 255, 0.705);padding:6px 6px 0px 4px;text-align:center">
@@ -202,7 +205,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                             <div class="product-style-02 margin-top-40">
                                 <div class="thumb">
-                                    <img src="{{product.get_main_image.url}}" alt="">
+                                    <img src="{{product.get_main_image.url}}" loading="lazy" alt="">
                                 
                                     <span class="out">Yeni</span>
                    
@@ -240,7 +243,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                             <div class="product-style-02 margin-top-40">
                                 <div class="thumb">
-                                    <img src="{{ product.get_main_image.url }}" alt="">
+                                    <img src="{{ product.get_main_image.url }}" loading="lazy" alt="">
                                     <ul class="cart-action-02" style="background-color:rgba(255, 255, 255, 0.705);padding:6px 6px 0px 4px">
                                         <li><a class="wishclick" data-target="{{ product.id }}" >
                                             <i onclick="addWish('{{ product.id }}', '{% url 'add_wish' %}','{{csrf_token}}' )" 
@@ -275,7 +278,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                             <div class="product-style-02 margin-top-40">
                                 <div class="thumb">
-                                    <img src="{{ product.get_main_image.url }}" alt="">
+                                    <img src="{{ product.get_main_image.url }}" loading="lazy" alt="">
                                     <span class="sale">Çox satılan</span>
                                     <ul class="cart-action-02" style="background-color:rgba(255, 255, 255, 0.705);padding:6px 6px 0px 4px">
                                         <li><a class="wishclick" data-target="{{ product.id }}" >

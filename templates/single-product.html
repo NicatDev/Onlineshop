@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
+<h1>{% trans "Merhaba Dünya" %}</h1>
 <html lang="zxx">
 
 <!-- Mirrored from zwin.io/html/stooon/single-product.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:46 GMT -->
@@ -60,7 +62,6 @@
     </div>
     <!-- breadcrumb end  -->
 
-
     <!-- collection area start  -->
     <div class="collection-area margin-top-60">
         <div class="container">
@@ -93,14 +94,7 @@
                                 <h1 class="product-title">{{ product.name }}</h1>
                                 <span style="text-decoration: line-through;font-size:24px;margin-bottom:0px" >{{ product.price }}azn</span>
                                 <p class="price">{{ product.get_discount_price }}azn</p>
-                                <span class="rating ml-0">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-half-o"></i>
-                                </span>
-                                <span class="review-text">3 reviews</span>
+                           
                                 <p class="specifications">Stok: <b class="color-green">{% if product.stock %}Stokda var{% else %}Stokda bitib{% endif %} </b></p>
                                 <div class="d-flex">
                                     <span class="specifications">Ölçü: </span>
@@ -136,7 +130,7 @@
                                 {% if product.material %}
                                 <p class="specifications">Material: {{ product.material }}</p>
                                 {% endif %}
-                                <div class="btn-wrapper d-flex">
+                                <div style="margin-top:14px" class="btn-wrapper d-flex">
                                     <div class="input-group">
                                         <div class="input-group-prepend align-self-center">
                                             <a class="btn btn-sm" id="minus-btn"><i class="fa fa-minus"></i></a>
@@ -187,72 +181,31 @@
                         <div class="single-delivery-item">
                             <div class="d-flex">
                                 <i class="icon-delivery-car"></i>
-                                <h4>Delivery</h4>
+                                <h4>Çatdırılma
+                                   </h4>
                             </div>
-                            <span>Free shipping on orders over $89.</span>
+                            <span>
+                                Bakı daxili ödənişsiz çatdırılma
+                                </span>
                         </div>
                         <div class="single-delivery-item">
                             <div class="d-flex">
                                 <i class="icon-phone-support"></i>
-                                <h4>Support 24/7</h4>
+                                <h4> 24/7 dəstək xidməti</h4>
                             </div>
-                            <span>Contact us 24 hours a day, 7 days a week.</span>
+                            <span>   (+994) 50 640-85-35 </span>
                         </div>
                         <div class="single-delivery-item">
                             <div class="d-flex">
                                 <i class="icon-money-back"></i>
-                                <h4>Return</h4>
+                                <h4>Zəmanət
+                                  </h4>
                             </div>
-                            <span>Simply return it within 30 days for an exchange.</span>
+                            <span>  Bütün məhsullara keyfiyyət zəmanəti</span>
                         </div>
                     </div>
-                    <div class="widget checkout-widget">
-                        <h4 class="widget-title">GUARANTED SAFE CHECKOUT</h4>
-                        <ul class="checkout-list">
-                            <li><a href="#"><img src="{% static 'assets/img/payment/p1.png' %}" alt=""></a></li>
-                            <li><a href="#"><img src="{% static 'assets/img/payment/p2.png' %}" alt=""></a></li>
-                            <li><a href="#"><img src="{% static 'assets/img/payment/p3.png' %}" alt=""></a></li>
-                            <li><a href="#"><img src="{% static 'assets/img/payment/p4.png' %}" alt=""></a></li>
-                            <li><a href="#"><img src="{% static 'assets/img/payment/p5.png' %}" alt=""></a></li>
-                            <li><a href="#"><img src="{% static 'assets/img/payment/p6.png' %}" alt=""></a></li>
-                            <li><a href="#"><img src="{% static 'assets/img/payment/p7.png' %}" alt=""></a></li>
-                        </ul>
-                    </div>
-                    <div class="widget">
-                        <a href="#"><img src="{% static 'assets/img/others/add1.png' %}" alt=""></a>
-                    </div>
-                    <div class="widget seller-widget">
-                        <h4 class="widget-title">Top Products</h4>
-                        <div class="seller-content">
-                            <div class="single-seller-content d-flex">
-                                <div class="thumb">
-                                    <img src="{% static 'assets/img/seller/1.png' %}" alt="">
-                                </div>
-                                <div class="content">
-                                    <h6>Men's Crew T-shirt</h6>
-                                    <span>$35.00</span>
-                                </div>
-                            </div>
-                            <div class="single-seller-content d-flex">
-                                <div class="thumb">
-                                    <img src="{% static 'assets/img/seller/2.png' %}" alt="">
-                                </div>
-                                <div class="content">
-                                    <h6>Men's V-neck Pima</h6>
-                                    <span>$35.00</span>
-                                </div>
-                            </div>
-                            <div class="single-seller-content d-flex">
-                                <div class="thumb">
-                                    <img src="{% static 'assets/img/seller/3.png' %}" alt="">
-                                </div>
-                                <div class="content">
-                                    <h6>Men's Crew T-shirt</h6>
-                                    <span>$35.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+             
+            
                 </div>
             </div>
         </div>
@@ -266,102 +219,28 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="title">
-                            <h2>RELATED PRODUCTS</h2>
+                            <h2>Digər məhsullar</h2>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="related-slider">
+                            {% for product in products %}
                             <div class="product-style-03 margin-top-30">
                                 <div class="thumb text-center">
-                                    <img src="{% static 'assets/img/shop/3.png' %}" alt="">
-                                    <span class="sale">Sale! 13%</span>
-                                    <span class="new margin-top-35">New</span>
+                                    <img src="{{ product.get_main_image.url }}" alt="">
+                                    <span class="sale">{{ product.discount_percent }} % endirim</span>
+            
                                 </div>
                                 <div class="content text-center">
-                                    <span class="brand">Brand: geek</span>
-                                    <ul class="justify-content-center margin-bottom-20">
-                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h6 class="title"><a href="#">Faxon Canvas Low-Top Sneaker</a></h6>
-                                    <span class="price">$400.00</span>
+                                    <span class="brand">Brend: {{ product.brand.name }}</span>
+                                  
+                                    <h6 class="title"><a href="#">{{ product.name }}</a></h6>
+                                    <span class="price">{{ product.get_discount_price }}</span>
                                 </div>
                             </div>
-                            <div class="product-style-03 margin-top-30">
-                                <div class="thumb text-center">
-                                    <img src="{% static 'assets/img/shop/9.png' %}" alt="">
-                                    <span class="new">New</span>
-                                </div>
-                                <div class="content text-center">
-                                    <span class="brand">Brand: geek</span>
-                                    <ul class="justify-content-center margin-bottom-20">
-                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h6 class="title"><a href="#">Faxon Canvas Low-Top Sneaker</a></h6>
-                                    <span class="price">$400.00</span>
-                                </div>
-                            </div>
-                            <div class="product-style-03 margin-top-30">
-                                <div class="thumb text-center">
-                                    <img src="{% static 'assets/img/shop/5.png' %}" alt="">
-                                </div>
-                                <div class="content text-center">
-                                    <span class="brand">Brand: geek</span>
-                                    <ul class="justify-content-center margin-bottom-20">
-                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h6 class="title"><a href="#">Faxon Canvas Low-Top Sneaker</a></h6>
-                                    <span class="price">$400.00</span>
-                                </div>
-                            </div>
-                            <div class="product-style-03 margin-top-30">
-                                <div class="thumb text-center">
-                                    <img src="{% static 'assets/img/shop/4.png' %}" alt="">
-                                    <span class="new">New</span>
-                                </div>
-                                <div class="content text-center">
-                                    <span class="brand">Brand: geek</span>
-                                    <ul class="justify-content-center margin-bottom-20">
-                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h6 class="title"><a href="#">Faxon Canvas Low-Top Sneaker</a></h6>
-                                    <span class="price">$400.00</span>
-                                </div>
-                            </div>
-                            <div class="product-style-03 margin-top-30">
-                                <div class="thumb text-center">
-                                    <img src="{% static 'assets/img/shop/12.png' %}" alt="">
-                                </div>
-                                <div class="content text-center">
-                                    <span class="brand">Brand: geek</span>
-                                    <ul class="justify-content-center margin-bottom-20">
-                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h6 class="title"><a href="#">Faxon Canvas Low-Top Sneaker</a></h6>
-                                    <span class="price">$400.00</span>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -470,7 +349,7 @@ return;}
                     var li = document.createElement('li')
                     li.innerHTML = `
                         <div class="d-flex">
-                            <a href="/mehsullar" style="width:100%;padding:10px 50px;color:white;" class="btn btn-contact" style="color:white">Ətraflı</a>
+                            <a href="{% url 'shopping' %}" style="width:100%;padding:10px 50px;color:white;" class="btn btn-contact" style="color:white">Ətraflı</a>
                         </div>`
                   
                         ul.appendChild(li);

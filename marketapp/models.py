@@ -1,10 +1,12 @@
 from django.db import models
-from django.contrib.auth import get_user, get_user_model
 from marketapp.utils import *
 from datetime import datetime
 from django.utils.text import slugify
 from django.urls import reverse
 from django_ckeditor_5.fields import CKEditor5Field
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class BaseMixin(models.Model):
     slug = models.SlugField(unique=True,editable=False,blank=True,null=True)
@@ -130,7 +132,7 @@ class Product(MetaMixin,BaseMixin):
     new = models.BooleanField(default=False)
     best_seller = models.BooleanField(default=False)
     most_searched = models.BooleanField(default=False)
-    wishlist = models.ManyToManyField("auth.User",blank=True,related_name='wishproducts')
+    wishlist = models.ManyToManyField(User,blank=True,related_name='wishproducts')
     material = models.CharField(max_length = 200,null=True,blank=True)
     product_code = models.CharField(max_length = 300,null=True,blank=True)
 
@@ -170,12 +172,13 @@ class ProductImages(models.Model):
 class Order(models.Model):
     status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey("auth.User",on_delete=models.SET_NULL,null=True,blank=True,related_name='myproducts')
+    user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='myproducts')
     phone_number = models.CharField(max_length=200,null=True,blank=True)
     address = models.TextField(null=True,blank=True)
+    
 
     def __str__(self):
-        return  f'{self.created_at}-{self.id}'
+        return  f'{self.status}-{self.id}'
     
 
     
@@ -187,13 +190,13 @@ class OrderItem(models.Model):
     size = models.ForeignKey(Size,on_delete=models.CASCADE,null=True,blank=True)
         
     def __str__(self):
-        return f'{self.product.name}' 
+        return f'{self.product.name} ' 
     
     
 class Comment(BaseMixin):
     content = models.TextField()
     rating = models.PositiveSmallIntegerField()
-    user = models.ForeignKey("auth.User",on_delete=models.SET_NULL,null=True)
+    user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
     product = models.ForeignKey(Product,on_delete=models.CASCADE,null=True)
     
     def __str__(self):

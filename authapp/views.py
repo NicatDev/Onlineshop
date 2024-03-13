@@ -12,6 +12,9 @@ from django.urls import reverse
 from django.db import close_old_connections
 from marketapp.views import get_instagram_photos,get_order_items
 from django.core.paginator import Paginator
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib import messages
 
 def register(request):
     if request.method == 'POST':
@@ -44,8 +47,9 @@ def logout_view(request):
 
 
 def shopping(request,form_name=None):
+
     if request.method == 'POST':
-        
+
         if form_name == 'change':
             id = request.POST.get('item_id')
             action = request.POST.get('action')
@@ -60,25 +64,54 @@ def shopping(request,form_name=None):
                     item.quantity -= 1
             item.save()
             return redirect('shopping')
-        
+
         elif form_name == 'order':
-            check = request.POST.get('check')
-            address = request.POST.get('address')
-            phone = request.POST.get('phone')
-            if check:
-                print(request.POST.get('order'))
+            try:
                 order = get_object_or_404(Order,id=int(request.POST.get('order')))
+                check = request.POST.get('check')
+                address = request.POST.get('address')
+                phone = request.POST.get('phone')
+
+                if not order.orderitems.exists():
+                    messages.error(request, f'Xəta: Səbətdə məhsul yoxdur!')
+                    return redirect('shopping')
+                if not phone or not len(phone)>6:
+                    messages.error(request, f'Xəta: Əlaqə nömrəsinin düzgünlüyünü yoxlayın!')
+                    return redirect('shopping')
+                if not address:
+                    messages.error(request, f'Xəta: Ünvan daxil edin!')
+                    return redirect('shopping')
+                if not check:
+                    messages.error(request, f'Xəta: Məlumatların düzgünlüyünü təsdiqləyin!')
+                    return redirect('shopping')
+                
                 order.address = address
                 order.phone_number = phone
                 order.status = True
                 order.save()
+                messages.success(request, 'Sifariş uğurla tamamlandı. Sizinlə tezliklə əlaqə saxlanılacaq !')
+                # send_mail(
+                #     'Sifariş',
+                #     f'Sifariş N {order.id}',
+                #     settings.EMAIL_HOST_USER,
+                #     ['viktoriassirri@gmail.com'],
+                #     fail_silently=False,
+                # )
+                return redirect('shopping')
+                    
+            except Exception as e:
+                print(str(e))
+                messages.error(request, f'Xəta: Məlumatların düzgünlüyünü yoxlayın !')
+                return redirect('shopping')
+        
         else:
             order, created = Order.objects.get_or_create(user=request.user, status=False)
             basket = OrderItem.objects.filter(order=order)
             for item in basket:
                 item.delete()
             return redirect('shopping')
-    
+        
+
     if request.user.is_authenticated:
         order, created = Order.objects.get_or_create(user=request.user, status=False)
         orderitems = order.orderitems.all()
@@ -105,17 +138,22 @@ def shopping(request,form_name=None):
         total = sum(orderitem['total'] for orderitem in serialized_orderitems)
         
     else:
-        cart = request.session.get('cart', [])
-        orderitems = cart
-        count = len(cart)
-        serialized_orderitems = orderitems
-        count = sum(int(orderitem['quantity']) for orderitem in serialized_orderitems)
+        serialized_orderitems = []
+        count = 0
         total = 0
+        order = {}
+
     categories = Category.objects.all()
     instas = get_instagram_photos()
     orderitems = get_order_items(request)
 
-    return render(request, 'shoping-cart.html',context={'data':serialized_orderitems,'count':count,'total':total,'categories':categories,'instas':instas,'orderitems':orderitems,'order':order.id})
+    context={'data':serialized_orderitems,'count':count,'total':total,'categories':categories,'instas':instas,'orderitems':orderitems}
+
+    if request.user.is_authenticated:
+        context['order'] = order.id
+    
+
+    return render(request, 'shoping-cart.html',context)
 
 
 def wish(request):
