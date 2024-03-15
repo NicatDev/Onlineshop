@@ -39,23 +39,26 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.sitemaps',
+  
     #django apps
     'marketapp',
     'authapp',
     #third_party
     'colorfield',
     'django_ckeditor_5',
+    'rosetta',
 
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
+   
 ]
 
 
@@ -79,6 +82,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'project.wsgi.application'
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'error.log',
+            'encoding': 'utf-8',  
+        },
+    },
+    'root': {
+        'handlers': ['file'],
+        'level': 'ERROR',
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -90,8 +109,8 @@ DATABASES = {
     }
 }
 
-IS_MONOLINGUAL=False
-TRANSLATABLE_MODEL_MODULES = ["marketapp.models",]
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -114,41 +133,35 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en'
+
 
 from django.utils.translation import gettext_lazy as _
 
 
-
-
+LANGUAGES = (
+    ('az', 'Azerbaijan'),
+    ('en', 'English'),
+)
 
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),
 ]
 
-LANGUAGES = (
-    ('en', 'English'),
-    ('az', 'azərbaycanca'),
-)
-
+LANGUAGE_CODE = 'az'
 
 TIME_ZONE = 'UTC'
 SITE_ID = 1
 USE_I18N = True
-
 USE_TZ = True
 
-print(LOCALE_PATHS)
 
 STATIC_URL = '/static/'
 
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
-
+TRANSLATABLE_MODEL_MODULES = ["marketapp.models","authapp.models" ]
 
 
 MEDIA_URL = '/media/'

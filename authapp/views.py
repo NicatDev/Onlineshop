@@ -176,3 +176,4 @@ def wish(request):
         'orderitems':orderitems
     }
     return render(request,'wishlist.html',context)
+
