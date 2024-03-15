@@ -11,7 +11,7 @@ class ProductTranslationOption(TranslationOptions):
     fields = ('name','description','material')
   
 class BlogTranslationOption(TranslationOptions):
-    fields = ('title','content','content_without_ck','content2')
+    fields = ('title','content_without_ck')
 
 
 translator.register(Color, NameTranslationOption)

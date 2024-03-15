@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from django.db import models
-from marketapp.models import Product,Category,Brand,Color,Size,Order,OrderItem,Comment,BlogTag,Blog,Collection,ProductImages,Message,Partner,İnstagramPhoto
+from marketapp.models import Product,Category,Brand,Color,Size,Order,OrderItem,BlogTag,Blog,Collection,ProductImages,Message,Partner,İnstagramPhoto
 
 # class MyModelAdmin(admin.ModelAdmin):
 #     formfield_overrides = {
@@ -22,7 +22,7 @@ admin.site.register(Category)
 admin.site.register(Brand)
 admin.site.register(Color)
 admin.site.register(Size)
-admin.site.register(Comment)
+
 admin.site.register(Blog)
 
 admin.site.register(Collection)
