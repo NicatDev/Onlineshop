@@ -1,5 +1,5 @@
 {% load static %}
-
+{% load i18n %}
 <div class="sidebar-menu" id="sidebar-menu">
     <button class="sidebar-menu-close">X</button>
     <div class="sidebar-inner">
@@ -7,7 +7,7 @@
             <img src="{% static 'assets/1.png' %}" alt="">
         </div>
         <div class="sidemenu-text">
-            <p>Viktorianın sirri</p>
+            <p>Viktoria's sirri</p>
         </div>
         <div class="sidebar-contact">
             <h4>Əlaqə</h4>
@@ -76,11 +76,11 @@
                     <div class="collapse navbar-collapse" id="shop-menu">
                         <ul class="navbar-nav menu-open">
                     
-                            <li><a href="{% url 'home' %}">Ana Səhifə</a></li>
-                            <li><a href="{% url 'about' %}">Haqqımızda</a></li>
-                            <li><a href="{% url 'shop' %}">Məhsullar</a></li>
-                            <li><a href="{% url 'blogs' %}">Bloqlar</a></li>
-                            <li><a href="{% url 'contact' %}">Əlaqə</a></li>
+                            <li><a href="{% url 'home' %}">{% trans 'Ana Səhifə' %}</a></li>
+                            <li><a href="{% url 'about' %}">{% trans 'Haqqımızda' %}</a></li>
+                            <li><a href="{% url 'shop' %}">{% trans 'Məhsullar' %}</a></li>
+                            <li><a href="{% url 'blogs' %}">{% trans 'Bloqlar' %}</a></li>
+                            <li><a href="{% url 'contact' %}">{% trans 'Əlaqə' %}</a></li>
           
                         </ul>
                     </div>
