@@ -193,14 +193,6 @@ class OrderItem(models.Model):
         return f'{self.product.name} ' 
     
     
-class Comment(BaseMixin):
-    content = models.TextField()
-    rating = models.PositiveSmallIntegerField()
-    user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
-    product = models.ForeignKey(Product,on_delete=models.CASCADE,null=True)
-    
-    def __str__(self):
-        return self.content + '-'  + self.user.username
 
 class BlogTag(models.Model):
     name = models.CharField(max_length=200)

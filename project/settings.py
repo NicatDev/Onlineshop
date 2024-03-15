@@ -140,7 +140,7 @@ from django.utils.translation import gettext_lazy as _
 
 LANGUAGES = (
     ('az', 'Azerbaijan'),
-    ('en', 'English'),
+    ('ru', 'Russian'),
 )
 
 LOCALE_PATHS = [
