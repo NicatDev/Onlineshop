@@ -1,37 +1,33 @@
 from django.contrib import admin
-
+from modeltranslation.admin import TranslationAdmin
 from django.db import models
-from marketapp.models import Product,Category,Brand,Color,Size,Order,OrderItem,BlogTag,Blog,Collection,ProductImages,Message,Partner,İnstagramPhoto
+from marketapp.models import SliderItems,Product,Category,Brand,Color,Size,Order,OrderItem,BlogTag,Blog,Collection,ProductImages,Message,Partner,İnstagramPhoto
 
-# class MyModelAdmin(admin.ModelAdmin):
-#     formfield_overrides = {
-#         models.TextField: {'widget': CKEditorWidget(config_name='default')},
-#     }
-#     # exclude = ('content_without_ck','content','name','bottomcontent','sidename','sidecontent','bottomname')
-class ProductImagesInline(admin.TabularInline):  # or use admin.StackedInline for a stacked layout
+
+class OperatorAdmin(TranslationAdmin):
+    pass
+
+class ProductImagesInline(admin.TabularInline):  
     model = ProductImages
-    extra = 3  # number of empty forms to display
+    extra = 3  
 
-class ImagesAdmin(admin.ModelAdmin):
+class ImagesAdmin(TranslationAdmin):
     inlines = [ProductImagesInline]
+    
 admin.site.register(İnstagramPhoto)
 admin.site.register(Product, ImagesAdmin)    
-    
-admin.site.register(Category)
-
-admin.site.register(Brand)
-admin.site.register(Color)
-admin.site.register(Size)
-
-admin.site.register(Blog)
-
-admin.site.register(Collection)
+admin.site.register(Category,OperatorAdmin)
+admin.site.register(SliderItems,OperatorAdmin)
+admin.site.register(Brand,OperatorAdmin)
+admin.site.register(Color,OperatorAdmin)
+admin.site.register(Size,OperatorAdmin)
+admin.site.register(Blog,OperatorAdmin)
+admin.site.register(Collection,OperatorAdmin)
 admin.site.register(Message)
-admin.site.register(BlogTag)
+admin.site.register(BlogTag,OperatorAdmin)
 admin.site.register(Partner)
-# admin.site.register(Training)
-# admin.site.register(Team)
-class BookInline(admin.TabularInline):  # veya StackedInline
+
+class BookInline(admin.TabularInline): 
     model = OrderItem
 
 class AuthorAdmin(admin.ModelAdmin):

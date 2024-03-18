@@ -148,6 +148,7 @@ LOCALE_PATHS = [
 ]
 
 LANGUAGE_CODE = 'az'
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'az'
 
 TIME_ZONE = 'UTC'
 SITE_ID = 1
@@ -157,9 +158,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 TRANSLATABLE_MODEL_MODULES = ["marketapp.models","authapp.models" ]
 

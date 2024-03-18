@@ -1,5 +1,5 @@
 from modeltranslation.translator import TranslationOptions,register, translator
-from marketapp.models import Color,Size,Product,Category,Collection,Blog,BlogTag,Brand
+from marketapp.models import Color,Size,Product,Category,Collection,Blog,BlogTag,Brand,SliderItems
 
 
 
@@ -15,6 +15,7 @@ class BlogTranslationOption(TranslationOptions):
 
 
 translator.register(Color, NameTranslationOption)
+translator.register(SliderItems, NameTranslationOption)
 translator.register(Size, NameTranslationOption)
 translator.register(Category, NameTranslationOption)
 translator.register(BlogTag, NameTranslationOption)

@@ -84,7 +84,7 @@ class Category(MetaMixin,BaseMixin):
     in_slide = models.BooleanField(default = False)
     
     def __str__(self):
-        return self.name
+        return self.name + '--'
 
     def save(self, *args, **kwargs):
         new_slug = get_slug(self.name)
@@ -97,12 +97,20 @@ class Category(MetaMixin,BaseMixin):
         self.slug = new_slug
         super(Category, self).save(*args, **kwargs)
     
+class SliderItems(models.Model):
+    name = models.CharField(max_length = 200)
+    image = models.ImageField()
+    feature = models.CharField(max_length = 200,null=True,blank=True)
+    in_slide = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+    
 class Collection(MetaMixin,BaseMixin):
     name = models.CharField(max_length = 200)
     image = models.ImageField()
     feature = models.CharField(max_length = 200,null=True,blank=True)
     in_slide = models.BooleanField(default=False)
-    
     
     def __str__(self):
         return self.name
@@ -117,6 +125,7 @@ class Collection(MetaMixin,BaseMixin):
                 count += 1
         self.slug = new_slug
         super(Collection, self).save(*args, **kwargs)
+
 
 class Product(MetaMixin,BaseMixin):
     name = models.CharField(max_length = 200)
@@ -137,7 +146,7 @@ class Product(MetaMixin,BaseMixin):
     product_code = models.CharField(max_length = 300,null=True,blank=True)
 
     def __str__(self):
-        return self.name
+        return  self.name + '--'
 
     def save(self, *args, **kwargs):
         if not self.slug:
