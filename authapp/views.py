@@ -15,6 +15,55 @@ from django.core.paginator import Paginator
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
+from django.template.loader import render_to_string
+from django.conf import settings
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from io import BytesIO
+import os
+from django.core.mail import EmailMessage
+def pdf_generate(order_id):
+    order = Order.objects.get(id=order_id)
+    order_items = order.orderitems.all()
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=letter)
+    y_coordinate = 750  # Starting Y coordinate
+
+    for item in order_items:
+        product_name = item.product.name
+        quantity = item.quantity
+        color = item.color
+        size = item.size
+    
+        pdf.drawString(100, y_coordinate, f"Product Name: {product_name}")
+        pdf.drawString(100, y_coordinate - 20, f"Quantity: {quantity}")
+        pdf.drawString(100, y_coordinate - 40, f"Color: {color}")
+        pdf.drawString(100, y_coordinate - 60, f"Size: {size}")
+        y_coordinate -= 100
+
+    pdf.drawString(100, y_coordinate, f"username: {order.user.username}")
+    pdf.drawString(100, y_coordinate - 20, f"phone: {order.phone_number}")
+    pdf.drawString(100, y_coordinate - 40, f"address: {order.address}")
+
+    pdf.showPage()
+    
+    pdf_filename = f"order_details.pdf"  
+    pdf_path = os.path.join(settings.BASE_DIR, 'static', pdf_filename) 
+
+    with open(pdf_path, 'wb') as pdf_file:
+        pdf.save()
+        pdf_data = buffer.getvalue()
+        pdf_file.write(pdf_data)
+    buffer.seek(0)
+    email = EmailMessage(
+        'Sifariş N #{}'.format(order.id),
+        'Sifarişin detalları əlavə edilmişdir.',
+        settings.EMAIL_HOST_USER,
+        ['viktoriassirri@gmail.com'],  # Replace with the recipient email address
+    )
+    email.attach(pdf_filename, pdf_data, 'application/pdf')
+    email.send()
+    return buffer
 
 def register(request):
     if request.method == 'POST':
@@ -84,19 +133,16 @@ def shopping(request,form_name=None):
                 if not check:
                     messages.error(request, f'Xəta: Məlumatların düzgünlüyünü təsdiqləyin!')
                     return redirect('shopping')
-                
+
                 order.address = address
                 order.phone_number = phone
                 order.status = True
                 order.save()
+         
+                pdf = pdf_generate(order.id)
+                print(pdf)
                 messages.success(request, 'Sifariş uğurla tamamlandı. Sizinlə tezliklə əlaqə saxlanılacaq !')
-                # send_mail(
-                #     'Sifariş',
-                #     f'Sifariş N {order.id}',
-                #     settings.EMAIL_HOST_USER,
-                #     ['viktoriassirri@gmail.com'],
-                #     fail_silently=False,
-                # )
+                
                 return redirect('shopping')
                     
             except Exception as e:

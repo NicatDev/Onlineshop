@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
 <html lang="zxx">
 
 <!-- Mirrored from zwin.io/html/stooon/about.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:49 GMT -->
@@ -8,7 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Victoria's secret</title>
+    <title>Victorias sirri - Cazibədar qadın alt geyimləri və pijamaları</title>
+
+    <meta name="description" content="Victorias sirri ilə pijama, tərlik və qadın alt paltarları, həm də tam orijinal. Xanımlar üçün çimərlik geyimləri, gecəlik və ayaqqabılar. Bizimlə daha cazibədar.">
     <!-- favicon -->
     <link rel=icon href={% static 'assets/1.png' %} sizes="20x20" type="image/png">
     <!-- Vendor Stylesheet -->
@@ -51,7 +54,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="breadcrumb-inner d-flex justify-content-between">
-                        <h2 class="page-title">Haqqımızda</h2>
+                        <h2 class="page-title">{% trans 'Haqqımızda' %}</h2>
                     
                     </div>
                 </div>
@@ -66,8 +69,8 @@
             <div class="row">
                 <div class="col-lg-5">
                     <div class="content-left">
-                        <h3>Biz məhsullarımızın orijinallığına tam zəmanət veririk</h3>
-                        <p>Biz artıq illərdi ki, zövqünüzü oxşayacaq dünya brendlərini sizə təqdim edir, məhsullarımızın istər orijinallığına istərsə də keyfiyyətinə zəmanət veririk.
+                        <h3>{% trans 'Biz məhsullarımızın orijinallığına tam zəmanət veririk' %}</h3>
+                        <p>{% trans 'Biz artıq illərdi ki, zövqünüzü oxşayacaq dünya brendlərini sizə təqdim edir, məhsullarımızın istər orijinallığına istərsə də keyfiyyətinə zəmanət veririk.' %}'
                             <br><br>
                             
                         </p>

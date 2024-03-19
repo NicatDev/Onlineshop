@@ -51,7 +51,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="breadcrumb-inner d-flex justify-content-between">
-                        <h2 class="page-title">Bloqlar</h2>
+                        <h2 class="page-title">{% trans 'Bloqlar' %}</h2>
                  
                     </div>
                 </div>
@@ -71,13 +71,13 @@
                             <div class="single-blog">
                                 <div class="thumb">
                                     <img src="{{ blog.image.url }}" alt="">
-                                    <span class="tag">lifestyle</span>
+                                    <span class="tag">{{ blog.tag.name }}</span>
                                 </div>
                                 <div class="content">
                                     <span class="date">{{ blog.created_at }}</span>
                                     <h2><a href="{% url 'blogSingle' blog.slug %}">{{ blog.title }}</a></h2>
                                     <p>{{ blog.content_without_ck }}...</p>
-                                    <a href="{% url 'blogSingle' blog.slug %}" class="btn btn-read">Daha ətraflı</a>
+                                    <a href="{% url 'blogSingle' blog.slug %}" class="btn btn-read">{% trans 'Daha ətraflı' %}</a>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                 </div>
                 <div class="col-lg-3 col-md-12">
                     <div class="post-widget margin-top-20">
-                        <h4 class="widget-title2">Əlaqəli bloqlar</h4>
+                        <h4 class="widget-title2">{% trans 'Əlaqəli bloqlar' %}</h4>
                         <div class="post-content">
                             {% for blog in recent_blogs %}
                             <div class="single-post-item">
@@ -125,7 +125,7 @@
                     </div>
 
                     <div class="seller-widget margin-top-20">
-                        <h4 class="widget-title">Çox satılanlar</h4>
+                        <h4 class="widget-title">{% trans 'Çox satılanlar' %}</h4>
                         <div class="seller-content">
                             {% for product in products %}
                             <div class="single-seller-content d-flex">
