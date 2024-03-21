@@ -54,7 +54,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="breadcrumb-inner d-flex justify-content-between">
-                        <h2 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" class="page-title">Məhsul</h2>
+                        <h2 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" class="page-title">{% trans 'Məhsul' %}</h2>
                    
                     </div>
                 </div>
@@ -96,9 +96,9 @@
                                 <span style="text-decoration: line-through;font-size:24px;margin-bottom:0px" >{{ product.price }}azn</span>
                                 <p class="price">{{ product.get_discount_price }}azn</p>
                            
-                                <p class="specifications">Stok: <b class="color-green">{% if product.stock %}Stokda var{% else %}Stokda bitib{% endif %} </b></p>
+                                <p class="specifications">{% trans 'Stok:' %}' <b class="color-green">{% if product.stock %}{% trans 'Stokda var' %}{% else %}{% trans 'Stokda bitib' %}{% endif %} </b></p>
                                 <div class="d-flex">
-                                    <span class="specifications">Ölçü: </span>
+                                    <span class="specifications">{% trans 'Ölçü:' %} </span>
                                     <ul  class="size-list align-self-center pl-3">
                                        
                                 
@@ -115,7 +115,7 @@
                                 </div>
                                 
                                 <div class="d-flex">
-                                    <span class="specifications">Rəng: </span>
+                                    <span class="specifications">{% trans 'Rəng:' %} </span>
                                     <ul class="color-list align-self-center">
 
                                         {% for color in product.color.all %}
@@ -129,7 +129,7 @@
 
 
                                 {% if product.material %}
-                                <p class="specifications">Material: {{ product.material }}</p>
+                                <p class="specifications">{% trans 'Material:' %} {{ product.material }}</p>
                                 {% endif %}
                                 <div style="margin-top:14px" class="btn-wrapper d-flex">
                                     <div class="input-group">
@@ -142,15 +142,15 @@
                                         </div>
                                     </div>
                                     <div style="cursor: pointer;" onclick="addToCart()" class="add-to-cart basketclick">
-                                        <a  ><i class="icon-add-to-cat"></i> Səbətə əlavə et</a>
+                                        <a  ><i class="icon-add-to-cat"></i> {% trans 'Səbətə əlavə et' %}</a>
 
                                     </div>
                                 </div>
                                 <div class="btn-wrapper">
                                     <a onclick="addToCart(4)" class="btn btn-buy">İndİ al</a>
                                 </div>
-                                <p class="specifications">Brend: <b>{{ product.brand.name }}</b></p>
-                                <p class="specifications">Kateqoriyalar<b>{% for category in product.category.all %} {{ category.name }} {% endfor %}</b></p>
+                                <p class="specifications">{% trans 'Brend:' %} <b>{{ product.brand.name }}</b></p>
+                                <p class="specifications">{% trans 'Kateqoriyalar' %}<b>{% for category in product.category.all %} {{ category.name }} {% endfor %}</b></p>
                                 
                             </div>
                         </div>
@@ -159,7 +159,7 @@
                         <div class="col-lg-12">
                             <div class="product-tab">
                                 <ul class="nav nav-pills">
-                                  <li><a data-toggle="pill" href="#home" class="active">Məlumat</a></li>
+                                  <li><a data-toggle="pill" href="#home" class="active">{% trans 'Məlumat' %}</a></li>
                         
                      
                                 </ul>
@@ -182,17 +182,17 @@
                         <div class="single-delivery-item">
                             <div class="d-flex">
                                 <i class="icon-delivery-car"></i>
-                                <h4>Çatdırılma
+                                <h4>{% trans 'Çatdırılma' %}
                                    </h4>
                             </div>
                             <span>
-                                Bakı daxili ödənişsiz çatdırılma
+                                {% trans 'Bakı daxili ödənişsiz çatdırılma' %}
                                 </span>
                         </div>
                         <div class="single-delivery-item">
                             <div class="d-flex">
                                 <i class="icon-phone-support"></i>
-                                <h4> 24/7 dəstək xidməti</h4>
+                                <h4>{% trans '24/7 dəstək xidməti' %}</h4>
                             </div>
                             <span>   (+994) 50 640-85-35 </span>
                         </div>
@@ -202,7 +202,7 @@
                                 <h4>Zəmanət
                                   </h4>
                             </div>
-                            <span>  Bütün məhsullara keyfiyyət zəmanəti</span>
+                            <span>  {% trans 'Bütün məhsullara keyfiyyət zəmanəti' %}</span>
                         </div>
                     </div>
              
@@ -220,7 +220,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="title">
-                            <h2>Digər məhsullar</h2>
+                            <h2>{% trans 'Digər məhsullar' %}</h2>
                         </div>
                     </div>
                 </div>
@@ -231,13 +231,13 @@
                             <div class="product-style-03 margin-top-30">
                                 <div class="thumb text-center">
                                     <img src="{{ product.get_main_image.url }}" alt="">
-                                    <span class="sale">{{ product.discount_percent }} % endirim</span>
+                                    <span class="sale">{{ product.discount_percent }} % {% trans 'endirim' %}</span>
             
                                 </div>
                                 <div class="content text-center">
-                                    <span class="brand">Brend: {{ product.brand.name }}</span>
+                                    <span class="brand">{% trans 'Brend:'%} {{ product.brand.name }}</span>
                                   
-                                    <h6 class="title"><a href="#">{{ product.name }}</a></h6>
+                                    <h6 class="title"><a href="{% url 'shopSingle' product.slug %}">{{ product.name }}</a></h6>
                                     <span class="price">{{ product.get_discount_price }}</span>
                                 </div>
                             </div>
@@ -256,7 +256,6 @@
 
 
 
-</script>
 
 <script>
     const product = '{{product.id}}'

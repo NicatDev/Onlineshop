@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
 <html lang="zxx">
 
 <!-- Mirrored from zwin.io/html/stooon/shoping-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:48 GMT -->
@@ -74,7 +75,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="breadcrumb-inner d-flex flex-column flex-md-row justify-content-md-between justify-content-center">
-                        <h2 class="page-title">Səbət</h2>
+                        <h2 class="page-title">{% trans 'Səbət' %}</h2>
                         <ul class="page-list">
                    
                         </ul>
@@ -94,10 +95,10 @@
                         <table class="table table-bordered table-responsive">
                             <thead>
                               <tr class="text-center">
-                                <th scope="col">Məhsul</th>
-                                <th scope="col">Qiymət</th>
-                                <th scope="col">Say</th>
-                                <th scope="col">Cəm</th>
+                                <th scope="col">{% trans 'Məhsul' %}</th>
+                                <th scope="col">{% trans 'Qiymət' %}</th>
+                                <th scope="col">{% trans 'Say' %}</th>
+                                <th scope="col">{% trans 'Cəm' %}</th>
                            
                               </tr>
                             </thead>
@@ -135,12 +136,12 @@
                         </table>
                         <div class="d-flex justify-content-between margin-top-30">
                             <div class="btn-wrapper">
-                                <a href="{% url 'shop' %}" class="btn btn-continue">Davam et</a>
+                                <a href="{% url 'shop' %}" class="btn btn-continue">{% trans 'Davam et' %}</a>
                             </div>
                             <div class="btn-wrapper">
                                 <form id="delete-form" method="POST" action="{% url 'shopping'  %}" >
                                     {% csrf_token %}
-                                <button type="submit"  class="btn btn-clear">Səbəti təmizlə</button>
+                                <button type="submit"  class="btn btn-clear">{% trans 'Səbəti təmizlə' %}</button>
                                 </form>
                             </div>
                         </div>
@@ -148,9 +149,9 @@
                 </div>
                 <div class="col-xl-3 col-lg-4">
                     <div class="summary margin-top-20">
-                        <h6 class="title">Xülasə</h6>
+                        <h6 class="title">{% trans 'Xülasə' %}</h6>
                         <div class="d-flex justify-content-between total">
-                            <p>Ümumi qiymət</p>
+                            <p>{% trans 'Ümumi qiymət' %}</p>
                             <p>{{ total }} azn</p>
                         </div>
 
@@ -163,9 +164,9 @@
                             <input name="address" placeholder="Ünvan" type="text" style="margin-top:10px;margin-bottom:5px">
                             <input name="order" value="{{ order }}" hidden>
                             <div style="display:flex; align-items:center;justify-content:center;margin-top:5px;margin-bottom:5px;">
-                                <input type="checkbox" name="check" style="height:20px;width:20px;gap:10px">&nbsp; Sifarişi təsdiqlə və göndər</input>
+                                <input type="checkbox" name="check" style="height:20px;width:20px;gap:10px">&nbsp; {% trans 'Sifarişi təsdiqlə və göndər' %}</input>
                             </div>
-                            <button style="margin-top:5px;"  name="action" value="order" type="submit" class="btn btn-checkout">Sifariş ver</button>
+                            <button style="margin-top:5px;"  name="action" value="order" type="submit" class="btn btn-checkout">{% trans 'Sifariş ver' %}</button>
                         </form>
                         </div>
                  

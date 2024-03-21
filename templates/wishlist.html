@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
 <html lang="zxx">
 
 <!-- Mirrored from zwin.io/html/stooon/collection.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:38 GMT -->
@@ -40,38 +41,7 @@
 
     <!-- search Popup end -->
 
-    <!--sidebar menu start-->
-    <div class="sidebar-menu" id="sidebar-menu">
-        <button class="sidebar-menu-close">X</button>
-        <div class="sidebar-inner">
-            <div class="sidebar-logo">
-                <img src="{% static 'assets/img/logo.png' %}" alt="">
-            </div>
-            <div class="sidemenu-text">
-                <p>Vicatorias sirri - Keyfiyyətli məhsulların ünvanı</p>
-            </div>
-            <div class="sidebar-contact">
-                <h4>Contact Us</h4>
-                <ul>
-                    <li><i class="fa fa-map-marker"></i>Ünvan</li>
-                    <li><i class="fa fa-envelope"></i>Email</li>
-                    <li><i class="fa fa-phone"></i>Nömrə</li>
-                </ul>
-            </div>
-            <div class="sidebar-subscribe">
-                <input type="text" placeholder="Email">
-                <button><i class="fa fa-long-arrow-right"></i></button>
-            </div>
-            <div class="social-link">
-                <ul>
-                    <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
-                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                    <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
+ 
     <!--sidebar menu end-->
 
     <!-- navbar start -->
@@ -84,7 +54,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="breadcrumb-inner d-flex justify-content-between">
-                        <h2 class="page-title">SEVİMLİLƏR</h2>
+                        <h2 class="page-title">{% trans 'SEVİMLİLƏR' %}</h2>
                   
                     </div>
                 </div>
@@ -109,7 +79,7 @@
                                         <div class="thumb">
                                             <img src="{{product.get_main_image.url}}" alt="">
                                             
-                                            <span class="out">{% if product.new %}Yeni{% elif product.best_seller %}Çox satılan{% elif product.most_searched %} Çox axtarılan {% endif %}</span>
+                                            <span class="out">{% if product.new %}{% trans 'Yeni' %}{% elif product.best_seller %}{% trans 'Çox satılan' %}{% elif product.most_searched %} {% trans 'Çox axtarılan' %} {% endif %}</span>
                                             
                                             <ul class="cart-action-02" style="background-color:rgba(255, 255, 255, 0.705);padding:6px 2px 0px 0px" >
                                                 <li><a class="wishclick" data-target="{{ product.id }}" >
@@ -130,7 +100,7 @@
                                                     
                                                     <!-- {% if request.user.is_authenticated %} -->
                                                  
-                                                   Daha ətraflı
+                                                   {% trans 'Daha ətraflı' %}
                                          
                                                     <!-- {% endif %} -->
 
@@ -148,7 +118,7 @@
                                 {% else %}
                                 <div class="container">
                                 <h4>
-                                     Sevimlilərdə hal-hazırda məhsul yoxdur
+                                     {% trans 'Sevimlilərdə hal-hazırda məhsul yoxdur' %}
                                 </h4>
                             </div>
                                 {% endif %}
@@ -158,7 +128,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="d-flex justify-content-between pagination">
-                                <h6>{{ products.paginator.count }} məhsuldan {{ products.start_index }}-{{ products.end_index }}</h6>
+                                <h6>{{ products.paginator.count }} {% trans 'məhsuldan' %} {{ products.start_index }}-{{ products.end_index }}</h6>
                                 <ul>
                                     <li><a {% if products.has_previous %} href="?page={{ products.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" {% else %} style="cursor: not-allowed;" {% endif %}><i class="fa-solid fa-caret-left"></i></a></li>
                                     {% for page in total_pages %}
@@ -206,22 +176,22 @@
                 <div class="col-lg-4">
                     <div class="single-delivery text-center">
                         <i class="icon-delivery-car"></i>
-                        <h6>Çatdırılma</h6>
-                        <p>Bakı daxili ödənişsiz çatdırılma</p>
+                        <h6>{% trans 'Çatdırılma' %}</h6>
+                        <p>{% trans 'Bakı daxili ödənişsiz çatdırılma' %}</p>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="single-delivery text-center">
                         <i class="icon-money-back"></i>
-                        <h6>Zəmanət</h6>
-                        <p>Bütün məhsullara keyfiyyət zəmanəti </p>
+                        <h6>{% trans 'Zəmanət' %}</h6>
+                        <p>{% trans 'Bütün məhsullara keyfiyyət zəmanəti' %} </p>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="single-delivery text-center">
                         <i class="icon-phone-support"></i>
                         <h6> (+994) 50 640-85-35 </h6>
-                        <p>24/7 dəstək xidməti</p>
+                        <p>{% trans '24/7 dəstək xidməti' %}</p>
                     </div>
                 </div>
             </div>

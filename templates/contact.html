@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
 <html lang="zxx">
 
 <!-- Mirrored from zwin.io/html/stooon/contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:50 GMT -->
@@ -85,7 +86,7 @@
           <i class="icon fas fa-phone"></i>
           <div class="card-content">
             <h3>{% trans 'Əlaqə nömrəsi' %}</h3>
-            <span>{% trans '050 640-85-35' %}</span>
+            <span>050 640-85-35</span>
           </div>
         </div>
       
@@ -107,23 +108,23 @@
                     <form>
                         <div class="form-row">
                           <div class="form-group col-md-6">
-                            <input type="text" class="form-control" id="name" placeholder="Tam adınız">
+                            <input type="text" class="form-control" id="name" placeholder="{% trans 'Tam adınız' %}">
                           </div>
                           <div class="form-group col-md-6">
-                            <input type="text" oninput="validateInput(this)" class="form-control" id="phone" placeholder="Əlaqə nömrəsi">
+                            <input type="text" oninput="validateInput(this)" class="form-control" id="phone" placeholder="{% trans 'Əlaqə nömrəsi' %}">
                           </div>
                         </div>
                         <div class="form-row">
                           <div class="form-group col-md-6">
-                            <input type="email" class="form-control" id="email" placeholder="E-poçt">
+                            <input type="email" class="form-control" id="email" placeholder="{% trans 'E-poçt' %}">
                           </div>
                           <div class="form-group col-md-6">
-                            <input type="text" class="form-control" id="subject" placeholder="Mövzu">
+                            <input type="text" class="form-control" id="subject" placeholder="{% trans 'Mövzu' %}">
                           </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                              <textarea name="message" id="message" rows="8" placeholder="Məktub"></textarea>
+                              <textarea name="message" id="message" rows="8" placeholder="{% trans 'Məktub' %}"></textarea>
                             </div>
                         </div>
                         <button id="submitmessage" type="submit" class="btn btn-contact">{% trans 'Göndər!' %}</button>

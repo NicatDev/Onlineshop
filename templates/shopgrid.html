@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
 <html lang="zxx">
 
 <!-- Mirrored from zwin.io/html/stooon/collection.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:38 GMT -->
@@ -52,7 +53,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="breadcrumb-inner d-flex justify-content-between">
-                        <h2 class="page-title">Məhsullar</h2>
+                        <h2 class="page-title">{% trans 'Məhsullar' %}</h2>
                   
                     </div>
                 </div>
@@ -92,8 +93,8 @@
                         <div class="col-lg-4 col-7">
                             <div action="#">
                                 <select name="order" id="orderBy" onchange="getOrderBy(event)" class="form-control sort-select">
-                                    <option value="">Varsayılan</option>
-                                    <option value="created_at">Ən yenilər</option>
+                                    <option value="">{% trans 'Varsayılan' %}</option>
+                                    <option value="created_at">{% trans 'Ən yenilər' %}</option>
                                     <option value="price">Ucuzdan bahaya</option>
                                     <option value="-price">Bahadan ucuza</option>
                                   
@@ -133,7 +134,7 @@
                                                     
                                                     <!-- {% if request.user.is_authenticated %} -->
                                                  
-                                                   Daha ətraflı
+                                                   {% trans 'Daha ətraflı' %}
                                          
                                                     <!-- {% endif %} -->
 
@@ -154,7 +155,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="d-flex justify-content-between pagination">
-                                <h6>{{ products.paginator.count }} məhsuldan {{ products.start_index }}-{{ products.end_index }}</h6>
+                                <h6>{{ products.paginator.count }} {% trans 'məhsuldan' %} {{ products.start_index }}-{{ products.end_index }}</h6>
                                 <ul>
                                     <li><a {% if products.has_previous %} href="?page={{ products.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" {% else %} style="cursor: not-allowed;" {% endif %}><i class="fa-solid fa-caret-left"></i></a></li>
                                     {% for page in total_pages %}
@@ -194,16 +195,17 @@
                     <div class="widget search-widget">
                         <div>
                             <button type="submit"><i class="icon-search"></i></button>
-                            <input name="search" onkeyup="handleSubmit(event)" id="searchInput" type="text" placeholder="Məhsullarda axtar...">
+                            <input name="search" onkeyup="handleSubmit(event)" id="searchInput" type="text" placeholder="{% trans 'Məhsullarda axtar...' %}">
                         
                         </div>
                     </div>
+                    {% if collections %}
                     <div class="widget collections-widget">
                         <div class="accordion-style-2" id="accordionExample8">
                             <div class="card">
                                 <div class="card-header" id="headingEight">
                                     <p class="mb-0">
-                                        <a href="#" role="button" data-toggle="collapse" data-target="#collapseEight" aria-expanded="true" aria-controls="collapseOne">Kolleksiyalar</a>
+                                        <a href="#" role="button" data-toggle="collapse" data-target="#collapseEight" aria-expanded="true" aria-controls="collapseOne">{% trans 'Kolleksiyalar' %}</a>
                                     </p>
                                 </div>
                                 <div id="collapseEight" class="collapse show" aria-labelledby="headingEight" data-parent="#accordionExample8">
@@ -222,12 +224,13 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                     <div class="widget categories-widget">
                         <div class="accordion-style-2" id="accordionExample1">
                             <div class="card">
                                 <div class="card-header" id="headingOne">
                                     <p class="mb-0">
-                                        <a href="#" role="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">KATEQORİYALAR</a>
+                                        <a href="#" role="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">{% trans 'KATEQORİYALAR' %}</a>
                                     </p>
                                 </div>
                                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample1">
@@ -246,12 +249,13 @@
                             </div>
                         </div>
                     </div>
+                    {% if brands %}
                     <div class="widget brand-widget">
                         <div class="accordion-style-2" id="accordionExample2">
                             <div class="card">
                                 <div class="card-header" id="headingTwo">
                                     <p class="mb-0">
-                                        <a href="#" role="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">Brendlər</a>
+                                        <a href="#" role="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">{% trans 'Brendlər' %}</a>
                                     </p>
                                 </div>
                                 <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample2">
@@ -272,18 +276,19 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                     <div class="widget price-widget">
                         <div class="accordion-style-2" id="accordionExample4">
                             <div class="card">
                                 <div class="card-header" id="headingFour">
                                     <p class="mb-0">
-                                        <a href="#" role="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">QİYMƏT</a>
+                                        <a  role="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">{% trans 'QİYMƏT' %}</a>
                                     </p>
                                 </div>
                                 <div id="collapseFour" class="collapse show" aria-labelledby="headingFour" data-parent="#accordionExample4">
                                     <div style="display: flex;align-items:center;justify-content:space-evenly">
-                                        <input id="min_price" onchange="changePrice(event)" min="0" max="10000" onkeydown="blockCharacters(event)" name="min_price" style="width:45%;border:rgb(220, 220, 220) solid 3px;border-radius:5px" placeholder="min qiymət" type="number">
-                                        <input id="max_price" onchange="changePrice(event)" min="0" max="10000" onkeydown="blockCharacters(event)" name="max_price" style="width:45%;border:rgb(220, 220, 220) solid 3px;border-radius:5px" placeholder="max qiymət" type="number">
+                                        <input id="min_price" onchange="changePrice(event)" min="0" max="10000" onkeydown="blockCharacters(event)" name="min_price" style="width:45%;border:rgb(220, 220, 220) solid 3px;border-radius:5px" placeholder="min " type="number">
+                                        <input id="max_price" onchange="changePrice(event)" min="0" max="10000" onkeydown="blockCharacters(event)" name="max_price" style="width:45%;border:rgb(220, 220, 220) solid 3px;border-radius:5px" placeholder="max " type="number">
                                     </div>
                                 </div>
                             </div>
@@ -296,7 +301,7 @@
                                 <div class="card">
                                     <div class="card-header" id="headingTwo">
                                         <p class="mb-0">
-                                            <a href="#" role="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">Rənglər</a>
+                                            <a href="#" role="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">{% trans 'Rənglər' %}</a>
                                         </p>
                                     </div>
                                     <div id="collapseFive" class="collapse show" aria-labelledby="headingFive" data-parent="#accordionExample5">
@@ -325,7 +330,7 @@
                             <div class="card">
                                 <div class="card-header" id="headingSix">
                                     <p class="mb-0">
-                                        <a href="#" role="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">Ölçü</a>
+                                        <a href="#" role="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">{% trans 'Ölçü' %}</a>
                                     </p>
                                 </div>
                                 <div id="collapseSix" class="collapse show" aria-labelledby="headingSix" data-parent="#accordionExample6">
@@ -345,7 +350,7 @@
                         </div>
                     </div>
                     <div class="widget seller-widget">
-                        <h4 class="widget-title">Çox satılanlar</h4>
+                        <h4 class="widget-title">{% trans 'Çox satılanlar' %}</h4>
                         <div class="seller-content">
                             {% for product in best_sellers %}
                             <div class="single-seller-content d-flex">
@@ -373,22 +378,22 @@
                 <div class="col-lg-4">
                     <div class="single-delivery text-center">
                         <i class="icon-delivery-car"></i>
-                        <h6>Çatdırılma</h6>
-                        <p>Bakı daxili ödənişsiz çatdırılma</p>
+                        <h6>{% trans 'Çatdırılma' %}</h6>
+                        <p>{% trans 'Bakı daxili ödənişsiz çatdırılma' %}</p>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="single-delivery text-center">
                         <i class="icon-money-back"></i>
-                        <h6>Zəmanət</h6>
-                        <p>Bütün məhsullara keyfiyyət zəmanəti </p>
+                        <h6>{% trans 'Zəmanət' %}</h6>
+                        <p>{% trans 'Bütün məhsullara keyfiyyət zəmanəti' %} </p>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="single-delivery text-center">
                         <i class="icon-phone-support"></i>
                         <h6> (+994) 50 640-85-35 </h6>
-                        <p>24/7 dəstək xidməti</p>
+                        <p>{% trans '24/7 dəstək xidməti' %}</p>
                     </div>
                 </div>
             </div>

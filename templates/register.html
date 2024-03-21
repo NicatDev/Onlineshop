@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
 <html lang="zxx">
 
 <!-- Mirrored from zwin.io/html/stooon/contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:50 GMT -->
@@ -51,7 +52,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="breadcrumb-inner d-flex justify-content-between">
-                        <h1 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" class="page-title">QEYDİYYAT</h1>
+                        <h1 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" class="page-title">{% trans 'QEYDİYYAT' %}</h1>
                   
                     </div>
                 </div>
@@ -65,7 +66,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="section-title text-center">
-                        <h3>Qeydiyyat</h3>
+                        <h3>{% trans 'Qeydiyyat' %}</h3>
                     </div>
                 </div>
             </div>
@@ -82,27 +83,27 @@
                         {% csrf_token %}
                         <div class="form-row">
                           <div class="form-group col-md-12">
-                            <input type="email" class="form-control" name="email" placeholder="email">
+                            <input type="email" class="form-control" name="email" placeholder="E-poçt">
                           </div>
                       
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                              <input type="text" class="form-control" name="first_name" placeholder="first_name">
+                              <input type="text" class="form-control" name="first_name" placeholder="Adınız">
                             </div>
                             <div class="form-group col-md-6">
-                              <input type="text" class="form-control" name="last_name" placeholder="last_name">
+                              <input type="text" class="form-control" name="last_name" placeholder="Soyadınız">
                             </div>
                           </div>
                           <div class="form-row">
                             <div class="form-group col-md-6">
-                              <input type="password" minlength="8" class="form-control" name="password1" placeholder="password1">
+                              <input type="password" minlength="8" class="form-control" name="password1" placeholder="Şifrə">
                             </div>
                             <div class="form-group col-md-6">
-                              <input type="password" minlength="8"  class="form-control" name="password2" placeholder="password2">
+                              <input type="password" minlength="8"  class="form-control" name="password2" placeholder="Təkrar şifrə">
                             </div>
                           </div>
-                        <button id="submitmessage" type="submit"  class="btn btn-contact">QEYDİYYATDAN KEÇ</button>
+                        <button id="submitmessage" type="submit"  class="btn btn-contact">{% trans 'QEYDİYYATDAN KEÇ' %}</button>
                     </form>
                 </div>
             </div>

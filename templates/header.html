@@ -12,8 +12,8 @@
         <div class="sidebar-contact">
             <h4>Əlaqə</h4>
             <ul>
-                <li><i class="fa fa-map-marker"></i>Bakı şəh. 15-17 Xaqani Küçəsi</li>
-                <li><i class="fa fa-envelope"></i>viktoriassirri@gmail.com</li>
+                <li><i class="fa fa-map-marker"></i>{% trans 'Bakı şəh. 15-17 Xaqani Küçəsi' %}</li>
+                <li><i class="fa fa-envelope"></i>{% trans 'viktoriassirri@gmail.com' %}</li>
                 <li><i class="fa fa-phone"></i>(+994) 50 640-85-35 </li>
             </ul>
         </div>
@@ -24,7 +24,7 @@
 <div class="search-popup" id="search-popup">
     <form id="search-form" action="{% url 'shop' %}" class="search-form" method="get">
         <div class="form-group">
-            <input type="text" id="search-input" class="form-control" placeholder="Axtar.....">
+            <input type="text" id="search-input" class="form-control" placeholder="{% trans 'Axtar...' %}">
         </div>
         <button type="submit" class="submit-btn"><i class="fa fa-search"></i></button>
     </form>
@@ -37,12 +37,12 @@
                 <div class="col-lg-4 col-8">
                     <div class="contact">
                         <a href="tel:+994506408535"><i class="icon-call-header"></i> (+994) 50 640-85-35 </a>
-                        <a href="#"><i class="icon-email-subscribe"></i> support@example.com</a>
+                        <a href="#"><i class="icon-email-subscribe"></i>viktoriassirri@gmail.com</a>
                     </div>
                 </div>
                 <div class="col-lg-4 d-none d-lg-block">
                     <div class="shipping text-center">
-                        <p>Ödənişsiz çatdırılma - <span>100 azn-dən daha çox sifarişlərə</span></p>
+                        <p>{% trans 'Ödənişsiz çatdırılma - <span>100 azn-dən daha çox sifarişlərə' %}</span></p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-4">
@@ -109,7 +109,7 @@
                                     {% endfor %}
                                     <li >
                                     <div class="d-flex">
-                                        <a href="{% url 'shopping' %}" style="width:100%;padding:10px 50px;color:white;" class="btn btn-contact" style="color:white">Ətraflı</a>
+                                        <a href="{% url 'shopping' %}" style="width:100%;padding:10px 50px;color:white;" class="btn btn-contact" style="color:white">{% trans 'Səbətə bax' %}</a>
                                     </div>
                                 </li>
                                 </ul>
@@ -121,14 +121,14 @@
                                     {% if request.user.is_authenticated %}
 
                                     <li><a >{{ request.user }}</a></li>
-                                    <li><a href="{% url 'shopping' %}"><i class="icon-user"></i>Sifarişlərim</a></li>
-                                    <li><a href="{% url 'logout' %}"><i class="fa fa-briefcase"></i> Çıxış et</a></li>
+                                    <li><a href="{% url 'shopping' %}"><i class="icon-user"></i>{% trans 'Sifarişlərim' %}</a></li>
+                                    <li><a href="{% url 'logout' %}"><i class="fa fa-briefcase"></i>{% trans 'Çıxış et' %}</a></li>
                  
                                     {% else %}
 
                                     <li><a ></a></li>
-                                    <li><a href="{% url 'login' %}"><i class="icon-user"></i>Daxil ol</a></li>
-                                    <li><a href="{% url 'register' %}"><i class="fa fa-briefcase"></i>Qeydiyyat</a></li>
+                                    <li><a href="{% url 'login' %}"><i class="icon-user"></i>{% trans 'Daxil ol' %}</a></li>
+                                    <li><a href="{% url 'register' %}"><i class="fa fa-briefcase"></i>{% trans 'Qeydiyyat' %}</a></li>
 
                                     {% endif %}
 
