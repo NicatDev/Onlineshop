@@ -37,6 +37,10 @@ CSRF_TRUSTED_ORIGINS = [
     'https://victoriassirri.az',
     'http://victoriassirri.az',
 ]
+
+CELERY_BROKER_URL = 'amqp://guest:guest@test.victoriassirri.az:5672/'
+CELERY_RESULT_BACKEND = 'django-db'
+
 INSTALLED_APPS = [
     'modeltranslation',
     'django.contrib.admin',

@@ -23,7 +23,9 @@ from io import BytesIO
 import os
 from django.core.mail import EmailMessage
 import json
+from celery import shared_task
 
+@shared_task
 def pdf_generate(order_id):
     order = Order.objects.get(id=order_id)
     order_items = order.orderitems.all()
@@ -67,6 +69,7 @@ def pdf_generate(order_id):
     email.send()
     return buffer
 
+@shared_task
 def pdf_generate_notAuth(data):
     print('333333333333333333333333333333333333')
     order_items = data.get('items')
@@ -195,7 +198,7 @@ def shopping(request,form_name=None):
                 order.status = True
                 order.save()
          
-                pdf_generate(order.id)
+                pdf_generate.delay(order.id)
            
                 messages.success(request, 'Sifariş uğurla tamamlandı. Sizinlə tezliklə əlaqə saxlanılacaq !')
                 
@@ -287,5 +290,5 @@ def wish(request):
 
 def order(request):
     data = json.loads(request.body)
-    pdf_generate_notAuth(data)
+    pdf_generate_notAuth.delay(data)
     return JsonResponse({'message':'ok'})
