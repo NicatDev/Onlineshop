@@ -88,7 +88,7 @@
                 <div class="col-lg-4">
                     <div class="collection-style-01 margin-top-20">
                         <div class="thumb">
-                            <img src="{{ collection.image.url }}" alt="">
+                            <img src="{{ collection.image.url }}" alt="{{ collection.name }}">
                             <div class="content">
                          
                                 <h3>{{ collection.name }}</h3>
@@ -120,7 +120,7 @@
                         <div class="thumb">
                             <div class="thumb-slider">
                                 {% for image in product.images.all %}
-                                <a href="{% url 'shopSingle' product.slug %}"><img src="{{ image.image.url }}" loading="lazy" alt=""></a>
+                                <a href="{% url 'shopSingle' product.slug %}"><img src="{{ image.image.url }}" loading="lazy" alt="{{ product.name }}"></a>
                                 {% endfor %}
                             </div>
                             <ul class="cart-action" style="background-color:rgba(255, 255, 255, 0.705);padding:6px 6px 0px 4px;text-align:center">
@@ -203,7 +203,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                             <div class="product-style-02 margin-top-40">
                                 <div class="thumb">
-                                    <img src="{{product.get_main_image.url}}" loading="lazy" alt="">
+                                    <img src="{{product.get_main_image.url}}" loading="lazy" alt="{{ product.name }} qadın geyimleri">
                                 
                                     <span class="out">Yeni</span>
                    
@@ -241,7 +241,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                             <div class="product-style-02 margin-top-40">
                                 <div class="thumb">
-                                    <img src="{{ product.get_main_image.url }}" loading="lazy" alt="">
+                                    <img src="{{ product.get_main_image.url }}" loading="lazy" alt="{{ product.name }} en cox axtarilan ">
                                     <ul class="cart-action-02" style="background-color:rgba(255, 255, 255, 0.705);padding:6px 6px 0px 4px">
                                         <li><a class="wishclick" data-target="{{ product.id }}" >
                                             <i onclick="addWish('{{ product.id }}', '{% url 'add_wish' %}','{{csrf_token}}' )" 
@@ -276,7 +276,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                             <div class="product-style-02 margin-top-40">
                                 <div class="thumb">
-                                    <img src="{{ product.get_main_image.url }}" loading="lazy" alt="">
+                                    <img src="{{ product.get_main_image.url }}" loading="lazy" alt="{{ product.name }} en cox satilan">
                                     <span class="sale">Çox satılan</span>
                                     <ul class="cart-action-02" style="background-color:rgba(255, 255, 255, 0.705);padding:6px 6px 0px 4px">
                                         <li><a class="wishclick" data-target="{{ product.id }}" >
@@ -329,7 +329,7 @@
                         {% for collection in all_collections %}
                         <div class="collection-item">
                             <div class="thumb">
-                                <img src="{{ collection.image.url }}" alt="">
+                                <img src="{{ collection.image.url }}" alt="{{ collection }} kolleksiyasi">
                                 <div class="thumb-content">
                                     <h2>{{ collection.name }}</h2>
                                     <div class="btn-wrapper">
@@ -386,7 +386,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                     <div class="article-style-01">
                         <div class="thumb">
-                            <img src="{{ blog.image.url }}" alt="">
+                            <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
                             <span class="tag">{{ blog.tag.name }}</span>
                         </div>
                         <div class="content">
@@ -416,7 +416,7 @@
                    
                         {% for brand in partners %}
                         <div class="brant-item">
-                            <img src="{% static 'assets/img/brand/brand1.png' %}" alt="brand">
+                            <img src="{% static 'assets/img/brand/brand1.png' %}" alt="{{ brand.name }}">
                         </div>
                         {% endfor %}
                     
@@ -494,9 +494,7 @@
     <script>
 
         const currentUrl = window.location.href;
-        console.log(currentUrl);
-        console.log(currentUrl.includes('auth=True'))
-
+        
             if (currentUrl.includes('auth=True')) {
         Swal.fire({
             icon: 'success',

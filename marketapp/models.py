@@ -135,7 +135,7 @@ class Product(MetaMixin,BaseMixin):
     stock = models.BooleanField(default=True)
     color = models.ManyToManyField(Color)
     size = models.ManyToManyField(Size)
-    collection = models.ManyToManyField(Collection)
+    collection = models.ManyToManyField(Collection,blank=True)
     category = models.ManyToManyField(Category)
     brand = models.ForeignKey(Brand,null=True,blank=True,on_delete=models.SET_NULL)
     new = models.BooleanField(default=False)

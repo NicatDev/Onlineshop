@@ -77,7 +77,7 @@
                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                                     <div class="product-style-02 margin-top-40">
                                         <div class="thumb">
-                                            <img src="{{product.get_main_image.url}}" alt="">
+                                            <img src="{{product.get_main_image.url}}" alt="{{ product.name }}">
                                             
                                             <span class="out">{% if product.new %}{% trans 'Yeni' %}{% elif product.best_seller %}{% trans 'Çox satılan' %}{% elif product.most_searched %} {% trans 'Çox axtarılan' %} {% endif %}</span>
                                             
@@ -214,7 +214,22 @@
 </body>
 
 <script>
-
+    var auth = {{ auth }}
+    console.log(auth)
+    if (!auth){
+        Swal.fire({
+            icon: 'info',
+            text: 'Bu xidmətdən istifadə etmək üçün hesabınıza daxil olmanız rica olunur',
+            confirmButtonText: 'Ana səhifə',
+            preConfirm: () => {
+                window.location.href = '{% url "home" %}';
+                }
+        }).then((result) => {
+            if (result.dismiss) {
+              window.location.href = '{% url "home" %}';
+            }
+          });
+    }
     const myuser = "{{ request.user }}"
 
     

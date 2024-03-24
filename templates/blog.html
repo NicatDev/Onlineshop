@@ -71,7 +71,7 @@
                         <div class="col-md-12">
                             <div class="single-blog">
                                 <div class="thumb">
-                                    <img src="{{ blog.image.url }}" alt="">
+                                    <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
                                     <span class="tag">{{ blog.tag.name }}</span>
                                 </div>
                                 <div class="content">
@@ -131,7 +131,7 @@
                             {% for product in products %}
                             <div class="single-seller-content d-flex">
                                 <div style="max-width: 20%;" class="thumb">
-                                    <img src="{{ product.get_main_image.url }}" alt="">
+                                    <img src="{{ product.get_main_image.url }}" alt="{{ product.slug }}">
                                 </div>
                                 <div class="content">
                                     <h6><a href="{% url 'shopSingle' product.slug %}">{{ product.name }}</a></h6>

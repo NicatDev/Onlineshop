@@ -37,7 +37,7 @@ def add_basket(request):
         mydata = []
         quantity = 0
         for x in order_items:
-            mydata.append({'quantity':x.quantity,'image':x.product.get_main_image().url,'name':x.product.name,'price':x.product.get_discount_price(),'id':x.product.id})
+            mydata.append({'quantity':x.quantity,'image':x.product.get_main_image().url,'name':x.product.name,'price':x.product.get_discount_price(),'id':x.product.id,'orderitem':x.id})
             quantity += x.quantity
         return JsonResponse({'status': 'success', 'message': message,'data':mydata,'quantity':quantity})
         
@@ -107,11 +107,7 @@ def login_js(request):
         return HttpResponse(status=400)
     
 def delete_order_item(request):
-    print('11')
     orderitem_id = request.POST.get('orderitem_id')
-    print('22')
-    print(orderitem_id)
     order_item = get_object_or_404(OrderItem, id=orderitem_id)
-    print(order_item)
     order_item.delete()
     return JsonResponse({'status': 'success'})

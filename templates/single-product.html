@@ -10,7 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Victoria's secret</title>
+    <title>{{ product.seo_title }}</title>
+    <meta name="description" content="{{ product.seo_description }}">
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- favicon -->
@@ -106,7 +108,7 @@
                                    
                                         {% for size in product.size.all %}
 
-                                        <input {% if forloop.first %} checked {% endif %} type="radio" id="s-{{size.id}}" name="size-select" value="s-{{size.id}}">
+                                        <input {% if forloop.first %} checked {% endif %} type="radio" id="s-{{size.id}}" name="size-select" data-size="{{size.name}}" value="s-{{size.id}}">
                                         <label for="s-{{size.id}}">{{ size.name }}</label>
                                         {% endfor %}
 
@@ -119,7 +121,7 @@
                                     <ul class="color-list align-self-center">
 
                                         {% for color in product.color.all %}
-                                        <input {% if forloop.first %} checked {% endif %} class="color-select" type="checkbox" id="c-{{ color.id }}" value="c-{{color.id}}" name="c-{{color.id}}"  >
+                                        <input {% if forloop.first %} checked {% endif %} class="color-select" type="checkbox" data-color="{{color.name}}" id="c-{{ color.id }}" value="c-{{color.id}}" name="c-{{color.id}}"  >
                                         <label class="color-label" id="{{color.color}}" for="c-{{ color.id }}"></label>
                                           {% endfor %}
                                       
@@ -141,7 +143,7 @@
                                             <a class="btn btn-sm" id="plus-btn"><i class="fa fa-plus"></i></a>
                                         </div>
                                     </div>
-                                    <div style="cursor: pointer;" onclick="addToCart()" class="add-to-cart basketclick">
+                                    <div style="cursor: pointer;" {% if request.user.is_authenticated %} onclick="addToCart()" {% else %} onclick="addToCartNotAuth()" {% endif %} class="add-to-cart basketclick">
                                         <a  ><i class="icon-add-to-cat"></i> {% trans 'Səbətə əlavə et' %}</a>
 
                                     </div>
@@ -256,144 +258,288 @@
 
 
 
-
-<script>
-    const product = '{{product.id}}'
-    function addToCart(arg) {
-        const checkboxes = document.querySelectorAll('.color-select');
-        var checkedValue;
-    $('.color-select').each(function() {
-        if ($(this).prop('checked')) {
-            checkedValue = $(this).val().substring(2);
-        }
-    });
-    var radioButtons = document.getElementsByName("size-select");
-
-    var selectedSize;
-
-    for (var i = 0; i < radioButtons.length; i++) {
-        if (radioButtons[i].checked) {
-
-            selectedSize = radioButtons[i].value.substring(2);
-            break; 
-        }
-    }
-    console.log(selectedSize)
-    if(selectedSize === undefined || selectedSize === null){
-        console.log('ttt')
-        Swal.fire({
-        icon: 'error',
-        title: 'Xəta',
-        text: 'Ölçü seçilməyib !',
-        confirmButtonText: 'Tamam'
-    })
-return;}
-    if(checkedValue === undefined || checkedValue === null){Swal.fire({
-        icon: 'error',
-        title: 'Xəta',
-        text: 'Rəng seçilməyib !',
-        confirmButtonText: 'Tamam'
-    });
-return;}
-
-        var quantity = $("#qty_input").val();
-  
-        var csrfToken = '{{ csrf_token }}'
+   
+    <script>
+        const product = '{{product.id}}'
+        function addToCart(arg) {
+            const checkboxes = document.querySelectorAll('.color-select');
+            var checkedValue;
+            $('.color-select').each(function() {
+            if ($(this).prop('checked')) {
+                checkedValue = $(this).val().substring(2);
+            }
+        });
+        var radioButtons = document.getElementsByName("size-select");
     
-        var postData = {
-            'size': selectedSize,
-            'color': checkedValue,
-            'quantity': quantity,
-            'product':product,
+        var selectedSize;
     
-        };
-       console.log(postData)
-          $.ajax({
-              type: 'POST',
-              url: "{% url 'add_basket' %}",
-              data: postData,
+        for (var i = 0; i < radioButtons.length; i++) {
+            if (radioButtons[i].checked) {
+    
+                selectedSize = radioButtons[i].value.substring(2);
+                break; 
+            }
+        }
+        console.log(selectedSize)
+        if(selectedSize === undefined || selectedSize === null){
+            console.log('ttt')
+            Swal.fire({
+            icon: 'error',
+            title: 'Xəta',
+            text: 'Ölçü seçilməyib !',
+            confirmButtonText: 'Tamam'
+        })
+            return;}
+        if(checkedValue === undefined || checkedValue === null){Swal.fire({
+            icon: 'error',
+            title: 'Xəta',
+            text: 'Rəng seçilməyib !',
+            confirmButtonText: 'Tamam'
+        });
+             return;}
+    
+            var quantity = $("#qty_input").val();
       
-              headers: {
-                  'X-CSRFToken': csrfToken  
-              },
-              dataType: 'json',
-              success: function (data) {
-                  if (data.status === 'success') {
-                    if(arg===4){
-                        window.location.href = "{% url 'shopping' %}"
-                    }
-                    mydata = data.data
-                    var ul = document.getElementById("orderitems");
-                    ul.innerHTML = "";
-                    
-                    mydata.forEach(function(newItemData) {
-                        var li = document.createElement("li");
-                        console.log(newItemData,'aaa')
+            var csrfToken = '{{ csrf_token }}'
+        
+            var postData = {
+                'size': selectedSize,
+                'color': checkedValue,
+                'quantity': quantity,
+                'product':product,
+        
+            };
+           console.log(postData)
+              $.ajax({
+                  type: 'POST',
+                  url: "{% url 'add_basket' %}",
+                  data: postData,
+          
+                  headers: {
+                      'X-CSRFToken': csrfToken  
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                      if (data.status === 'success') {
+                        if(arg===4){
+                            window.location.href = "{% url 'shopping' %}"
+                        }
+                        mydata = data.data
+                        var ul = document.getElementById("orderitems");
+                        ul.innerHTML = "";
+                        
+                        mydata.forEach(function(newItemData) {
+                            var li = document.createElement("li");
+                            console.log(newItemData,'aaa')
+                            li.innerHTML = `
+                                <div class="d-flex">
+                                    <div class="thumb">
+                                        <img src="${newItemData.image}" alt="${newItemData.name}">
+                                    </div>
+                                    <div class="content">
+                                        <h6 class="title"><a href="#">${newItemData.name}</a></h6>
+                                        <span class="price">${newItemData.price}</span>
+                                    </div>
+                                    <div class="action">
+                                        <input type="text" value="${newItemData.quantity}">
+                                    
+                                        <a style="cursor:pointer" onclick="delete_order_item(${ newItemData.orderitem },'{% url "delete_order_item" %}','{{ csrf_token }}')" id="{{item.product.id}}" id="${newItemData.id}" class="remove"><i class="fa-solid fa-trash-can"></i></a>
+                                    </div>
+                                </div>
+                            `;
+                            ul.appendChild(li);
+                        });
+                        var li = document.createElement('li')
                         li.innerHTML = `
                             <div class="d-flex">
-                                <div class="thumb">
-                                    <img src="${newItemData.image}" alt="${newItemData.name}">
-                                </div>
-                                <div class="content">
-                                    <h6 class="title"><a href="#">${newItemData.name}</a></h6>
-                                    <span class="price">${newItemData.price}</span>
-                                </div>
-                                <div class="action">
-                                    <input type="number" value="${newItemData.quantity}">
-                                    <a href="#" id="${newItemData.id}" class="remove"><i class="fa-solid fa-trash-can"></i></a>
-                                </div>
-                            </div>
-                        `;
-                        ul.appendChild(li);
-                    });
-                    var li = document.createElement('li')
-                    li.innerHTML = `
-                        <div class="d-flex">
-                            <a href="{% url 'shopping' %}" style="width:100%;padding:10px 50px;color:white;" class="btn btn-contact" style="color:white">Ətraflı</a>
-                        </div>`
-                  
-                        ul.appendChild(li);
-                        $('.basketbadge').text(data.quantity);
-                        
-
-                      Swal.fire({
-                          icon: 'success',
-                          title: 'Uğurla tamamlandı'
-                      })
-                  } else {
-                      Swal.fire({
-                          icon: 'error',
-                          title: 'Xəta',
-                          text: 'Bu özəllikdən istifadə etmək üçün hesaba daxil olmalısınız    !',
-                          confirmButtonText: 'Tamam'
-                      })
-                  }
-              },
-              error: function () {
-                  alert('An unexpected error occurred.');
-              }
-          });
-      }
-    </script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const checkboxes = document.querySelectorAll('.color-select');
+                                <a href="{% url 'shopping' %}" style="width:100%;padding:10px 50px;color:white;" class="btn btn-contact" style="color:white">Səbətə bax</a>
+                            </div>`
+                      
+                            ul.appendChild(li);
+                            $('.basketbadge').text(data.quantity);
+                            
     
-            checkboxes.forEach(function(checkbox) {
-                checkbox.addEventListener('change', function() {
-                    if (this.checked) {
-      
-                        checkboxes.forEach(function(otherCheckbox) {
-                            if (otherCheckbox !== checkbox) {
-                                otherCheckbox.checked = false;
-                            }
-                        });
-                    }
+                          Swal.fire({
+                              icon: 'success',
+                              title: 'Uğurla tamamlandı'
+                          })
+                      } else {
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'Xəta',
+                              text: 'Bu özəllikdən istifadə etmək üçün hesaba daxil olmalısınız    !',
+                              confirmButtonText: 'Tamam'
+                          })
+                      }
+                  },
+                  error: function () {
+                      alert('An unexpected error occurred.');
+                  }
+              });
+          }
+        </script>
+    
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const checkboxes = document.querySelectorAll('.color-select');
+        
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.addEventListener('change', function() {
+                        if (this.checked) {
+          
+                            checkboxes.forEach(function(otherCheckbox) {
+                                if (otherCheckbox !== checkbox) {
+                                    otherCheckbox.checked = false;
+                                }
+                            });
+                        }
+                    });
                 });
             });
-        });
     </script>
+  
+    
+    <script>
+        function isIdentical(item1, item2) {
+            return item1 === item2;
+        }
+        function addToCartNotAuth() {
+                var id = {{ product.id }}
+                var name = "{{ product.name }}"
+                var image = "{{ product.get_main_image.url }}"
+                var price = "{{ product.get_discount_price }}"
+                var radioButtons = document.getElementsByName("size-select");
+                var selectedSize;
+                var sizeName
+                for (var i = 0; i < radioButtons.length; i++) {
+                    if (radioButtons[i].checked) {
+            
+                        selectedSize = radioButtons[i].value.substring(2);
+                        sizeName = radioButtons[i].dataset.size;
+                     
+                        break; 
+                    }
+                }
+
+                      
+                var checkedValue;   
+                var colorName;
+                $('.color-select').each(function() {
+                    if ($(this).prop('checked')) {
+                        checkedValue = $(this).val().substring(2);
+                        colorName = $(this).data('color')
+                    }
+                });
+                console.log(colorName)
+                var quantity = $("#qty_input").val();
+                
+                if(selectedSize === undefined || selectedSize === null){
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'Ölçü seçilməyib !',
+                    confirmButtonText: 'Tamam'
+                })
+                return;
+                }
+                if(checkedValue === undefined || checkedValue === null){
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'Rəng seçilməyib !',
+                    confirmButtonText: 'Tamam'
+                });
+                return;
+                }
+
+                var data = {
+                    product:{
+                        id:id,
+                        name:name,
+                        price:price,
+                        image:{url:image}
+                    },
+                    color:{
+                        id:checkedValue,
+                        name:colorName
+                    },
+                    size:{
+                        id:selectedSize,
+                        name:sizeName    
+                    },
+                    quantity:quantity
+                }
+
+                var existingItemsJSON = localStorage.getItem("items");
+                var items = existingItemsJSON ? JSON.parse(existingItemsJSON) : [];
+                var newItem = data;
+                
+                var exists = items.some(function(item) {
+                    return isIdentical(item.product.id, newItem.product.id) &&
+                           isIdentical(item.color.id, newItem.color.id) &&
+                           isIdentical(item.size.id, newItem.size.id);
+                });
+                
+                if (!exists) {
+                    items.push(newItem); 
+                }
+                else{
+                    items.some(function(item) {
+                        if(isIdentical(item.product.id, newItem.product.id) &&
+                               isIdentical(item.color.id, newItem.color.id) &&
+                               isIdentical(item.size.id, newItem.size.id)){
+                                item.quantity = (parseInt(item.quantity) + parseInt(newItem.quantity)).toString();
+                            }
+                    });
+                }
+                console.log(JSON.stringify(items))
+                localStorage.setItem("items", JSON.stringify(items));
+                var sum = items.reduce(function(total, current) {
+                    return total + parseInt(current.quantity);
+                }, 0);
+                
+                var ul = document.getElementById("orderitems");
+                        ul.innerHTML = "";
+                        
+                        items.forEach(function(newItemData) {
+                            var li = document.createElement("li");
+           
+                            li.innerHTML = `
+                                <div class="d-flex">
+                                    <div class="thumb">
+                                        <img src="${newItemData.product.image.url}" alt="${newItemData.product.name}">
+                                    </div>
+                                    <div class="content">
+                                        <h6 class="title"><a href="#">${newItemData.product.name}</a></h6>
+                                        <span class="price">${newItemData.product.price}</span>
+                                    </div>
+                                    <div class="action">
+                                        <input type="text" value="${newItemData.quantity}">
+                                        <a style="cursor:pointer;" onclick="deleteFromBasket(${newItemData.product.id},${newItemData.color.id},${newItemData.size.id})" id="${newItemData.product.id}" class="remove"><i class="fa-solid fa-trash-can"></i></a>
+                                    </div>
+                                </div>
+                            `;
+                            ul.appendChild(li);
+                        });
+                        var li = document.createElement('li')
+                        li.innerHTML = `
+                            <div class="d-flex">
+                                <a href="{% url 'shopping' %}" style="width:100%;padding:10px 50px;color:white;" class="btn btn-contact" style="color:white">Səbətə bax</a>
+                            </div>`
+                      
+                            ul.appendChild(li);
+                            $('.basketbadge').text(sum);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Uğurla tamamlandı'
+                            })
+                            
+        }
+        
+    </script>
+   
+    
+
 
 <style>
     
@@ -416,10 +562,10 @@ return;}
     }
    
     input[type=checkbox] + label {
+        font-size:22px;
         display: block;
-        margin: 0.2em;
         cursor: pointer;
-        padding: 0.2em;
+        margin: 0px 4px;
         font-family: 'Arial'
       }
       
@@ -430,7 +576,7 @@ return;}
       input[type=checkbox] + label:before {
         content: "\2714";
        
-        border-radius: 0.2em;
+        border-radius: 50%;
         display: inline-block;
         width: 1em;
         height: 1em;
@@ -449,7 +595,7 @@ return;}
       }
       
       input[type=checkbox]:checked + label:before {
-
+        border-radius:50%;
         color: #fff;
       }
       
@@ -527,7 +673,7 @@ label{
     <script src="{% static 'assets/js/vendor.js' %}"></script>
     <!-- main js  -->
     <script src="{% static 'assets/js/main.js' %}"></script>
-    
+    <script src="{% static 'assets/js/functions.js' %}"></script>
 
 </body>
 

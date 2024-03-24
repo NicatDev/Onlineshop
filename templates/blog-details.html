@@ -67,7 +67,7 @@
                     <div class="blog-content">
                         <h2>{{ blog.title }}</h2>
                         <p>{{ blog.content|safe }}</p>
-                        <img src="{{ blog.image.url }}" alt="">
+                        <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
                         <p>{{ blog.content2|safe }}</p>
                         
                         <div class="author-social-area margin-top-50">

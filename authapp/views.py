@@ -22,6 +22,8 @@ from reportlab.pdfgen import canvas
 from io import BytesIO
 import os
 from django.core.mail import EmailMessage
+import json
+
 def pdf_generate(order_id):
     order = Order.objects.get(id=order_id)
     order_items = order.orderitems.all()
@@ -64,6 +66,50 @@ def pdf_generate(order_id):
     email.attach(pdf_filename, pdf_data, 'application/pdf')
     email.send()
     return buffer
+
+def pdf_generate_notAuth(data):
+    print(data,'---------------------')
+    order_items = data.get('items')
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=letter)
+    y_coordinate = 750  # Starting Y coordinate
+
+    for item in order_items:
+        product_name = item['product']['name']
+        quantity = item['quantity']
+        color = item['color']['name']
+        size = item['size']['name']
+    
+        pdf.drawString(100, y_coordinate, f"Product Name: {product_name}")
+        pdf.drawString(100, y_coordinate - 20, f"Quantity: {quantity}")
+        pdf.drawString(100, y_coordinate - 40, f"Color: {color}")
+        pdf.drawString(100, y_coordinate - 60, f"Size: {size}")
+        y_coordinate -= 100
+
+
+    pdf.drawString(100, y_coordinate - 20, f"phone: {data.get('phone')}")
+    pdf.drawString(100, y_coordinate - 40, f"address: {data.get('address')}")
+
+    pdf.showPage()
+    
+    pdf_filename = f"order_details.pdf"  
+    pdf_path = os.path.join(settings.BASE_DIR, 'static', pdf_filename) 
+
+    with open(pdf_path, 'wb') as pdf_file:
+        pdf.save()
+        pdf_data = buffer.getvalue()
+        pdf_file.write(pdf_data)
+    buffer.seek(0)
+    email = EmailMessage(
+        'Sifariş',
+        'Sifarişin detalları əlavə edilmişdir.',
+        settings.EMAIL_HOST_USER,
+        ['viktoriassirri@gmail.com'],  
+    )
+    email.attach(pdf_filename, pdf_data, 'application/pdf')
+    email.send()
+    return buffer
+
 
 def register(request):
     if request.method == 'POST':
@@ -116,7 +162,9 @@ def shopping(request,form_name=None):
 
         elif form_name == 'order':
             try:
+    
                 order = get_object_or_404(Order,id=int(request.POST.get('order')))
+             
                 check = request.POST.get('check')
                 address = request.POST.get('address')
                 phone = request.POST.get('phone')
@@ -203,6 +251,11 @@ def shopping(request,form_name=None):
 
 
 def wish(request):
+    if not request.user.is_authenticated:
+        context = {
+            'auth':0
+        }
+        return render(request,'wishlist.html',context)
     product_list = Product.objects.filter(wishlist=request.user)
     orderitems = get_order_items(request)
     paginator = Paginator(product_list, 12)
@@ -214,6 +267,7 @@ def wish(request):
 
     instas = get_instagram_photos()
     context = {
+        'auth':1,
         'categories':categories,
         'instas':instas,
         'products':products,
@@ -223,3 +277,7 @@ def wish(request):
     }
     return render(request,'wishlist.html',context)
 
+def order(request):
+    data = json.loads(request.body)
+    pdf_generate_notAuth(data)
+    return JsonResponse({'message':'ok'})

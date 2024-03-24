@@ -24,6 +24,7 @@
   
 </head>
 <body>
+   
     <a href="https://wa.me/+994513126599?text=Yardım%20lazımdır" class="float" target="_blank">
         <img style="max-width:40px;margin-top:6px;  filter: brightness(550%);" src="{% static 'assets/whatsapp.png' %}" >
         </a>
@@ -102,12 +103,12 @@
                            
                               </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="items">
                                 {% for item in data %}
                               <tr>
                                 <th scope="row" class="d-flex">
                                     <div style="max-width:22%" class="left">
-                                        <img src="{{ item.product.image }}" alt="">
+                                        <img src="{{ item.product.image }}" alt="{{ item.product.name }}">
                                     </div>
                                     <div class="right responsivetitle">
                                         <h6 class="name">{{ item.product.name }}</h6>
@@ -151,20 +152,20 @@
                     <div class="summary margin-top-20">
                         <h6 class="title">{% trans 'Xülasə' %}</h6>
                         <div class="d-flex justify-content-between total">
-                            <p>{% trans 'Ümumi qiymət' %}</p>
-                            <p>{{ total }} azn</p>
+                            <p >{% trans 'Ümumi qiymət' %}</p>
+                            <p id="total_price">{{ total }} azn</p>
                         </div>
 
 
                         <div  class="btn-wrapper">
-                            <form  method="POST" action="{% url 'shopping' form_name="order" %}">
+                            <form id="myForm" {% if request.user.is_authenticated %} method="POST" action="{% url 'shopping' form_name='order' %}"  {% endif %}>
                                 {% csrf_token %}
                                 
-                            <input name="phone" placeholder="Əlaqə nömrəsi" type="text" style="margin-top:15px;margin-bottom:5px">
-                            <input name="address" placeholder="Ünvan" type="text" style="margin-top:10px;margin-bottom:5px">
+                            <input name="phone" id="phone" placeholder="Əlaqə nömrəsi" type="text" style="margin-top:15px;margin-bottom:5px">
+                            <input name="address" id="address" placeholder="Ünvan" type="text" style="margin-top:10px;margin-bottom:5px">
                             <input name="order" value="{{ order }}" hidden>
                             <div style="display:flex; align-items:center;justify-content:center;margin-top:5px;margin-bottom:5px;">
-                                <input type="checkbox" name="check" style="height:20px;width:20px;gap:10px">&nbsp; {% trans 'Sifarişi təsdiqlə və göndər' %}</input>
+                                <input type="checkbox" id="check" name="check" style="height:20px;width:20px;gap:10px">&nbsp; {% trans 'Sifarişi təsdiqlə və göndər' %}</input>
                             </div>
                             <button style="margin-top:5px;"  name="action" value="order" type="submit" class="btn btn-checkout">{% trans 'Sifariş ver' %}</button>
                         </form>
@@ -192,6 +193,184 @@
     <script src="{% static 'assets/js/main.js' %}"></script>
     
 </body>
+{% if not request.user.is_authenticated %}
+<script>
+    function getShoppingCartNotAuth(){
+        if(!localStorage.getItem('items')){
+            var mydiv = document.getElementById("items");
+                    mydiv.innerHTML = ''
+                    return;
+        }
+    var localitems = JSON.parse(localStorage.getItem('items'));
+    var total = localitems.reduce(function(total, current) {
+
+        return total + parseInt(current.product.price)*parseInt(current.quantity);
+    }, 0);
+                    var mydiv = document.getElementById("items");
+                    mydiv.innerHTML = ''
+                  
+                    var total_price = 0
+                    localitems.forEach(function(item) {
+                        total = parseInt(item.product.price)*parseInt(item.quantity)
+                        total_price += total
+                        console.log(item);
+                        var tr = document.createElement('tr')
+                        tr.innerHTML = `<th scope="row" class="d-flex">
+                                <div style="max-width:22%" class="left">
+                                    <img src="${ item.product.image.url }" alt="${ item.product.name }">
+                                </div>
+                                <div class="right responsivetitle">
+                                    <h6 class="name">${ item.product.name }</h6>
+                                    <h6 style="display:flex" class="title">Ölçü: <span class="values">&nbsp; ${ item.size.name }</span></h6>
+                                    <h6 style="display:flex" class="title">Rəng: <span class="values">&nbsp; ${ item.color.name }</span></h6>
+                                </div>
+                            </th>
+                            <td>${ item.product.price } azn</td>
+                            
+                            <td>
+                                <div >
+                                    <div class="divmybutton" method="post" action="{% url 'shopping' form_name='change' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="item_id" >
+                                        <button name="action" type="submit" value="subtract" onclick="changeQuantity(${item.size.id},${item.color.id},${item.product.id},'subtract')" class="mybutton">-</button>
+                                        <div id="item-${item.id}">${ item.quantity}</div>
+                                        <button name="action" value="add" onclick="changeQuantity(${item.size.id},${item.color.id},${item.product.id},'add')" type="submit" class="mybutton">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td  style="position:relative">${total} azn <img style="cursor:pointer" onclick="changeQuantity(${item.size.id},${item.color.id},${item.product.id},'del')" class="deleteicon" src="{% static 'assets/img/deleteicon.png' %}" ></td>
+                          `
+                          mydiv.appendChild(tr);
+                    })
+                    document.getElementById('total_price').innerHTML = `${total_price}azn`
+                }
+                getShoppingCartNotAuth()
+</script>
+{% endif %}
+<script>
+    function changeQuantity(size,color,product,action){
+        var existingItemsJSON = localStorage.getItem("items");
+                var items = existingItemsJSON ? JSON.parse(existingItemsJSON) : [];
+             
+
+                
+             
+                    items.some(function(item,index) {
+                        if(item.product.id == product &&
+                              item.color.id == color &&
+                               item.size.id == size){
+
+                                if(action == 'add'){
+                                    item.quantity = parseInt(item.quantity) + 1;
+                                }
+                                else if(action == 'subtract'){
+                                    if(item.quantity==1){
+                                        items.splice(index, 1);
+                            
+                                    }
+                                    else{
+                                    item.quantity = parseInt(item.quantity) - 1;
+                        
+                                    }
+                                }
+                                else if(action == 'del'){
+                                    items.splice(index, 1);
+                                    
+                                }
+                  
+                            }
+                    });
+                    localStorage.setItem("items", JSON.stringify(items));
+                    getShoppingCartNotAuth();
+                    GetLocalItem();
+                }
+</script>
+
+{% if not request.user.is_authenticated %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.getElementById('myForm');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            phone = document.getElementById('phone').value
+            address = document.getElementById('address').value
+   
+            check = document.getElementById('check')
+   
+            if (phone === ""){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'Zəhmət olmasa əlaqə nömrənizi daxil edin',
+                });
+                return;
+            }
+            
+            else if (address === ""){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'Zəhmət olmasa ünvanı daxil edin',
+                });
+                return;
+            }
+            
+            else if (!check.checked){
+                console.log(check)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'Zəhmət olmasa formun düzgünlüyünü təsdiqləyin',
+                });
+                return;
+            }
+            const csrfToken = "{{ csrf_token }}";
+            items = JSON.parse(localStorage.getItem('items'))
+            formData = {
+                phone:phone,
+                address:address,
+                items:items
+            }
+            
+            fetch("{% url 'order' %}", {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Xəta',
+                        text: 'Zəhmət olmasa formun düzgünlüyünü yoxlayın',
+                    });
+                    throw new Error('Network response was not ok');
+                }
+                localStorage.setItem('items','');
+                getShoppingCartNotAuth();
+                Swal.fire({
+                    title: "",
+                    text: "Sifarişiniz təsdiqləndi, sizinlə tezliklə əlaqə saxlanacaq !",
+                    icon: "success"
+                  });
+                return response.json();
+            })
+            .then(data => {
+                // Handle successful response if needed
+                console.log(data);
+            })
+            .catch(error => {
+                // Handle error if needed
+                console.error('There was a problem with the fetch operation:', error);
+            });
+   
+        });
+    });
+    </script>
+{% endif %}
 <style>
     td{
         font-weight:700
@@ -216,7 +395,6 @@
             e.preventDefault();
             
            
-            // Capture form data
             const formData = {
                 username: $("#username").val(),
                 password: $("#password").val(),
@@ -262,9 +440,7 @@
                             window.location.href = '{% url "home" %}';
                             }
                     }).then((result) => {
-                        // Check if the result.dismiss property is present, indicating a click outside the modal
                         if (result.dismiss) {
-                          // Redirect to the homepage
                           window.location.href = '{% url "home" %}';
                         }
                       });
@@ -273,27 +449,21 @@
                   else{
                     Swal.fire({
                         icon: 'error',
-                       
                         text: 'Yanlış ad və ya şifrə !',
                         confirmButtonText: 'Təkrar yoxla',
                         preConfirm: () => {
                             window.location.href = '{% url "login" %}';
                             }
                     }).then((result) => {
-                        // Check if the result.dismiss property is present, indicating a click outside the modal
                         if (result.dismiss) {
-                          // Redirect to the homepage
                           window.location.href = '{% url "login" %}';
                         }
                       });
                   } 
                 })
                 .then(data => {
-                    // Handle successful response if needed
-                  
                 })
                 .catch(error => {
-                    // Handle error if needed
                     console.error('There was a problem with the fetch operation:', error);
                 });
             }

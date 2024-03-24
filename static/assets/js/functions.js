@@ -90,7 +90,7 @@ function remove_basket(id,url,csrftoken) {
 
   function delete_order_item(id,url,csrftoken) {
    
-   
+  
       $.ajax({
           type: 'POST',
           url: url,

@@ -102,6 +102,7 @@
                                         </div>
                                         <div class="action" >
                                             <input readonly type="text" value="{{item.quantity}}" >
+                                           
                                             <a style="cursor:pointer" onclick="delete_order_item('{{ item.id }}','{% url 'delete_order_item' %}','{{ csrf_token }}')" id="{{item.product.id}}" class="remove"><i  class="fa-solid fa-trash-can"></i></a>
                                         </div>
                                     </div>
@@ -169,7 +170,75 @@
         });
     });
     </script>
+    {% if not request.user.is_authenticated %}
+    <script>
+        function GetLocalItem(){
+        var localitems = JSON.parse(localStorage.getItem('items'))
+        var sum = localitems.reduce(function(total, current) {
+            return total + parseInt(current.quantity);
+        }, 0);
+        var ul = document.getElementById("orderitems");
+                        ul.innerHTML = "";
+                        
+                        localitems.forEach(function(newItemData) {
+                            var li = document.createElement("li");
+           
+                            li.innerHTML = `
+                                <div class="d-flex">
+                                    <div class="thumb">
+                                        <img src="${newItemData.product.image.url}" alt="${newItemData.product.name}">
+                                    </div>
+                                    <div class="content">
+                                        <h6 class="title"><a href="#">${newItemData.product.name}</a></h6>
+                                        <span class="price">${newItemData.product.price}</span>
+                                    </div>
+                                    <div class="action">
+                                        <input type="number" value="${newItemData.quantity}">
+                                        <a style="cursor:pointer" onclick="deleteFromBasket(${newItemData.product.id},${newItemData.color.id},${newItemData.size.id})" id="${newItemData.product.id}" ><i class="fa-solid fa-trash-can"></i></a>
+                                    </div>
+                                </div>
+                            `;
+                            ul.appendChild(li);
+                        });
+                        var li = document.createElement('li')
+                        li.innerHTML = `
+                            <div class="d-flex">
+                                <a href="{% url 'shopping' %}" style="width:100%;padding:10px 50px;color:white;" class="btn btn-contact" style="color:white">Səbətə bax</a>
+                            </div>`
+                      
+                            ul.appendChild(li);
+                            $('.basketbadge').text(sum);
+                        }
+                        GetLocalItem()
+                            
+    </script>
+    {% endif %}
+<script>
+    function deleteFromBasket(product,color,size){
+        
+            var items = JSON.parse(localStorage.getItem('items'));
+         
 
+            var indexToRemove = items.findIndex(function(item) {
+                   return item.product.id == product && 
+                    item.color.id == color && 
+                    item.size.id == size;
+            });
+            console.log(indexToRemove)
+            if (indexToRemove !== -1) {
+                items.splice(indexToRemove, 1); 
+            }
+
+            var updatedItemsJson = JSON.stringify(items);
+            localStorage.setItem('items', updatedItemsJson);
+            GetLocalItem();
+            var fullURL = window.location.href;
+            if (fullURL.includes("auth/shopping")) {
+                getShoppingCartNotAuth();
+            }
+            
+    }
+</script>
 <style>
     .remove i{
         color:black !important; font-size:20px; padding-top:5px

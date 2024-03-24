@@ -111,7 +111,7 @@
                                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                                     <div class="product-style-02 margin-top-40">
                                         <div class="thumb">
-                                            <img src="{{product.get_main_image.url}}" alt="">
+                                            <img src="{{product.get_main_image.url}}" alt="{{ product.name }}">
                                             
                                             <span class="out">{% if product.new %}Yeni{% elif product.best_seller %}Çox satılan{% elif product.most_searched %} Çox axtarılan {% endif %}</span>
                                             
@@ -355,7 +355,7 @@
                             {% for product in best_sellers %}
                             <div class="single-seller-content d-flex">
                                 <div class="thumb">
-                                    <img style="max-width:100px" src="{{ product.get_main_image.url }}" alt="">
+                                    <img style="max-width:100px" src="{{ product.get_main_image.url }}" alt="{{ product.name }}">
                                 </div>
                                 <div class="content">
                                     <h6>{{ product.name }}</h6>
