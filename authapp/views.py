@@ -113,7 +113,9 @@ def pdf_generate_notAuth(data):
     )
     print('100000000000000000000000000000000000000000000000')
     email.attach(pdf_filename, pdf_data, 'application/pdf')
+    print('111111111111111')
     email.send()
+    print('12222222222222222222222')
     return buffer
 
 
@@ -284,8 +286,6 @@ def wish(request):
     return render(request,'wishlist.html',context)
 
 def order(request):
-    print('1111111111111111111111111111111111111')
     data = json.loads(request.body)
-    print('222222222222222222222222222222222222222222')
     pdf_generate_notAuth(data)
     return JsonResponse({'message':'ok'})
