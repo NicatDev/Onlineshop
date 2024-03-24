@@ -31,7 +31,7 @@ CORS_ALLOWED_ORIGINS = [
     'https://victoriassirri.az',
 ]
 # Application definition
-
+CSRF_TRUSTED_ORIGINS = ['*']
 INSTALLED_APPS = [
     'modeltranslation',
     'django.contrib.admin',
