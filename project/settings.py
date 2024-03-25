@@ -39,7 +39,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CELERY_BROKER_URL = 'amqp://guest:guest@test.victoriassirri.az:5672/'
-CELERY_RESULT_BACKEND = 'amqp://guest:guest@test.victoriassirri.az:5672/0'
+CELERY_RESULT_BACKEND = 'rpc://guest:guest@test.victoriassirri.az:5672/'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
