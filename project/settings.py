@@ -38,6 +38,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://victoriassirri.az',
 ]
 
+BROKER_URL = os.environ.get('RABBITMQ_URL', 'amqp://guest:guest@test.victoriassirri.az:5672/')
 CELERY_BROKER_URL = 'amqp://guest:guest@test.victoriassirri.az:5672/'
 CELERY_RESULT_BACKEND = 'rpc://guest:guest@test.victoriassirri.az:5672/'
 CELERY_TASK_TRACK_STARTED = True
