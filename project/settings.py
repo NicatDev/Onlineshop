@@ -38,9 +38,8 @@ CSRF_TRUSTED_ORIGINS = [
     'http://victoriassirri.az',
 ]
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
-BROKER_URL = os.environ.get('RABBITMQ_URL', 'amqp://guest:guest@135.181.42.192:5672/')
-CELERY_BROKER_URL = 'amqp://user:password@135.181.42.192:5672/'
-CELERY_RESULT_BACKEND = 'rpc://user:password@135.181.42.192:5672/'
+CELERY_BROKER_URL = 'amqp://user:password@135.181.42.192:5672/vhost'
+CELERY_RESULT_BACKEND = 'rpc://user:password@135.181.42.192:5672/vhost'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
