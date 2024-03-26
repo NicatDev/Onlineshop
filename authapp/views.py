@@ -74,52 +74,39 @@ def pdf_generate_notAuth(data):
     print('333333333333333333333333333333333333')
     order_items = data.get('items')
     print('333333333333333333355555555555555555555')
-    buffer = BytesIO()
+
     print('4444444444444444444444444444444444444')
-    pdf = canvas.Canvas(buffer, pagesize=letter)
+
     print('55555555555555555555555555555')
-    y_coordinate = 750  # Starting Y coordinate
+    text = ''
     print('666666666666666666666666666')
     for item in order_items:
         product_name = item['product']['name']
         quantity = item['quantity']
         color = item['color']['name']
         size = item['size']['name']
+        text += str(product_name) + str(quantity) + str(color) + str(size)
+
+
     
-        pdf.drawString(100, y_coordinate, f"Product Name: {product_name}")
-        pdf.drawString(100, y_coordinate - 20, f"Quantity: {quantity}")
-        pdf.drawString(100, y_coordinate - 40, f"Color: {color}")
-        pdf.drawString(100, y_coordinate - 60, f"Size: {size}")
-        y_coordinate -= 100
 
-
-    pdf.drawString(100, y_coordinate - 20, f"phone: {data.get('phone')}")
-    pdf.drawString(100, y_coordinate - 40, f"address: {data.get('address')}")
-
-    pdf.showPage()
-    
-    pdf_filename = f"order_details.pdf"  
-    pdf_path = os.path.join(settings.BASE_DIR, 'static', pdf_filename) 
     print('777777777777777777777777777777777777777777777')
-    with open(pdf_path, 'wb') as pdf_file:
-        pdf.save()
-        pdf_data = buffer.getvalue()
-        pdf_file.write(pdf_data)
+
     print('8888888888888888888888888888888888888')
-    buffer.seek(0)
+  
     print('99999999999999999999999999999999999')
     email = EmailMessage(
         'Sifariş',
-        'Sifarişin detalları əlavə edilmişdir.',
+        text,
         settings.EMAIL_HOST_USER,
         ['viktoriassirri@gmail.com'],  
     )
     print('100000000000000000000000000000000000000000000000')
-    email.attach(pdf_filename, pdf_data, 'application/pdf')
+ 
     print('111111111111111')
     email.send()
     print('12222222222222222222222')
-    return buffer
+    return {'message':'ok'}
 
 
 def register(request):
