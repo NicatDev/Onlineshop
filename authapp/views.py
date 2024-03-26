@@ -90,21 +90,14 @@ def pdf_generate_notAuth(data):
 
     
 
-    print('777777777777777777777777777777777777777777777')
-
-    print('8888888888888888888888888888888888888')
-  
-    print('99999999999999999999999999999999999')
-    email = EmailMessage(
-        'Sifariş',
-        text,
-        settings.EMAIL_HOST_USER,
-        ['viktoriassirri@gmail.com'],  
-    )
-    print('100000000000000000000000000000000000000000000000')
- 
-    print('sss111111111111111')
-    email.send()
+    send_mail(
+            'Sifaris',  # Konu
+            text,  # İçerik
+            settings.EMAIL_HOST_USER,
+            ['alici@example.com'],  # Alıcılar
+            fail_silently=False,  # Hata oluşursa sessizce başarısız olma (Varsayılan olarak False)
+        )
+   
     print('12222222222222222222222')
     return {'message':'ok'}
 
