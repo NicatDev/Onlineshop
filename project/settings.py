@@ -40,8 +40,8 @@ CSRF_TRUSTED_ORIGINS = [
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 # CELERY_BROKER_URL = 'amqp://guest:guest@127.0.0.1:5673/'
 # CELERY_RESULT_BACKEND = 'rpc://guest:guest@127.0.0.1:5673/' 
-CELERY_BROKER_URL = 'amqp://user:password@135.181.42.192:5672/vhost'
-CELERY_RESULT_BACKEND = 'rpc://user:password@135.181.42.192:5672/vhost'
+CELERY_BROKER_URL = 'amqp://user:password@test.victoriassirri.az/vhost'
+CELERY_RESULT_BACKEND = 'rpc://user:password@test.victoriassirri.az/vhost'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
