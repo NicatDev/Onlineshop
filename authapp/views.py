@@ -47,7 +47,7 @@ def pdf_generate(order_id):
             ['nicat254memmedov@gmail.com'],  # Alıcılar
             fail_silently=False,  # Hata oluşursa sessizce başarısız olma (Varsayılan olarak False)
         )
-    return buffer
+    return {'message':'ok'}
 
 
 def pdf_generate_notAuth(data):
