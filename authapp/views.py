@@ -94,7 +94,7 @@ def pdf_generate_notAuth(data):
             'Sifaris',  # Konu
             text,  # İçerik
             settings.EMAIL_HOST_USER,
-            ['alici@example.com'],  # Alıcılar
+            ['nicat254memmedov@gmail.com'],  # Alıcılar
             fail_silently=False,  # Hata oluşursa sessizce başarısız olma (Varsayılan olarak False)
         )
    
