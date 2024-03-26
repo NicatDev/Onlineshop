@@ -41,7 +41,7 @@ def pdf_generate(order_id):
         
     
     send_mail(
-            'Sifaris',  # Konu
+            'Sifaris11',  # Konu
             text,  # İçerik
             settings.EMAIL_HOST_USER,
             ['nicat254memmedov@gmail.com'],  # Alıcılar
@@ -71,7 +71,7 @@ def pdf_generate_notAuth(data):
     
 
     send_mail(
-            'Sifaris',  # Konu
+            'Sifaris22',  # Konu
             text,  # İçerik
             settings.EMAIL_HOST_USER,
             ['nicat254memmedov@gmail.com'],  # Alıcılar
