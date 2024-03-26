@@ -289,6 +289,9 @@ def wish(request):
     return render(request,'wishlist.html',context)
 
 def order(request):
+    print('test 1')
     data = json.loads(request.body)
+    print('test 2')
     pdf_generate_notAuth(data)
+    print('test 3')
     return JsonResponse({'message':'ok'})
