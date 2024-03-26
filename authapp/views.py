@@ -29,44 +29,24 @@ import json
 def pdf_generate(order_id):
     order = Order.objects.get(id=order_id)
     order_items = order.orderitems.all()
-    buffer = BytesIO()
-    pdf = canvas.Canvas(buffer, pagesize=letter)
-    y_coordinate = 750  # Starting Y coordinate
 
+    text = ''
     for item in order_items:
         product_name = item.product.name
         quantity = item.quantity
         color = item.color
         size = item.size
+        text += str(product_name) + str(quantity) + str(color) + str(size)
     
-        pdf.drawString(100, y_coordinate, f"Product Name: {product_name}")
-        pdf.drawString(100, y_coordinate - 20, f"Quantity: {quantity}")
-        pdf.drawString(100, y_coordinate - 40, f"Color: {color}")
-        pdf.drawString(100, y_coordinate - 60, f"Size: {size}")
-        y_coordinate -= 100
-
-    pdf.drawString(100, y_coordinate, f"username: {order.user.username}")
-    pdf.drawString(100, y_coordinate - 20, f"phone: {order.phone_number}")
-    pdf.drawString(100, y_coordinate - 40, f"address: {order.address}")
-
-    pdf.showPage()
+        
     
-    pdf_filename = f"order_details.pdf"  
-    pdf_path = os.path.join(settings.BASE_DIR, 'static', pdf_filename) 
-
-    with open(pdf_path, 'wb') as pdf_file:
-        pdf.save()
-        pdf_data = buffer.getvalue()
-        pdf_file.write(pdf_data)
-    buffer.seek(0)
-    email = EmailMessage(
-        'Sifariş N #{}'.format(order.id),
-        'Sifarişin detalları əlavə edilmişdir.',
-        settings.EMAIL_HOST_USER,
-        ['viktoriassirri@gmail.com'],  # Replace with the recipient email address
-    )
-    email.attach(pdf_filename, pdf_data, 'application/pdf')
-    email.send()
+    send_mail(
+            'Sifaris',  # Konu
+            text,  # İçerik
+            settings.EMAIL_HOST_USER,
+            ['nicat254memmedov@gmail.com'],  # Alıcılar
+            fail_silently=False,  # Hata oluşursa sessizce başarısız olma (Varsayılan olarak False)
+        )
     return buffer
 
 
