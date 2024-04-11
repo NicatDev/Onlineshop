@@ -122,7 +122,7 @@ def pdf_generate_notAuth(data):
     email.send()
 
     return buffer
-#s
+
 def confirm(request,username,code):
     if request.method == 'POST':
         user = User.objects.get(username = username)
