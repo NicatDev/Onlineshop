@@ -1,0 +1,310 @@
+{% load static %}
+{% load i18n %}
+<html lang="zxx">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Victoria's secret</title>
+    <!-- favicon -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ 	
+    <link rel=icon href={% static 'assets/1.png' %} sizes="20x20" type="image/png">
+    <!-- Vendor Stylesheet -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendor.css' %}">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <!-- responsive Stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+     
+</head>
+<body>
+
+    <!-- preloader area start -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-inner">
+            <div class="spinner">
+                <div class="dot1"></div>
+                <div class="dot2"></div>
+            </div>
+        </div>
+    </div>
+    <!-- preloader area end -->
+
+    <!-- search Popup -->
+    <div class="body-overlay" id="body-overlay"></div>
+
+    <!-- search Popup end -->
+
+
+    <!-- navbar start -->
+    {% include 'header.html' %}
+    <!-- navbar end -->
+
+    <!-- breadcrumb start  -->
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="breadcrumb-inner d-flex justify-content-between">
+                        <h1 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" class="page-title">{% trans 'Əlaqə' %}</h1>
+                  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb end  -->
+
+    <div class="contact-info margin-top-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-title text-center">
+                        <h3>{% trans 'Əlaqə' %}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+    <!-- contact area start  -->
+    <div class="contact-info">
+        <div class="card">
+          <i class="icon fas fa-envelope"></i>
+          <div class="card-content">
+            <h3>{% trans 'E-poçt' %}</h3>
+            <span>viktoriassirri@gmail.com</span>
+          </div>
+        </div>
+      
+        <div class="card">
+          <i class="icon fas fa-phone"></i>
+          <div class="card-content">
+            <h3>{% trans 'Əlaqə nömrəsi' %}</h3>
+            <span>050 640-85-35</span>
+          </div>
+        </div>
+      
+        <div class="card">
+          <i class="icon fas fa-map-marker-alt"></i>
+          <div class="card-content">
+            <h3>{% trans 'Ünvan' %}</h3>
+            <span>{% trans 'Xəqanı küçəsi,17' %}</span>
+          </div>
+        </div>
+      </div>
+    <!-- contact area end  -->
+
+    <!-- contact form start  -->
+    <div class="contact-form text-center padding-top-80 padding-bottom-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <form>
+                        <div class="form-row">
+                          <div class="form-group col-md-6">
+                            <input type="text" class="form-control" id="name" placeholder="{% trans 'Tam adınız' %}">
+                          </div>
+                          <div class="form-group col-md-6">
+                            <input type="text" oninput="validateInput(this)" class="form-control" id="phone" placeholder="{% trans 'Əlaqə nömrəsi' %}">
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-6">
+                            <input type="email" class="form-control" id="email" placeholder="{% trans 'E-poçt' %}">
+                          </div>
+                          <div class="form-group col-md-6">
+                            <input type="text" class="form-control" id="subject" placeholder="{% trans 'Mövzu' %}">
+                          </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                              <textarea name="message" id="message" rows="8" placeholder="{% trans 'Məktub' %}"></textarea>
+                            </div>
+                        </div>
+                        <button id="submitmessage" type="submit" class="btn btn-contact">{% trans 'Göndər!' %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- contact form end  -->
+    <div class="mapouter">
+        <div class="gmap_canvas">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3039.693969074679!2d49.83540458459628!3d40.37130959782484!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40307da50ac6e98f%3A0xdd0261bc14c4fff!2sMalakan!5e0!3m2!1saz!2saz!4v1708166920268!5m2!1saz!2saz" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+    
+    {% include 'footer.html' %}
+
+    <!-- back to top area start -->
+    <div class="back-to-top">
+        <span class="back-top"><i class="fa fa-angle-up"></i></span>
+    </div>
+    <!-- back to top area end -->
+
+    <!-- all plugins here -->
+    <script src="{% static 'assets/js/vendor.js' %}"></script>
+    <!-- main js  -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+<script>
+    function validateInput(input) {
+        input.value = input.value.replace(/[^0-9()\-/+]/g, '');
+    }
+</script>
+<script>
+    const csrfToken = "{{ csrf_token }}";
+    const messageUrl = "{% url 'message' %}";
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+
+    $(document).ready(function() {
+        $("#submitmessage").on("click", function(e) {
+            e.preventDefault();
+            
+           
+            // Capture form data
+            const formData = {
+                subject: $("#subject").val(),
+                name: $("#name").val(),
+                email: $("#email").val(),
+                message: $("#message").val(),
+                phone: $("#phone").val()
+            };
+
+            // Check if any field is empty
+            if (Object.values(formData).some(value => value === "")) {
+                // Display SweetAlert for empty fields
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'Zəhmət olmasa formun düzgünlüyünü yoxlayın',
+                });
+            }else if (!emailRegex.test($("#email").val())){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'E-poçtun düzgünlüyünü yoxlayın',
+                });
+              
+            } else {
+                // If not empty, send data to the backend
+                fetch(messageUrl, {
+                    method: 'POST',
+                    body: JSON.stringify(formData),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Xəta',
+                            text: 'Zəhmət olmasa formun düzgünlüyünü yoxlayın',
+                        });
+                        throw new Error('Network response was not ok');
+                    }
+                    Swal.fire({
+                        title: "",
+                        text: "Məktub uğurla göndərildi",
+                        icon: "success"
+                      });
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle successful response if needed
+                    console.log(data);
+                })
+                .catch(error => {
+                    // Handle error if needed
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+            }
+        });
+    });
+</script>
+<script src="{% static 'assets/js/functions.js' %}"></script>
+<style>
+    .contact-info{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin:50px 0px;
+    }
+    
+    .card{
+        position: relative;
+        flex: 1;
+        max-width: 300px;
+        height: 140px;
+        background-color: #444;
+        margin: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .icon{
+        font-size: 32px;
+        color: #ea8685;
+        transition: .3s linear;
+    }
+    
+    .card:hover .icon{
+        transform: scale(4);
+        opacity: 0;
+    }
+    
+    .card-content h3,
+    .card-content span{
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 16px;
+        opacity: 0;
+    }
+    
+    .card-content h3{
+        top: 20px;
+        text-transform: uppercase;
+        color: #ea8685;
+    }
+    
+    .card-content span{
+        bottom: 20px;
+        color: #fff;
+        font-weight: 500;
+    }
+    
+    .card:hover h3{
+        opacity: 1;
+        top: 46px;
+        transition: .3s linear .3s;
+    }
+    
+    .card:hover span{
+        opacity: 1;
+        bottom: 46px;
+        transition: .3s linear .3s;
+    }
+    
+    
+    @media screen and (max-width:900px){
+        .card{
+            flex: 100%;
+            max-width: 500px;
+        }
+    }
+</style>
+<!-- Mirrored from zwin.io/html/stooon/contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:50 GMT -->
+</html>

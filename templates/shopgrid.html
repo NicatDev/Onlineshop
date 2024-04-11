@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+{% load static %}
+{% load i18n %}
+<html lang="zxx">
+
+<!-- Mirrored from zwin.io/html/stooon/collection.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:38 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Victoria's sirri</title>
+    <!-- favicon -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Vendor Stylesheet -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendor.css' %}">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <!-- responsive Stylesheet -->
+    <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+    <!-- preloader area start -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-inner">
+            <div class="spinner">
+                <div class="dot1"></div>
+                <div class="dot2"></div>
+            </div>
+        </div>
+    </div>
+    <!-- preloader area end -->
+
+    <!-- search Popup -->
+    <div class="body-overlay" id="body-overlay"></div>
+
+    <!-- search Popup end -->
+
+
+
+    <!-- navbar start -->
+    {% include 'header.html' %}
+    <!-- navbar end -->
+
+    <!-- breadcrumb start  -->
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="breadcrumb-inner d-flex justify-content-between">
+                        <h2 class="page-title">{% trans 'Məhsullar' %}</h2>
+                  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb end  -->
+
+    {% if collection %}
+    <div class="sale-area padding-top-40">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-md-12">
+                    <div class="sales-content" style="background: url('{{collection.image.url}}') no-repeat center center/cover;">
+                        <h2>{{ collection.name }}</h2>
+                        <h6>{{ collection.feature }}</h6>
+                        <div class="btn-wrapper">
+       
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="collection-area margin-top-60">
+        <div class="container">
+            <div class="row flex-row-reverse">
+                <div class="col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12">
+                    <div class="row">
+                        <div class="col-lg-8 col-5">
+                            <ul class="nav nav-pills shop-tab">
+                                <li><a data-toggle="pill" href="#one" class="active"><i class="fa fa-th-large"></i></a></li>
+
+                            </ul>
+                        </div>
+                        <div class="col-lg-4 col-7">
+                            <div action="#">
+                                <select name="order" id="orderBy" onchange="getOrderBy(event)" class="form-control sort-select">
+                                    <option value="">{% trans 'Varsayılan' %}</option>
+                                    <option value="created_at">{% trans 'Ən yenilər' %}</option>
+                                    <option value="price">{% trans 'Ucuzdan bahaya' %}</option>
+                                    <option value="-price">{% trans 'Bahadan ucuza' %}</option>
+                                  
+                                </select>
+                                <i class="fa fa-chevron-down"></i>
+                            </div> 
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <div class="tab-pane fade in show active" id="one">
+                            <div class="row">
+                                {% for product in products %}
+                                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                                    <div class="product-style-02 margin-top-40">
+                                        <div class="thumb">
+                                            <img src="{{product.get_main_image.url}}" alt="{{ product.name }}">
+                                            
+                                            <span class="out">{% if product.new %}{% trans 'Yeni' %}{% elif product.best_seller %}{% trans 'Çox satılan' %}{% elif product.most_searched %} {% trans 'Çox axtarılan' %} {% endif %}</span>
+                                            
+                                            <ul class="cart-action-02" style="background-color:rgba(255, 255, 255, 0.705);padding:6px 2px 0px 0px" >
+                                                <li><a class="wishclick" data-target="{{ product.id }}" >
+                                                    <i onclick="addWish('{{ product.id }}', '{% url 'add_wish' %}','{{csrf_token}}' )" 
+                                                    {% if request.user in product.wishlist.all %} style=" font-weight:900; cursor:pointer;" {% else %} style=" font-weight:400; cursor:pointer;" {% endif %} 
+                                                    class="fa-regular fa-heart product-{{product.id}}">
+                                                 </i> 
+                                                </a></li>
+                                                <li><a href="{% url 'shopSingle' product.slug %}"><i class="icon-quick-view"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="content text-left">
+                                            <span class="brand">{{product.brand.name}}</span>
+                                          
+                                            <h6 class="title"><a href="{% url 'shopSingle' product.slug %}">{{ product.name }}</a></h6>
+                                            <div class="d-flex position-relative">
+                                                <div style="cursor:pointer" class="content-hover-cart"><a href="{% url 'shopSingle' product.slug %}"><i class="icon-add-to-cat"></i>
+                                                    
+                                                    <!-- {% if request.user.is_authenticated %} -->
+                                                 
+                                                   {% trans 'Daha ətraflı' %}
+                                         
+                                                    <!-- {% endif %} -->
+
+                                                    </a></div>
+                                                <div class="content-cart"><a href="#"><i class="icon-add-to-cat"></i></a></div>
+                                                <div class="content-price d-flex flex-column align-self-center">
+                                                    <span class="old-price">{{ product.price }}</span>
+                                                    <span class="new-price">{{ product.get_discount_price}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="d-flex justify-content-between pagination">
+                                <h6>{{ products.paginator.count }} {% trans 'məhsuldan' %} {{ products.start_index }}-{{ products.end_index }}</h6>
+                                <ul>
+                                    <li><a {% if products.has_previous %} href="?page={{ products.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" {% else %} style="cursor: not-allowed;" {% endif %}><i class="fa-solid fa-caret-left"></i></a></li>
+                                    {% for page in total_pages %}
+               
+                                    <li><a {% if products.number == page %}style="background-color:black;color:white"{% endif %} href="?page={{ page }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ page }}</a></li>
+                                    {% endfor %}
+                                  <li><a {% if products.has_next %}  href="?page={{ products.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" {% else %} style="cursor: not-allowed;" {% endif %}><i class="fa-solid fa-caret-right"></i></a></li>
+                                </ul>
+                                <!-- <nav class="navigation pagination @@navClass" role="navigation">
+                                    <h2 class="screen-reader-text">Səhifələr</h2>
+                                    <div class="nav-links">
+                                        
+                                        <a class="prev page-numbers" {% if blogs.has_previous %} href="?page={{ blogs.previous_page_number }}" {% else %} style="cursor: not-allowed;color: white;" {% endif %}>
+                                            <i class="fa fa-chevron-left"></i>
+                                            <span class="screen-reader-text">Əvvəlki</span>
+                                        </a>
+                                        
+                                        {% for page in total_pages %}
+                                        <a class="page-numbers" {% if blogs.number == page %} style="background-color: rgb(29, 29, 29);color: white;border:none" {% endif %} href="?page={{ page }}">
+                                            <span class="meta-nav screen-reader-text">{{ page }} </span>
+                                            {{ page }}
+                                        </a>
+                            
+                                        {% endfor %}
+                                
+                                        <a class="next page-numbers" {% if blogs.has_next %} href="?page={{ blogs.next_page_number }}" {% else %} style="cursor: not-allowed;color: white;" {% endif %}>
+                                            <span class="screen-reader-text">Sonrakı</span>
+                                            <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </nav> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 margin-top-20">
+                    <div class="widget search-widget">
+                        <div>
+                            <button type="submit"><i class="icon-search"></i></button>
+                            <input name="search" onkeyup="handleSubmit(event)" id="searchInput" type="text" placeholder="{% trans 'Məhsullarda axtar...' %}">
+                        
+                        </div>
+                    </div>
+                    {% if collections %}
+                    <div class="widget collections-widget">
+                        <div class="accordion-style-2" id="accordionExample8">
+                            <div class="card">
+                                <div class="card-header" id="headingEight">
+                                    <p class="mb-0">
+                                        <a href="#" role="button" data-toggle="collapse" data-target="#collapseEight" aria-expanded="true" aria-controls="collapseOne">{% trans 'Kolleksiyalar' %}</a>
+                                    </p>
+                                </div>
+                                <div id="collapseEight" class="collapse show" aria-labelledby="headingEight" data-parent="#accordionExample8">
+                                    <div class="card-body">
+                                        <div >
+                                            {% for collection in collections %}
+                                    
+                                            <label style="font-size:20px" class="checkcontainer">{{collection.name}}
+                                                <input onclick="clickfunction(event)" name="collection" id="{{collection.id}}-{{collection.slug}}" value="{{collection.slug}}" type="checkbox">
+                                                <span class="checkmark"></span>
+                                              </label>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="widget categories-widget">
+                        <div class="accordion-style-2" id="accordionExample1">
+                            <div class="card">
+                                <div class="card-header" id="headingOne">
+                                    <p class="mb-0">
+                                        <a href="#" role="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">{% trans 'KATEQORİYALAR' %}</a>
+                                    </p>
+                                </div>
+                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample1">
+                                    <div class="card-body">
+                                        <div >
+                                            {% for category in categories %}
+                                    
+                                            <label style="font-size:20px" class="checkcontainer">{{category.name}}
+                                                <input onclick="clickfunction(event)" name="category" id="{{category.id}}-{{category.slug}}" value="{{category.slug}}" type="checkbox">
+                                                <span class="checkmark"></span>
+                                              </label>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if brands %}
+                    <div class="widget brand-widget">
+                        <div class="accordion-style-2" id="accordionExample2">
+                            <div class="card">
+                                <div class="card-header" id="headingTwo">
+                                    <p class="mb-0">
+                                        <a href="#" role="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">{% trans 'Brendlər' %}</a>
+                                    </p>
+                                </div>
+                                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample2">
+                                    <div class="card-body">
+                                        <div >
+                                            {% for brand in brands %}
+                                    
+                                            <label style="font-size:20px" class="checkcontainer">{{brand.name}}
+                                                
+                                                <input onclick="clickfunction(event)" name="brand" onclick="" id="{{brand.name}}-{{brand.id}}" type="checkbox" value="{{brand.slug}}" >
+                                                <span class="checkmark"></span>
+                                              </label>
+                                            {% endfor %}
+                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="widget price-widget">
+                        <div class="accordion-style-2" id="accordionExample4">
+                            <div class="card">
+                                <div class="card-header" id="headingFour">
+                                    <p class="mb-0">
+                                        <a  role="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">{% trans 'QİYMƏT' %}</a>
+                                    </p>
+                                </div>
+                                <div id="collapseFour" class="collapse show" aria-labelledby="headingFour" data-parent="#accordionExample4">
+                                    <div style="display: flex;align-items:center;justify-content:space-evenly">
+                                        <input id="min_price" onchange="changePrice(event)" min="0" max="10000" onkeydown="blockCharacters(event)" name="min_price" style="width:45%;border:rgb(220, 220, 220) solid 3px;border-radius:5px" placeholder="min " type="number">
+                                        <input id="max_price" onchange="changePrice(event)" min="0" max="10000" onkeydown="blockCharacters(event)" name="max_price" style="width:45%;border:rgb(220, 220, 220) solid 3px;border-radius:5px" placeholder="max " type="number">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget color-widget">
+
+                            <div class="accordion-style-2" id="accordionExample5">
+                                <div class="card">
+                                    <div class="card-header" id="headingTwo">
+                                        <p class="mb-0">
+                                            <a href="#" role="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">{% trans 'Rənglər' %}</a>
+                                        </p>
+                                    </div>
+                                    <div id="collapseFive" class="collapse show" aria-labelledby="headingFive" data-parent="#accordionExample5">
+                                        <div class="card-body">
+                                            <div >
+                                                {% for color in colors %}
+                                    
+                                                <label style="font-size:20px" class="checkcontainer">{{color.name}}
+                                                    <input onclick="clickfunction(event)" id="{{color.name}}-{{color.id}}" name="color" type="checkbox" value="{{color.slug}}" >
+                                                    <span class="checkmark"></span>
+                                                  </label>
+            
+                                                {% endfor %}
+                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                  
+         
+                    </div>
+                    <div class="widget size-widget">
+                        <div class="accordion-style-2" id="accordionExample6">
+                            <div class="card">
+                                <div class="card-header" id="headingSix">
+                                    <p class="mb-0">
+                                        <a href="#" role="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">{% trans 'Ölçü' %}</a>
+                                    </p>
+                                </div>
+                                <div id="collapseSix" class="collapse show" aria-labelledby="headingSix" data-parent="#accordionExample6">
+                                    <div class="card-body">
+                              
+                                            {% for size in sizes %}
+                                            <label style="font-size:20px;margin-right:10px" class="checkcontainer">{{size.name}}
+                            
+                                                <input onclick="clickfunction(event)" id="{{size.name}}-{{size.id}}" name="size" type="checkbox" value="{{size.slug}}" >
+                                                <span class="checkmark"></span>
+                                              </label>
+                                            {% endfor %}
+                              
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget seller-widget">
+                        <h4 class="widget-title">{% trans 'Çox satılanlar' %}</h4>
+                        <div class="seller-content">
+                            {% for product in best_sellers %}
+                            <div class="single-seller-content d-flex">
+                                <div class="thumb">
+                                    <img style="max-width:100px" src="{{ product.get_main_image.url }}" alt="{{ product.name }}">
+                                </div>
+                                <div class="content">
+                                    <a href="{% url 'shopSingle' product.slug %}"><h6>{{ product.name }}</h6></a>
+                                    <span>{{ product.get_discount_price }}</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- collection area end  -->
+
+    <div class="delivery-area padding-top-80">
+        <div class="container">
+            <div class="row no-gutters">
+                <div class="col-lg-4">
+                    <div class="single-delivery text-center">
+                        <i class="icon-delivery-car"></i>
+                        <h6>{% trans 'Çatdırılma' %}</h6>
+                        <p>{% trans 'Bakı daxili ödənişsiz çatdırılma' %}</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="single-delivery text-center">
+                        <i class="icon-money-back"></i>
+                        <h6>{% trans 'Zəmanət' %}</h6>
+                        <p>{% trans 'Bütün məhsullara keyfiyyət zəmanəti' %} </p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="single-delivery text-center">
+                        <i class="icon-phone-support"></i>
+                        <h6> (+994) 50 640-85-35 </h6>
+                        <p>{% trans '24/7 dəstək xidməti' %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <!-- back to top area start -->
+    <div class="back-to-top">
+        <span class="back-top"><i class="fa fa-angle-up"></i></span>
+    </div>
+    <!-- back to top area end -->
+
+    <!-- all plugins here -->
+    <script src="{% static 'assets/js/vendor.js' %}"></script>
+    <!-- main js  -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <script src="{% static 'assets/js/functions.js' %}"></script>
+</body>
+
+<script>
+
+    const myuser = "{{ request.user }}"
+
+    
+
+    $(document).ready(function() {
+        console.log('2')
+        $(".wishclick").on("click", function(e) {
+            console.log('4')
+            e.preventDefault();
+            const product_id = $(this).data('target');
+            console.log(product_id,'--------------')
+    
+            const formData = {   
+            };
+
+                fetch(`manage_wishlist/${product_id}/`, {
+                    method: 'POST',
+                    body: JSON.stringify(formData),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    }
+                })
+                .then(response => {
+                    
+                    var elementsWithDataTarget = $(`[data-target="${product_id}"]`);
+                    if(response.status===200){
+                    elementsWithDataTarget.each(function() {
+                        console.log($(this),response.status,'--200')
+                        $(this).find('i').css('font-weight', '900');
+                        $(this).find('i').css('color','red')
+                      });
+                      fetchData(myurl)
+                    }
+                    else if(response.status===201){
+                        elementsWithDataTarget.each(function() {
+                            console.log($(this),response.status,'--201')
+                            $(this).find('i').css('font-weight', '400');
+                            $(this).find('i').css('color','black') 
+                          });
+                          fetchData(myurl)    
+                    }
+                    if (!response.ok) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Xəta',
+                            text: 'Hesaba daxil olmağınız xahiş olunur',
+                            showCancelButton: true,
+                            confirmButtonText: 'Qeydiyyat',
+                            cancelButtonText: 'Daxil ol',
+                            showCloseButton: true,
+                       
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '{% url 'register' %}';
+                            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                window.location.href = '{% url 'login' %}';
+                            } else if (result.dismiss === Swal.DismissReason.close) {
+                           
+                            }
+                        });
+                        throw new Error('Network response was not ok');
+                    }
+               
+                    return response.json();
+                })
+                .then(data => {
+          
+                    Swal.fire({
+                        title: "",
+                        text: data.message,
+                        icon: "success"
+                      });
+                })
+                .catch(error => {
+                    // Handle error if needed
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+          
+        });
+    });
+</script>
+
+
+<script>
+    function changePrice(event){
+        const input = event.target
+        const url = new URL(window.location.href);
+        const urlParams = new URLSearchParams(url.search);
+        urlParams.set(event.target.name, event.target.value);
+        url.search = urlParams.toString();
+        window.location.href = url
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const inputs = document.querySelectorAll('input[type="checkbox"], input[type="number"]');
+        const urlParams = new URLSearchParams(window.location.search);
+    
+        inputs.forEach(function (input) {
+            const value = urlParams.get(input.name);
+            console.log(value);
+
+             if (input.type === 'number') {
+                if (value !== null) {
+                    input.value = value;
+                }
+            }
+        });
+    });
+</script>
+<script>
+    function handleSubmit(event) {
+        if (event.key === "Enter") {
+        const input = document.getElementById('searchInput')
+        console.log(input.value,'0---------------------------------------------')
+        const url = new URL(window.location.href);
+        const urlParams = new URLSearchParams(url.search);
+        urlParams.set(input.name, input.value);
+        url.search = urlParams.toString();
+        window.location.href = url
+    }}
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const inputs = document.querySelectorAll('input[type="text"]');
+        const urlParams = new URLSearchParams(window.location.search);
+    
+        inputs.forEach(function (input) {
+            const value = urlParams.get(input.name);
+            console.log(value);
+            
+             if (input.type === 'text') {
+                if (value !== null) {
+                    input.value = value;
+                }
+            }
+        });
+    });
+</script>
+<script>
+    function getOrderBy(event){
+        const input = event.target
+        const url = new URL(window.location.href);
+        const urlParams = new URLSearchParams(url.search);
+        urlParams.set(input.name, input.value);
+        url.search = urlParams.toString();
+        window.location.href = url
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const urlParams = new URLSearchParams(window.location.search);
+    
+        checkboxes.forEach(function (checkbox) {
+            const value = urlParams.get(checkbox.name);
+            console.log(value)
+            if (checkbox.value===value) {
+                checkbox.checked = true;
+            }
+        });
+    });
+</script>
+<script>
+
+    function clickfunction(event) {
+        const input = event.target
+        const url = new URL(window.location.href);
+         const urlParams = new URLSearchParams(url.search);
+         console.log(urlParams,'-----Params')
+        if (input.type == 'checkbox'){
+            if (input.checked){
+                urlParams.set(event.target.name, event.target.value);
+            } else {
+                urlParams.delete(event.target.name);
+            }
+            console.log(url,urlParams,'-ikiside')
+        }
+
+        url.search = urlParams.toString();
+        window.location.href = url
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = document.querySelectorAll('.sort-select');
+        console.log(checkboxes)
+        const urlParams = new URLSearchParams(window.location.search);
+    console.log(urlParams)
+        checkboxes.forEach(function (checkbox) {
+            const value = urlParams.get('order');
+            console.log(value)
+                if (value){
+                console.log(checkbox)
+                checkbox.value = value
+                }       
+        });
+    });
+ 
+</script>
+<script> 
+    function blockCharacters(event) {
+    // Get the pressed key
+    var pressedKey = event.key;
+
+    // Check if the pressed key is '-' or 'e'
+    if (pressedKey === '-' || pressedKey === 'e') {
+      // Prevent the default behavior (typing the character)
+      event.preventDefault();
+    }
+  }</script>
+
+
+
+<style>
+    /* The container */
+    .checkcontainer {
+      display: block;
+      position: relative;
+      padding-left: 35px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      font-size: 22px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    
+    /* Hide the browser's default checkbox */
+    .checkcontainer input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+    
+    /* Create a custom checkbox */
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 25px;
+      width: 25px;
+      background-color: #eee;
+    }
+    
+    /* On mouse-over, add a grey background color */
+    .container:hover input ~ .checkmark {
+      background-color: #ccc;
+    }
+    
+    /* When the checkbox is checked, add a blue background */
+    .checkcontainer input:checked ~ .checkmark {
+      background-color: #2196F3;
+    }
+    
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+    
+    /* Show the checkmark when checked */
+    .checkcontainer input:checked ~ .checkmark:after {
+      display: block;
+    }
+    
+    /* Style the checkmark/indicator */
+    .checkcontainer .checkmark:after {
+      left: 9px;
+      top: 5px;
+      width: 8px;
+      height: 11px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+    </style>
+<!-- Mirrored from zwin.io/html/stooon/collection.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:44 GMT -->
+</html>

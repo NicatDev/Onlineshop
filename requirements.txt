@@ -1,0 +1,5 @@
+Django
+django-modeltranslation
+django-ckeditor-5
+pillow
+django-colorfield

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+{% load static %}
+{% load i18n %}
+
+<html lang="zxx">
+
+<!-- Mirrored from zwin.io/html/stooon/single-product.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:46 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ product.seo_title }}</title>
+
+    <meta name="description" content="{{ product.seo_description }}">
+    <meta itemprop="name" content="{{ product.name }}">
+    <meta itemprop="description" content="{{ product.description }}">
+    <meta itemprop="image" content="{{ product.get_main_image.url }}">
+    <meta itemprop="ratingValue" content="5">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- favicon -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel=icon href={% static 'assets/1.png' %} sizes="20x20" type="image/png">
+    <!-- Vendor Stylesheet -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendor.css' %}">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <!-- responsive Stylesheet -->
+    <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+     
+</head>
+<style>
+    
+    .hoverable-item:hover img{
+        filter:contrast(120%);
+        border:1px solid gray
+   
+    }
+    .size-list li{
+        cursor: pointer;
+    }
+    .size-list li:hover{
+        color: black;
+        background-color: rgb(230, 231, 233);
+    }
+    select{
+        padding: 2px 5px;
+        border-radius: 5px;
+        background-color: #fbffff;
+    }
+   
+    input[type=checkbox] + label {
+        font-size:22px;
+        display: block;
+        cursor: pointer;
+        margin: 0px 4px;
+        font-family: 'Arial'
+      }
+      
+      input[type=checkbox] {
+        display: none;
+      }
+      
+      input[type=checkbox] + label:before {
+        content: "\2714";
+       
+        border-radius: 50%;
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        padding-left: 0.2em;
+        padding-bottom: 0.3em;
+        margin-right: 0.2em;
+        vertical-align: bottom;
+        color: transparent;
+        transition: .2s;
+        box-sizing:content-box;
+        background-color: var(--before-bg);
+      }
+      
+      input[type=checkbox] + label:active:before {
+        transform: scale(0);
+      }
+      
+      input[type=checkbox]:checked + label:before {
+        border-radius:50%;
+        color: #fff;
+      }
+      
+      input[type=checkbox]:disabled + label:before {
+        transform: scale(1);
+        border-color: #aaa;
+      }
+      
+      input[type=checkbox]:checked:disabled + label:before {
+        transform: scale(1);
+        background-color: #F7C28F;
+        border-color: #F7C28F;
+      }
+      /* Style for Radio Buttons */
+        input[type="radio"] {
+        /* Hide the default radio button */
+        display: none;
+        }
+
+        /* Style for Radio Button Label */
+        input[type="radio"] + label {
+        font-family: Arial, sans-serif;
+        cursor: pointer;
+        padding-left: 25px; /* Adjust as needed for spacing */
+        position: relative;
+        margin-right: 15px; /* Adjust as needed for spacing */
+        }
+
+        /* Style for Radio Button Indicator (Dot or Circle) */
+        input[type="radio"] + label::before {
+        content: '';
+        display: inline-block;
+        width: 16px; /* Adjust as needed for size */
+        height: 16px; /* Adjust as needed for size */
+        border-radius: 50%;
+        border: 2px solid #3498db; /* Change the color as needed */
+        background-color: white; /* Background color when not selected */
+        position: absolute;
+        left: 0;
+        top: 3px; /* Adjust as needed for vertical alignment */
+        }
+
+
+        input[type="radio"]:checked + label::before {
+        background-color: #3498db; /* Change the color as needed */
+        border-color: #3498db; /* Change the color as needed */
+
+        color: white; /* Color of the dot when selected */
+        text-align: center;
+        line-height: 14px; /* Adjust as needed for vertical alignment */
+        font-size: 12px; /* Adjust as needed for size */
+        }
+        label{
+            margin-bottom:0px !important
+        }
+
+</style>
+<style>
+
+    .lightcolors + label:before {
+        box-shadow:0 0 0 2px white, 0 0 0 4px #ededed;
+    }
+    .darkcolors + label:before {
+        box-shadow:0 0 0 2px white, 0 0 0 4px #ededed;
+    }
+    .lightcolors:checked + label:before{
+        color:transparent !important;
+        box-shadow:0 0 0 2px white, 0 0 0 4px black;
+    }
+    .darkcolors:checked + label:before{
+        color:transparent !important;
+        box-shadow:0 0 0 2px white, 0 0 0 4px black;
+    }
+</style>
+<body>
+ 
+    <!-- preloader area start -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-inner">
+            <div class="spinner">
+                <div class="dot1"></div>
+                <div class="dot2"></div>
+            </div>
+        </div>
+    </div>
+    <!-- preloader area end -->
+
+    <!-- search Popup -->
+    <div class="body-overlay" id="body-overlay"></div>
+
+    <!-- search Popup end -->
+
+
+    <!-- navbar start -->
+    {% include 'header.html' %}
+    <!-- navbar end -->
+
+    <!-- breadcrumb start  -->
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="breadcrumb-inner d-flex justify-content-between">
+                        <h2 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" class="page-title">{% trans 'Məhsul' %}</h2>
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb end  -->
+
+    <!-- collection area start  -->
+    <div class="collection-area margin-top-60">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-12">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-6">
+                            <div class="slider-tabfor margin-top-20">
+                                {% for image in product.images.all %}
+                                <div class="single-item">
+                                    <img src="{{ image.image.url }}" alt="{{product.slug}}">
+                                </div>
+                                    {% endfor %}
+                              
+                                
+                            </div>
+                            <div class="slider-tabnav">
+                                {% for image in product.images.all %}
+                                <div style="cursor: pointer;" class="single-item hoverable-item">
+                                    <div class="img">
+                                        <img src="{{ image.image.url }}" alt="{{product.slug}}">
+                                    </div>
+                                </div>
+                                {% endfor %}
+                        
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-6">
+                            <div class="content-part  margin-top-20">
+                                <h1 class="product-title">{{ product.name }}</h1>
+                                <span style="text-decoration: line-through;font-size:24px;margin-bottom:0px" >{{ product.price }}azn</span>
+                                <p class="price">{{ product.get_discount_price }}azn</p>
+                           
+                                <p class="specifications">{% trans 'Stok:' %}' <b class="color-green">{% if product.stock %}{% trans 'Stokda var' %}{% else %}{% trans 'Stokda bitib' %}{% endif %} </b></p>
+                                <div class="d-flex">
+                                    <span class="specifications">{% trans 'Ölçü:' %} </span>
+                                    <ul  class="size-list align-self-center pl-3">
+                                       
+                                
+                                
+                                   
+                                        {% for size in product.size.all %}
+
+                                        <input {% if forloop.first %} checked {% endif %} type="radio" id="s-{{size.id}}" name="size-select" data-size="{{size.name}}" value="s-{{size.id}}">
+                                        <label for="s-{{size.id}}">{{ size.name }}</label>
+                                        {% endfor %}
+
+                                    </select>
+                                    </ul>
+                                </div>
+                               
+                                <div class="d-flex">
+                                    <span class="specifications">{% trans 'Rəng:' %} </span>
+                                    <ul class="color-list align-self-center">
+
+                                        {% for color in product.color.all %}
+                                        <input {% if forloop.first %} checked {% endif %} class="color-select {% if color.dark %} darkcolors {% else %} lightcolors {% endif %}" type="checkbox" data-color="{{color.name}}" id="c-{{ color.id }}" value="c-{{color.id}}" name="c-{{color.id}}"  >
+                                        <label class="color-label" id="{{color.color}}" for="c-{{ color.id }}"></label>
+                                          {% endfor %}
+                                      
+                               
+                                    </ul>
+                                </div>
+
+
+                                {% if product.material %}
+                                <p class="specifications">{% trans 'Material:' %} {{ product.material }}</p>
+                                {% endif %}
+                                <div style="margin-top:14px" class="btn-wrapper d-flex">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend align-self-center">
+                                            <a class="btn btn-sm" id="minus-btn"><i class="fa fa-minus"></i></a>
+                                        </div>
+                                        <input type="number" id="qty_input" class="form-control text-center form-control-sm" placeholder="1" value="1" min="1">
+                                        <div class="input-group-prepend align-self-center">
+                                            <a class="btn btn-sm" id="plus-btn"><i class="fa fa-plus"></i></a>
+                                        </div>
+                                    </div>
+                                    <div style="cursor: pointer;" {% if request.user.is_authenticated %} onclick="addToCart()" {% else %} onclick="addToCartNotAuth()" {% endif %} class="add-to-cart basketclick">
+                                        <a  ><i class="icon-add-to-cat"></i> {% trans 'Səbətə əlavə et' %}</a>
+
+                                    </div>
+                                </div>
+                                <div class="btn-wrapper">
+                                    <a onclick="addToCart(4)" class="btn btn-buy">İndİ al</a>
+                                </div>
+                                <p class="specifications">{% trans 'Brend:' %} <b>{{ product.brand.name }}</b></p>
+                                <p class="specifications">{% trans 'Kateqoriyalar' %}<b>{% for category in product.category.all %} {{ category.name }} {% endfor %}</b></p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="product-tab">
+                                <ul class="nav nav-pills">
+                                  <li><a data-toggle="pill" href="#home" class="active">{% trans 'Məlumat' %}</a></li>
+                        
+                     
+                                </ul>
+                                
+                                <div class="tab-content">
+                                  <div id="home" class="tab-pane fade in show active">
+                                    <p>{{ product.description }}</p>
+
+                                 
+                                  </div>
+                             
+                            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-12">
+                    <div class="widget delivery-widget margin-top-20">
+                        <div class="single-delivery-item">
+                            <div class="d-flex">
+                                <i class="icon-delivery-car"></i>
+                                <h4>{% trans 'Çatdırılma' %}
+                                   </h4>
+                            </div>
+                            <span>
+                                {% trans 'Bakı daxili ödənişsiz çatdırılma' %}
+                                </span>
+                        </div>
+                        <div class="single-delivery-item">
+                            <div class="d-flex">
+                                <i class="icon-phone-support"></i>
+                                <h4>{% trans '24/7 dəstək xidməti' %}</h4>
+                            </div>
+                            <span>   (+994) 50 640-85-35 </span>
+                        </div>
+                        <div class="single-delivery-item">
+                            <div class="d-flex">
+                                <i class="icon-money-back"></i>
+                                <h4>Zəmanət
+                                  </h4>
+                            </div>
+                            <span>  {% trans 'Bütün məhsullara keyfiyyət zəmanəti' %}</span>
+                        </div>
+                    </div>
+             
+            
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- collection area end  -->
+
+    <!-- related product start  -->
+    <div class="related-product-section">
+        <div class="container">
+            <div class="related-product">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="title">
+                            <h2>{% trans 'Digər məhsullar' %}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="related-slider">
+                            {% for product in products %}
+                            <div class="product-style-03 margin-top-30">
+                                <div class="thumb text-center">
+                                    <img src="{{ product.get_main_image.url }}" alt="">
+                                   {% if product.discount_percent > 0 %} <span class="sale">{{ product.discount_percent }} % {% trans 'endirim' %}</span>{% endif %}
+            
+                                </div>
+                                <div class="content text-center">
+                                    <span class="brand">{% trans 'Brend:'%} {{ product.brand.name }}</span>
+                                  
+                                    <h6 class="title"><a href="{% url 'shopSingle' product.slug %}">{{ product.name }}</a></h6>
+                                    <span class="price">{{ product.get_discount_price }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- related product end  -->
+    {% include 'footer.html' %}
+    
+    <script src="{% static 'assets/js/functions.js' %}"></script>
+
+
+
+
+   
+    <script>
+        const product = '{{product.id}}'
+        function addToCart(arg) {
+            const checkboxes = document.querySelectorAll('.color-select');
+            var checkedValue;
+            $('.color-select').each(function() {
+            if ($(this).prop('checked')) {
+                checkedValue = $(this).val().substring(2);
+            }
+        });
+        var radioButtons = document.getElementsByName("size-select");
+    
+        var selectedSize;
+    
+        for (var i = 0; i < radioButtons.length; i++) {
+            if (radioButtons[i].checked) {
+    
+                selectedSize = radioButtons[i].value.substring(2);
+                break; 
+            }
+        }
+        console.log(selectedSize)
+        if(selectedSize === undefined || selectedSize === null){
+            console.log('ttt')
+            Swal.fire({
+            icon: 'error',
+            title: 'Xəta',
+            text: 'Ölçü seçilməyib !',
+            confirmButtonText: 'Tamam'
+        })
+            return;}
+        if(checkedValue === undefined || checkedValue === null){Swal.fire({
+            icon: 'error',
+            title: 'Xəta',
+            text: 'Rəng seçilməyib !',
+            confirmButtonText: 'Tamam'
+        });
+             return;}
+    
+            var quantity = $("#qty_input").val();
+      
+            var csrfToken = '{{ csrf_token }}'
+        
+            var postData = {
+                'size': selectedSize,
+                'color': checkedValue,
+                'quantity': quantity,
+                'product':product,
+        
+            };
+           console.log(postData)
+              $.ajax({
+                  type: 'POST',
+                  url: "{% url 'add_basket' %}",
+                  data: postData,
+          
+                  headers: {
+                      'X-CSRFToken': csrfToken  
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                      if (data.status === 'success') {
+                        if(arg===4){
+                            window.location.href = "{% url 'shopping' %}"
+                        }
+                        mydata = data.data
+                        var ul = document.getElementById("orderitems");
+                        ul.innerHTML = "";
+                        
+                        mydata.forEach(function(newItemData) {
+                            var li = document.createElement("li");
+                            console.log(newItemData,'aaa')
+                            li.innerHTML = `
+                                <div class="d-flex">
+                                    <div class="thumb">
+                                        <img src="${newItemData.image}" alt="${newItemData.name}">
+                                    </div>
+                                    <div class="content">
+                                        <h6 class="title"><a href="#">${newItemData.name}</a></h6>
+                                        <span class="price">${newItemData.price}</span>
+                                    </div>
+                                    <div class="action">
+                                        <input type="text" value="${newItemData.quantity}">
+                                    
+                                        <a style="cursor:pointer" onclick="delete_order_item(${ newItemData.orderitem },'{% url "delete_order_item" %}','{{ csrf_token }}')" id="{{item.product.id}}" id="${newItemData.id}" class="remove"><i class="fa-solid fa-trash-can"></i></a>
+                                    </div>
+                                </div>
+                            `;
+                            ul.appendChild(li);
+                        });
+                        var li = document.createElement('li')
+                        li.innerHTML = `
+                            <div class="d-flex">
+                                <a href="{% url 'shopping' %}" style="width:100%;padding:10px 50px;color:white;" class="btn btn-contact" style="color:white">Səbətə bax</a>
+                            </div>`
+                      
+                            ul.appendChild(li);
+                            $('.basketbadge').text(data.quantity);
+                            
+    
+                          Swal.fire({
+                              icon: 'success',
+                              title: 'Uğurla tamamlandı'
+                          })
+                      } else {
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'Xəta',
+                              text: 'Bu özəllikdən istifadə etmək üçün hesaba daxil olmalısınız    !',
+                              confirmButtonText: 'Tamam'
+                          })
+                      }
+                  },
+                  error: function () {
+                      alert('An unexpected error occurred.');
+                  }
+              });
+          }
+        </script>
+    
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const checkboxes = document.querySelectorAll('.color-select');
+        
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.addEventListener('change', function() {
+                        if (this.checked) {
+          
+                            checkboxes.forEach(function(otherCheckbox) {
+                                if (otherCheckbox !== checkbox) {
+                                    otherCheckbox.checked = false;
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+    </script>
+  
+    
+    <script>
+        function isIdentical(item1, item2) {
+            return item1 === item2;
+        }
+        function addToCartNotAuth() {
+                var id = {{ product.id }}
+                var name = "{{ product.name }}"
+                var image = "{{ product.get_main_image.url }}"
+                var price = "{{ product.get_discount_price }}"
+                var radioButtons = document.getElementsByName("size-select");
+                var selectedSize;
+                var sizeName
+                for (var i = 0; i < radioButtons.length; i++) {
+                    if (radioButtons[i].checked) {
+            
+                        selectedSize = radioButtons[i].value.substring(2);
+                        sizeName = radioButtons[i].dataset.size;
+                     
+                        break; 
+                    }
+                }
+
+                      
+                var checkedValue;   
+                var colorName;
+                $('.color-select').each(function() {
+                    if ($(this).prop('checked')) {
+                        checkedValue = $(this).val().substring(2);
+                        colorName = $(this).data('color')
+                    }
+                });
+                console.log(colorName)
+                var quantity = $("#qty_input").val();
+                
+                if(selectedSize === undefined || selectedSize === null){
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'Ölçü seçilməyib !',
+                    confirmButtonText: 'Tamam'
+                })
+                return;
+                }
+                if(checkedValue === undefined || checkedValue === null){
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'Rəng seçilməyib !',
+                    confirmButtonText: 'Tamam'
+                });
+                return;
+                }
+
+                var data = {
+                    product:{
+                        id:id,
+                        name:name,
+                        price:price,
+                        image:{url:image}
+                    },
+                    color:{
+                        id:checkedValue,
+                        name:colorName
+                    },
+                    size:{
+                        id:selectedSize,
+                        name:sizeName    
+                    },
+                    quantity:quantity
+                }
+
+                var existingItemsJSON = localStorage.getItem("items");
+                var items = existingItemsJSON ? JSON.parse(existingItemsJSON) : [];
+                var newItem = data;
+                
+                var exists = items.some(function(item) {
+                    return isIdentical(item.product.id, newItem.product.id) &&
+                           isIdentical(item.color.id, newItem.color.id) &&
+                           isIdentical(item.size.id, newItem.size.id);
+                });
+                
+                if (!exists) {
+                    items.push(newItem); 
+                }
+                else{
+                    items.some(function(item) {
+                        if(isIdentical(item.product.id, newItem.product.id) &&
+                               isIdentical(item.color.id, newItem.color.id) &&
+                               isIdentical(item.size.id, newItem.size.id)){
+                                item.quantity = (parseInt(item.quantity) + parseInt(newItem.quantity)).toString();
+                            }
+                    });
+                }
+                console.log(JSON.stringify(items))
+                localStorage.setItem("items", JSON.stringify(items));
+                var sum = items.reduce(function(total, current) {
+                    return total + parseInt(current.quantity);
+                }, 0);
+                
+                var ul = document.getElementById("orderitems");
+                        ul.innerHTML = "";
+                        
+                        items.forEach(function(newItemData) {
+                            var li = document.createElement("li");
+           
+                            li.innerHTML = `
+                                <div class="d-flex">
+                                    <div class="thumb">
+                                        <img src="${newItemData.product.image.url}" alt="${newItemData.product.name}">
+                                    </div>
+                                    <div class="content">
+                                        <h6 class="title"><a href="#">${newItemData.product.name}</a></h6>
+                                        <span class="price">${newItemData.product.price}</span>
+                                    </div>
+                                    <div class="action">
+                                        <input type="text" value="${newItemData.quantity}">
+                                        <a style="cursor:pointer;" onclick="deleteFromBasket(${newItemData.product.id},${newItemData.color.id},${newItemData.size.id})" id="${newItemData.product.id}" class="remove"><i class="fa-solid fa-trash-can"></i></a>
+                                    </div>
+                                </div>
+                            `;
+                            ul.appendChild(li);
+                        });
+                        var li = document.createElement('li')
+                        li.innerHTML = `
+                            <div class="d-flex">
+                                <a href="{% url 'shopping' %}" style="width:100%;padding:10px 50px;color:white;" class="btn btn-contact" style="color:white">Səbətə bax</a>
+                            </div>`
+                      
+                            ul.appendChild(li);
+                            $('.basketbadge').text(sum);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Uğurla tamamlandı'
+                            })
+                            
+        }
+        
+    </script>
+   
+    
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var colorLabels = document.querySelectorAll('.color-label');
+        
+        colorLabels.forEach(function(label) {
+            var id = label.id;
+            label.style.setProperty('--before-bg',  id);
+        });
+    });
+</script>
+    <!-- back to top area start -->
+    <div class="back-to-top">
+        <span class="back-top"><i class="fa fa-angle-up"></i></span>
+    </div>
+    <!-- back to top area end -->
+
+    <!-- all plugins here -->
+    <script src="{% static 'assets/js/vendor.js' %}"></script>
+    <!-- main js  -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <script src="{% static 'assets/js/functions.js' %}"></script>
+
+</body>
+
+<!-- Mirrored from zwin.io/html/stooon/single-product.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:48 GMT -->
+</html>

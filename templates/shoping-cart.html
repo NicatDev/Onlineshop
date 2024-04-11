@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+{% load static %}
+{% load i18n %}
+<html lang="zxx">
+
+<!-- Mirrored from zwin.io/html/stooon/shoping-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:48 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Victoria's secret</title>
+    <!-- favicon -->
+    <link rel=icon href={% static 'assets/1.png' %} sizes="20x20" type="image/png">
+    <!-- Vendor Stylesheet -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="{% static 'assets/css/vendor.css' %}">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <!-- responsive Stylesheet -->
+    <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
+</head>
+<body>
+   <style>
+    @media (max-width: 768px) {
+        .lastclass{
+        width:100%;display:flex !important;align-items:center;justify-content:center
+        }
+        thead{
+        display:none;
+            }
+        tbody{
+            display:flex;
+            flex-wrap:wrap;
+            gap:30px;
+        }
+        .pricetd{
+            width:100%
+        }
+        #items tr{
+            width:100%
+        }
+        #items td{
+            width:100%
+        }
+        .margin-top-60{
+            margin-top:30px !important;
+        }
+        .divmybutton{
+            margin: 0px 1em;
+        }
+       
+        }
+    
+   </style>
+    <a href="https://wa.me/+994513126599?text=Yardım%20lazımdır" class="float" target="_blank">
+        <img style="max-width:40px;margin-top:6px;  filter: brightness(550%);" src="{% static 'assets/whatsapp.png' %}" >
+        </a>
+        
+        <style>
+            .float{
+                position:fixed;
+                width:60px;
+                height:60px;
+                bottom:40px;
+                right:40px;
+                background-color:#25d366;
+                color:#FFF;
+                border-radius:50px;
+                text-align:center;
+              font-size:30px;
+                box-shadow: 2px 2px 3px #999;
+              z-index:100;
+            }
+            
+            .my-float{
+                margin-top:16px;
+            }
+        </style>
+    <!-- preloader area start -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-inner">
+            <div class="spinner">
+                <div class="dot1"></div>
+                <div class="dot2"></div>
+            </div>
+        </div>
+    </div>
+    <!-- preloader area end -->
+
+    <!-- search Popup -->
+    <div class="body-overlay" id="body-overlay"></div>
+
+    <!-- search Popup end -->
+
+    
+
+    <!-- navbar start -->
+    {% include 'header.html' %}
+    <!-- navbar end -->
+
+    <!-- breadcrumb start  -->
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="breadcrumb-inner d-flex flex-column flex-md-row justify-content-md-between justify-content-center">
+                        <h2 class="page-title">{% trans 'Səbət' %}</h2>
+                        <ul class="page-list">
+                   
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb end  -->
+
+    <!-- cart area start  -->
+    <div class="cart-area margin-top-60">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-9 col-lg-8">
+                    <div class="cart-content margin-top-20">
+                        <table class="table table-bordered table-responsive">
+                            <thead>
+                              <tr class="text-center">
+                                <th scope="col">{% trans 'Məhsul' %}</th>
+                                <th scope="col">{% trans 'Qiymət' %}</th>
+                                <th scope="col">{% trans 'Say' %}</th>
+                                <th scope="col">{% trans 'Cəm' %}</th>
+                           
+                              </tr>
+                            </thead>
+                            <tbody id="items">
+                                {% for item in data %}
+                              <tr>
+                                <th scope="row" class="d-flex">
+                                    <div style="max-width:22%" class="left">
+                                        <img src="{{ item.product.image }}" alt="{{ item.product.name }}">
+                                    </div>
+                                    <div class="right responsivetitle">
+                                        <h6 class="name">{{ item.product.name }}</h6>
+                                        <h6 style="display:flex" class="title">Ölçü: <span class="values">&nbsp; {{ item.size }}</span></h6>
+                                        <h6 style="display:flex" class="title">Rəng: <span class="values">&nbsp; {{ item.color }}</span></h6>
+                                    </div>
+                                </th>
+                                <td>{{ item.product.price }} azn</td>
+                                
+                                <td>
+                                    <div >
+                                        <form style="justify-content:space-between" class="divmybutton" method="post" action="{% url 'shopping' form_name='change' %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                                            <button name="action" type="submit" value="subtract" class="mybutton">-</button>
+                                            <div id="item-{{item.id}}">{{ item.quantity}}</div>
+                                            <button name="action" value="add" type="submit" class="mybutton">+</button>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td style="position:relative;" class="lastclass">{{ item.total }} azn <img style="cursor:pointer" onclick="delete_order_item('{{ item.id }}','{% url 'delete_order_item' %}','{{ csrf_token }}')" class="deleteicon" src="{% static 'assets/img/deleteicon.png' %}" ></td>
+                              
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                        </table>
+                        
+                        <div class="d-flex justify-content-between margin-top-30">
+                            <div class="btn-wrapper">
+                                <a href="{% url 'shop' %}" class="btn btn-continue">{% trans 'Davam et' %}</a>
+                            </div>
+                            <div class="btn-wrapper">
+                                {% if request.user.is_authenticated %}
+                                <form id="delete-form" method="POST" action="{% url 'shopping'  %}" >
+                                    {% csrf_token %}
+                                <button type="submit"  class="btn btn-clear">{% trans 'Səbəti təmizlə' %}</button>
+                                </form>
+                                {% else %}
+                                <button onclick="deleteAllNotAuth()"  class="btn btn-clear">{% trans 'Səbəti təmizlə' %}</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4">
+                    <div class="summary margin-top-20">
+                        <h6 class="title">{% trans 'Xülasə' %}</h6>
+                        <div class="d-flex justify-content-between total">
+                            <p >{% trans 'Ümumi qiymət' %}</p>
+                            <p id="total_price">{{ total }} azn</p>
+                        </div>
+
+
+                        <div  class="btn-wrapper">
+                            <form id="myForm" {% if request.user.is_authenticated %} method="POST" action="{% url 'shopping' form_name='order' %}"  {% endif %}>
+                                {% csrf_token %}
+                                
+                            <input name="phone" id="phone" placeholder="Əlaqə nömrəsi" type="text" style="margin-top:15px;margin-bottom:5px">
+                            <input name="address" id="address" placeholder="Ünvan" type="text" style="margin-top:10px;margin-bottom:5px">
+                            <input name="order" value="{{ order }}" hidden>
+                            <div style="display:flex; align-items:center;justify-content:center;margin-top:5px;margin-bottom:5px;">
+                                <input type="checkbox" id="check" name="check" style="height:20px;width:20px;gap:10px">&nbsp; {% trans 'Sifarişi təsdiqlə və göndər' %}</input>
+                            </div>
+                            <button style="margin-top:5px;"  name="action" value="order" type="submit" class="btn btn-checkout">{% trans 'Sifariş ver' %}</button>
+                        </form>
+                        </div>
+                 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- cart area end  -->
+
+    {% include 'footer.html' %}
+
+    <!-- back to top area start -->
+    <div class="back-to-top">
+        <span class="back-top"><i class="fa fa-angle-up"></i></span>
+    </div>
+    <!-- back to top area end -->
+    <script src="{% static 'assets/js/functions.js' %}"></script>
+ 
+    <!-- all plugins here -->
+    <script src="{% static 'assets/js/vendor.js' %}"></script>
+    <!-- main js  -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    
+</body>
+
+{% if not request.user.is_authenticated %}
+<script>
+    function getShoppingCartNotAuth(){
+        if(!localStorage.getItem('items')){
+            var mydiv = document.getElementById("items");
+                    mydiv.innerHTML = ''
+                    return;
+        }
+    var localitems = JSON.parse(localStorage.getItem('items'));
+    var total = localitems.reduce(function(total, current) {
+
+        return total + parseInt(current.product.price)*parseInt(current.quantity);
+    }, 0);
+                    var mydiv = document.getElementById("items");
+                    mydiv.innerHTML = ''
+                  
+                    var total_price = 0
+                    localitems.forEach(function(item) {
+                        total = parseInt(item.product.price)*parseInt(item.quantity)
+                        total_price += total
+                        console.log(item);
+                        var tr = document.createElement('tr')
+                        tr.innerHTML = `<th scope="row" class="d-flex">
+                                <div style="max-width:22%" class="left">
+                                    <img src="${ item.product.image.url }" alt="${ item.product.name }">
+                                </div>
+                                <div class="right responsivetitle">
+                                    <h6 class="name">${ item.product.name }</h6>
+                                    <h6 style="display:flex" class="title">Ölçü: <span class="values">&nbsp; ${ item.size.name }</span></h6>
+                                    <h6 style="display:flex" class="title">Rəng: <span class="values">&nbsp; ${ item.color.name }</span></h6>
+                                </div>
+                            </th>
+                            <td>${ item.product.price } azn</td>
+                            
+                            <td>
+                                <div >
+                                    <div class="divmybutton" method="post" action="{% url 'shopping' form_name='change' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="item_id" >
+                                        <button name="action" type="submit" value="subtract" onclick="changeQuantity(${item.size.id},${item.color.id},${item.product.id},'subtract')" class="mybutton">-</button>
+                                        <div id="item-${item.id}">${ item.quantity}</div>
+                                        <button name="action" value="add" onclick="changeQuantity(${item.size.id},${item.color.id},${item.product.id},'add')" type="submit" class="mybutton">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="position:relative;" class="lastclass">${total} azn <img style="cursor:pointer" onclick="changeQuantity(${item.size.id},${item.color.id},${item.product.id},'del')" class="deleteicon" src="{% static 'assets/img/deleteicon.png' %}" ></td>
+                          `
+                          mydiv.appendChild(tr);
+                    })
+                    document.getElementById('total_price').innerHTML = `${total_price}azn`
+                }
+                getShoppingCartNotAuth()
+</script>
+{% endif %}
+<script>
+    function deleteAllNotAuth(){
+        localStorage.removeItem('items');
+        getShoppingCartNotAuth()
+    }
+</script>
+<script>
+    function changeQuantity(size,color,product,action){
+        var existingItemsJSON = localStorage.getItem("items");
+                var items = existingItemsJSON ? JSON.parse(existingItemsJSON) : [];
+             
+
+                
+             
+                    items.some(function(item,index) {
+                        if(item.product.id == product &&
+                              item.color.id == color &&
+                               item.size.id == size){
+
+                                if(action == 'add'){
+                                    item.quantity = parseInt(item.quantity) + 1;
+                                }
+                                else if(action == 'subtract'){
+                                    if(item.quantity==1){
+                                        items.splice(index, 1);
+                            
+                                    }
+                                    else{
+                                    item.quantity = parseInt(item.quantity) - 1;
+                        
+                                    }
+                                }
+                                else if(action == 'del'){
+                                    items.splice(index, 1);
+                                    
+                                }
+                  
+                            }
+                    });
+                    localStorage.setItem("items", JSON.stringify(items));
+                    getShoppingCartNotAuth();
+                    GetLocalItem();
+                }
+</script>
+
+{% if not request.user.is_authenticated %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.getElementById('myForm');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            phone = document.getElementById('phone').value
+            address = document.getElementById('address').value
+   
+            check = document.getElementById('check')
+   
+            if (phone === ""){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'Zəhmət olmasa əlaqə nömrənizi daxil edin',
+                });
+                return;
+            }
+            
+            else if (address === ""){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'Zəhmət olmasa ünvanı daxil edin',
+                });
+                return;
+            }
+            
+            else if (!check.checked){
+                console.log(check)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'Zəhmət olmasa formun düzgünlüyünü təsdiqləyin',
+                });
+                return;
+            }
+            const csrfToken = "{{ csrf_token }}";
+            items = JSON.parse(localStorage.getItem('items'))
+            formData = {
+                phone:phone,
+                address:address,
+                items:items
+            }
+            
+            fetch("{% url 'order' %}", {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Xəta',
+                        text: 'Zəhmət olmasa formun düzgünlüyünü yoxlayın',
+                    });
+                    throw new Error('Network response was not ok');
+                }
+                localStorage.setItem('items','');
+                getShoppingCartNotAuth();
+                Swal.fire({
+                    title: "",
+                    text: "Sifarişiniz təsdiqləndi, sizinlə tezliklə əlaqə saxlanacaq !",
+                    icon: "success"
+                  });
+                return response.json();
+            })
+            .then(data => {
+                // Handle successful response if needed
+                console.log(data);
+            })
+            .catch(error => {
+                // Handle error if needed
+                console.error('There was a problem with the fetch operation:', error);
+            });
+   
+        });
+    });
+    </script>
+{% endif %}
+<style>
+    td{
+        font-weight:700
+    }
+    input{
+        font-weight:700
+    }
+    h6{
+        font-weight:700 !important;
+    }
+    span{
+        font-weight:700 !important;
+        color:black !important
+    }
+</style>
+
+<script>
+    const csrfToken = "{{ csrf_token }}";
+   
+    $(document).ready(function() {
+        $("#submitmessage").on("click", function(e) {
+            e.preventDefault();
+            
+           
+            const formData = {
+                username: $("#username").val(),
+                password: $("#password").val(),
+               
+            };
+
+            // Check if any field is empty
+            if (Object.values(formData).some(value => value === "")) {
+                // Display SweetAlert for empty fields
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'Zəhmət olmasa formun düzgünlüyünü yoxlayın',
+                });
+                return;
+            }else if (!emailRegex.test($("#username").val())){
+                console.log($("#username").val())
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Xəta',
+                    text: 'E-poçtun düzgünlüyünü yoxlayın',
+                });
+                return;
+              
+            } else {
+                // If not empty, send data to the backend
+                fetch(messageUrl, {
+                    method: 'POST',
+                    body: JSON.stringify(formData),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    }
+                })
+                .then(response => {
+                   if(response.ok){
+                    Swal.fire({
+                        icon: 'success',
+                       
+                        text: 'Uğurla daxil oldunuz !',
+                        confirmButtonText: 'Ana səhifəyə qayıt',
+                        preConfirm: () => {
+                            window.location.href = '{% url "home" %}';
+                            }
+                    }).then((result) => {
+                        if (result.dismiss) {
+                          window.location.href = '{% url "home" %}';
+                        }
+                      });
+                
+                   }
+                  else{
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Yanlış ad və ya şifrə !',
+                        confirmButtonText: 'Təkrar yoxla',
+                        preConfirm: () => {
+                            window.location.href = '{% url "login" %}';
+                            }
+                    }).then((result) => {
+                        if (result.dismiss) {
+                          window.location.href = '{% url "login" %}';
+                        }
+                      });
+                  } 
+                })
+                .then(data => {
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+            }
+        });
+    });
+</script>
+
+<script>
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+              
+                Swal.fire({
+                    icon: 'success',
+                    title: '{{ message }}',
+                
+                });
+            {% elif message.tags == 'error' %}
+      
+                Swal.fire({
+                    icon: 'error',
+                    title: '{{ message }}',
+                  
+                });
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</script>
+
+</html>

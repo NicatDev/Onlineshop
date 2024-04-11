@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+{% load static %}
+{% load custom_filters %}
+{% load i18n %}
+<html lang="zxx">
+
+<!-- Mirrored from zwin.io/html/stooon/blog.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:44 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Victoria's secret</title>
+    <meta name="description" content="Baxım məhsulları, pijamalar, çimərlik geyimləri və qadınlar üçün daha nələr nələr ! Victorias sirri ilə dəbi izlə. Yalnız orijinal məhsullar">
+    <meta itemprop="ratingValue" content="5">
+    <!-- favicon -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ 
+    <link rel=icon href={% static 'assets/1.png' %} sizes="20x20" type="image/png">
+    <!-- Vendor Stylesheet -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendor.css' %}">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <!-- responsive Stylesheet -->
+    <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+      
+</head>
+<body>
+
+    <!-- preloader area start -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-inner">
+            <div class="spinner">
+                <div class="dot1"></div>
+                <div class="dot2"></div>
+            </div>
+        </div>
+    </div>
+    <!-- preloader area end -->
+
+    <!-- search Popup -->
+    <div class="body-overlay" id="body-overlay"></div>
+
+    <!-- search Popup end -->
+
+
+    <!-- navbar start -->
+   {% include 'header.html' %}
+    <!-- navbar end -->
+
+    <!-- breadcrumb start  -->
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="breadcrumb-inner d-flex justify-content-between">
+                        <h2 class="page-title">{% trans 'Bloqlar' %}</h2>
+                 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb end  -->
+
+    <!-- collection area start  -->
+    <div class="collection-area margin-top-60">
+        <div class="container">
+            <div class="row flex-row-reverse">
+                <div class="col-lg-9 col-md-12 margin-top-20">
+                    <div class="row">
+                        {% for blog in blogs %}
+                        <div class="col-md-12">
+                            <div class="single-blog">
+                                <div class="thumb">
+                                    <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+                                    <span class="tag">{{ blog.tag.name }}</span>
+                                </div>
+                                <div class="content">
+                                    <span class="date">{{ blog.created_at }}</span>
+                                    <h2><a href="{% url 'blogSingle' blog.slug %}">{{ blog.title }}</a></h2>
+                                    <p>{{ blog.content_without_ck }}...</p>
+                                    <a href="{% url 'blogSingle' blog.slug %}" class="btn btn-read">{% trans 'Daha ətraflı' %}</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="d-flex justify-content-center pagination border-0 mt-0">
+                          
+                                <ul>
+                                    <li><a {% if not blogs.has_previous %} style="cursor:not-allowed;font-weight: 700;font-size:20px" {% else %} style="font-weight: 700;font-size:20px"  href="?{{ request.GET.urlencode|removetag:'page' }}&page={{ blogs.previous_page_number }}" {% endif %}><</a></li>
+                                 
+                                    {% for page in total_pages %}
+
+                                    <li class="page-item {% if blogs.number == page %} liactive {% endif %}" ><a href="?{{ request.GET.urlencode|removetag:'page' }}&page={{ page }}">{{ page }}</a></li>
+                                    {% endfor %}
+                                    <li><a {% if not blogs.has_next %} style="cursor:not-allowed;font-weight: 700;font-size:20px" {% else %} style="font-weight: 700;font-size:20px"  href="?{{ request.GET.urlencode|removetag:'page' }}&page={{ blogs.next_page_number }}" {% endif %}>></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-12">
+                    <div class="post-widget margin-top-20">
+                        <h4 class="widget-title2">{% trans 'Əlaqəli bloqlar' %}</h4>
+                        <div class="post-content">
+                            {% for blog in recent_blogs %}
+                            <div class="single-post-item">
+                                <h6><a href="{% url 'blogSingle' blog.slug %}">{{ blog.title }}</a></h6> 
+                                <span>{{ blog.created_at }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+              
+                    <div class="tag-widget margin-top-20">
+                        <h4 class="widget-title2">Teqlər</h4>
+                        <div class="tag-content">
+                            <ul>
+                                {% for tag in tags %}
+                                <li {% if request.GET.tag == tag.name %} style="background:#FF8E78 !important;" {% endif %}><a {% if request.GET.tag == tag.name %} style="color:white !important;" {% endif %} href="{% url 'blogs' %}?tag={{tag.name}}">{{ tag.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="seller-widget margin-top-20">
+                        <h4 class="widget-title">{% trans 'Çox satılanlar' %}</h4>
+                        <div class="seller-content">
+                            {% for product in products %}
+                            <div class="single-seller-content d-flex">
+                                <div style="max-width: 20%;" class="thumb">
+                                    <img src="{{ product.get_main_image.url }}" alt="{{ product.slug }}">
+                                </div>
+                                <div class="content">
+                                    <h6><a href="{% url 'shopSingle' product.slug %}">{{ product.name }}</a></h6>
+                                    <span>{{ product.get_discount_price }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- collection area end  -->
+
+    {% include 'footer.html' %}
+
+    <!-- back to top area start -->
+    <div class="back-to-top">
+        <span class="back-top"><i class="fa fa-angle-up"></i></span>
+    </div>
+    <!-- back to top area end -->
+
+    <!-- all plugins here -->
+    <script src="{% static 'assets/js/vendor.js' %}"></script>
+    <!-- main js  -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <script src="{% static 'assets/js/functions.js' %}"></script>
+</body>
+<style>
+    .liactive{
+        background:#000000 !important;
+        color:white !important
+    }
+</style>
+<!-- Mirrored from zwin.io/html/stooon/blog.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:45 GMT -->
+</html>

@@ -1,0 +1,112 @@
+   <!-- instagram start -->
+   {% load i18n %}
+   <div class="instagram-area margin-top-75">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="instagram-title margin-bottom-40">
+                    <h4><span> <a href="https://www.instagram.com/victorias_sirri2/">{% trans 'instagramda' %}</a></span> {% trans 'izlə' %}</h4>
+                    <h6>{% trans 'Yeniliklərdən xəbərdar olmaq üçün bizi instagramdan da izlə!'%}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="instagram-slider">
+
+                    {% for insta in instas %}
+                    <div class="thumb">
+                       <a href="{{insta.href}}"><img src="{{insta.image.url}}" alt="viktorianin sirri instagram alt geyimi"></a>
+                    </div>
+                    {% endfor %}
+             
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- instagram end -->
+
+<!-- footer area start -->
+<footer class="footer-area footer-style-1 padding-top-70 margin-top-70">
+    <div class="footer-top padding-bottom-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="widget widget_nav_menu">
+                        <h4 class="widget-title">{% trans 'Kateqirayalar' %}</h4>
+                        <ul>
+                            {% for category in categories %}
+                            <li><a href="{% url 'shop' %}?category={{category.slug}}">{{ category.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="widget widget_nav_menu">
+                        <h4 class="widget-title">Keçidlər</h4>
+                        <ul>
+                            <li><a href="{% url 'home' %}">{% trans 'Əsas səhifə' %}</a></li>
+                            <li><a href="{% url 'contact' %}">{% trans 'Əlaqə' %}</a></li>
+                            <li><a href="{% url 'shop' %}">{% trans 'Məhsullar' %}</a></li>
+                            <li><a href="{% url 'register' %}">{% trans 'Qeydiyyat' %}</a></li>
+                            <li><a href="{% url 'blogs' %}">{% trans 'Bloqlar' %}</a></li>
+            
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="widget contact-widget">
+                        <h4 class="widget-title">Əlaqə</h4>
+                        <ul class="contact_info_list">
+                            <li class="single-info-item">
+                                <div class="icon">
+                                    <i class="icon-home-foother"></i>
+                                </div>
+                                <div class="details">
+                                    <span>Bakı, Tarqovaya</span>
+                                </div>
+                            </li>
+                            <li class="single-info-item">
+                                <div class="icon">
+                                    <i class="icon-email-subscribe"></i>
+                                </div>
+                                <div class="details">
+                                    viktoriassirri@gmail.com
+                                </div>
+                            </li>
+                            <li class="single-info-item">
+                                <div class="icon">
+                                    <i class="icon-call-footer"></i>
+                                </div>
+                                <div class="details">
+                                    <a href="tel:+994506408535">(+994) 50 640-85-35, (+994) 55 640-85-35</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="widget widget_nav_menu">
+                        <h4 class="widget-title">FOLLOW US</h4>
+                        <ul>
+                        
+                            <li><a href="https://www.instagram.com/victorias_sirri2/"><i class="icon-instagram"></i> Instagram</a></li>
+              
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 align-self-center">
+                    <p>© Powered by <a href="oneiro.az" target="_blanc">oneiro.az</a>.</p>
+                </div>
+              
+            </div>
+        </div>
+    </div>
+</footer>
