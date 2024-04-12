@@ -256,10 +256,14 @@ def shopping(request,form_name=None):
                 
                 'total':orderitem.quantity*orderitem.product.get_discount_price(),
                 'quantity': orderitem.quantity,
-                'color':orderitem.color.name,
-                'size':orderitem.size.name,
+               
                 'id':orderitem.id
             }
+     
+            if orderitem.color:
+                product_data['color'] = orderitem.color.name
+            if orderitem.size:
+                product_data['size'] = orderitem.color.size
             serialized_orderitems.append(product_data)
 
         count = sum(orderitem['quantity'] for orderitem in serialized_orderitems)
