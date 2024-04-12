@@ -152,7 +152,7 @@ def register(request):
             
             email = EmailMessage(
                 '{% trans "Qeydiyyatı tamamlamaq üçün linkə daxil olun" %}',
-                f'https://victoriassirri.az/auth/tesdiq/{user.username}/{code.code}',
+                f'https://test.victoriassirri.az/auth/tesdiq/{user.username}/{code.code}',
                 settings.EMAIL_HOST_USER,
                 [user.email],  
             )
