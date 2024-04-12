@@ -232,36 +232,31 @@
                                 <p class="price">{{ product.get_discount_price }}azn</p>
                            
                                 <p class="specifications">{% trans 'Stok:' %}' <b class="color-green">{% if product.stock %}{% trans 'Stokda var' %}{% else %}{% trans 'Stokda bitib' %}{% endif %} </b></p>
+                               
+                                {% if product.size.all %}
                                 <div class="d-flex">
                                     <span class="specifications">{% trans 'Ölçü:' %} </span>
                                     <ul  class="size-list align-self-center pl-3">
-                                       
-                                
-                                
-                                   
                                         {% for size in product.size.all %}
-
                                         <input {% if forloop.first %} checked {% endif %} type="radio" id="s-{{size.id}}" name="size-select" data-size="{{size.name}}" value="s-{{size.id}}">
                                         <label for="s-{{size.id}}">{{ size.name }}</label>
                                         {% endfor %}
-
                                     </select>
                                     </ul>
                                 </div>
-                               
+                                {% endif %}
+
+                                {% if product.color.all %}
                                 <div class="d-flex">
                                     <span class="specifications">{% trans 'Rəng:' %} </span>
                                     <ul class="color-list align-self-center">
-
                                         {% for color in product.color.all %}
                                         <input {% if forloop.first %} checked {% endif %} class="color-select {% if color.dark %} darkcolors {% else %} lightcolors {% endif %}" type="checkbox" data-color="{{color.name}}" id="c-{{ color.id }}" value="c-{{color.id}}" name="c-{{color.id}}"  >
                                         <label class="color-label" id="{{color.color}}" for="c-{{ color.id }}"></label>
                                           {% endfor %}
-                                      
-                               
                                     </ul>
                                 </div>
-
+                                {% endif %}
 
                                 {% if product.material %}
                                 <p class="specifications">{% trans 'Material:' %} {{ product.material }}</p>
