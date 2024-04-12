@@ -253,14 +253,24 @@
                         total_price += total
                         console.log(item);
                         var tr = document.createElement('tr')
+                        size_name = "{% trans 'Ölçü' %}"
+                        color_name = "{% trans 'Rəng' %}"
+                        if (Object.keys(item.size).length==0){
+                            item.size.name = "";
+                            size_name = ""
+                        }
+                        if (Object.keys(item.color).length==0){
+                            item.color.name = "";
+                            color_name = ""
+                        }
                         tr.innerHTML = `<th scope="row" class="d-flex">
                                 <div style="max-width:22%" class="left">
                                     <img src="${ item.product.image.url }" alt="${ item.product.name }">
                                 </div>
                                 <div class="right responsivetitle">
                                     <h6 class="name">${ item.product.name }</h6>
-                                    <h6 style="display:flex" class="title">Ölçü: <span class="values">&nbsp; ${ item.size.name }</span></h6>
-                                    <h6 style="display:flex" class="title">Rəng: <span class="values">&nbsp; ${ item.color.name }</span></h6>
+                                    <h6 style="display:flex" class="title"> ${ size_name } <span class="values">&nbsp; ${ item.size.name }</span></h6>
+                                    <h6 style="display:flex" class="title">${ color_name } <span class="values">&nbsp; ${ item.color.name }</span></h6>
                                 </div>
                             </th>
                             <td>${ item.product.price } azn</td>
