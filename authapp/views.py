@@ -85,13 +85,15 @@ def pdf_generate_notAuth(data):
     for item in order_items:
         product_name = item['product']['name']
         quantity = item['quantity']
-        color = item['color']['name']
-        size = item['size']['name']
-    
         pdf.drawString(100, y_coordinate, f"Product Name: {product_name}")
         pdf.drawString(100, y_coordinate - 20, f"Quantity: {quantity}")
-        pdf.drawString(100, y_coordinate - 40, f"Color: {color}")
-        pdf.drawString(100, y_coordinate - 60, f"Size: {size}")
+        if 'color' in item:
+            color = item['color']['name']
+            pdf.drawString(100, y_coordinate - 40, f"Color: {color}")
+        if 'size' in item:
+            size = item['size']['name']
+            pdf.drawString(100, y_coordinate - 60, f"Size: {size}")
+            
         y_coordinate -= 100
 
 
