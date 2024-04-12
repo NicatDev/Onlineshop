@@ -263,7 +263,7 @@ def shopping(request,form_name=None):
             if orderitem.color:
                 product_data['color'] = orderitem.color.name
             if orderitem.size:
-                product_data['size'] = orderitem.color.size
+                product_data['size'] = orderitem.size.name
             serialized_orderitems.append(product_data)
 
         count = sum(orderitem['quantity'] for orderitem in serialized_orderitems)
