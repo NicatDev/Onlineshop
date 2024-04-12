@@ -408,24 +408,7 @@
                 break; 
             }
         }
-        console.log(selectedSize)
-        if(selectedSize === undefined || selectedSize === null){
-            console.log('ttt')
-            Swal.fire({
-            icon: 'error',
-            title: 'Xəta',
-            text: 'Ölçü seçilməyib !',
-            confirmButtonText: 'Tamam'
-        })
-            return;}
-        if(checkedValue === undefined || checkedValue === null){Swal.fire({
-            icon: 'error',
-            title: 'Xəta',
-            text: 'Rəng seçilməyib !',
-            confirmButtonText: 'Tamam'
-        });
-             return;}
-    
+   
             var quantity = $("#qty_input").val();
       
             var csrfToken = '{{ csrf_token }}'
@@ -561,24 +544,7 @@
                 console.log(colorName)
                 var quantity = $("#qty_input").val();
                 
-                if(selectedSize === undefined || selectedSize === null){
-                    Swal.fire({
-                    icon: 'error',
-                    title: 'Xəta',
-                    text: 'Ölçü seçilməyib !',
-                    confirmButtonText: 'Tamam'
-                })
-                return;
-                }
-                if(checkedValue === undefined || checkedValue === null){
-                    Swal.fire({
-                    icon: 'error',
-                    title: 'Xəta',
-                    text: 'Rəng seçilməyib !',
-                    confirmButtonText: 'Tamam'
-                });
-                return;
-                }
+               
 
                 var data = {
                     product:{
