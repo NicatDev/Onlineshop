@@ -128,11 +128,11 @@ def pdf_generate_notAuth(data):
 def confirm(request,username,code):
     if request.method == 'POST':
         user = User.objects.get(username = username)
-        print(username,code)
+  
         if user.code.code == code:
             user.is_active = True
             user.save()
-            print(user.is_active)
+   
         return redirect('home')
     return render(request, 'confirmation.html')
 
@@ -147,7 +147,7 @@ def register(request):
             email = form.cleaned_data['email']
             form.cleaned_data['username'] = email
             user = form.save()
-            print(user.is_active)
+      
             user.is_active = False
             user.save()
             code = Code.objects.create(user=user,code=createCode(user.username))
@@ -230,7 +230,7 @@ def shopping(request,form_name=None):
                 return redirect('shopping')
                     
             except Exception as e:
-                print(str(e))
+            
                 messages.error(request, f'Xəta: Məlumatların düzgünlüyünü yoxlayın !')
                 return redirect('shopping')
         
