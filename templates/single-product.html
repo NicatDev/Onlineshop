@@ -231,7 +231,7 @@
                                 <span style="text-decoration: line-through;font-size:24px;margin-bottom:0px" >{{ product.price }}azn</span>
                                 <p class="price">{{ product.get_discount_price }}azn</p>
                            
-                                <p class="specifications">{% trans 'Stok:' %}' <b class="color-green">{% if product.stock %}{% trans 'Stokda var' %}{% else %}{% trans 'Stokda bitib' %}{% endif %} </b></p>
+                                <p class="specifications">{% trans 'Stok:' %} <b class="color-green">{% if product.stock %}{% trans 'Stokda var' %}{% else %}{% trans 'Stokda bitib' %}{% endif %} </b></p>
                                
                                 {% if product.size.all %}
                                 <div class="d-flex">
