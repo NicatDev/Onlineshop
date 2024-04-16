@@ -67,7 +67,7 @@
                             <h2 class="title" style="color:white;opacity:1 !important" data-animation-in="fadeInRight">{{ collection.name }}</h2>
                             <div class="margin-top-50 pl-1">
                                 <div class="btn-wrapper" data-animation-in="fadeInDown">
-                                    <a class="btn btn-white" href="{% url 'shop' %}?collection={{ collection.slug }}">{% trans 'Keçid et' %} <i class="icon-arrow-buttom"></i></a>
+                                    <a class="btn btn-white" href="{% url 'shop' %}?category={{ collection.slug }}">{% trans 'Keçid et' %} <i class="icon-arrow-buttom"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                             <div class="content">
                          
                                 <h3>{{ collection.name }}</h3>
-                                <a href="{% url 'shop' %}?category={{ collection.slug }}">{% trans 'Ətraflı bax' %}</a>
+                                <a href="{% url 'shop' %}?collection={{ collection.slug }}">{% trans 'Ətraflı bax' %}</a>
                             </div>
                         </div>
                     </div>
