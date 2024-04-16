@@ -145,8 +145,9 @@ def contact(request):
     return render(request,'contact.html',context)
 
 def about(request):
+    instas = get_instagram_photos()
     context = {
-
+        'instas':instas
     }
     return render(request,'about.html',context)
 
