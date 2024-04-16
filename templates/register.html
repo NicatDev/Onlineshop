@@ -213,56 +213,58 @@
     }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script>
-    // Form submit edildiğinde
-    document.getElementById('myform').addEventListener('submit', function (e) {
-        e.preventDefault();
-        var form = this;
 
-        // Fetch API kullanarak formu sunucuya gönderf
-        fetch(form.action, {
-            method: form.method,
-            body: new FormData(form),
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
+    <script>
+        // Form submit edildiğinde
+        document.getElementById('myform').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var form = this;
     
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Qeydiyyatı tamamla !'
-                    text: "Aktivləşdirmə linki e-poçt ünvanınıza göndərildi !",
-                    confirmButtonText: "Tamam",
-                });
-            } else {
-         
-                var errorsHtml = '<ul style="padding-left:25px;padding-right:25px">';
-                for (var key in data.errors) {
-                    if (key==='username'){
-                        errorsHtml += '<li>' + 'email' + ' - ' + data.errors[key][0] + '</li>';
+            // Fetch API kullanarak formu sunucuya gönderf
+            fetch(form.action, {
+                method: form.method,
+                body: new FormData(form),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+        
+                    Swal.fire({
+                        icon: 'success',
+                        title: "Qeydiyyatı tamamla !",
+                        text: "Aktivləşdirmə linki e-poçt ünvanınıza göndərildi !",
+                        confirmButtonText: "Tamam",
+                    });
+                } else {
+             
+                    var errorsHtml = '<ul style="padding-left:25px;padding-right:25px">';
+                    for (var key in data.errors) {
+                        if (key==='username'){
+                            errorsHtml += '<li>' + 'email' + ' - ' + data.errors[key][0] + '</li>';
+                        }
+                        else{
+                            errorsHtml += '<li>' + key + ' - ' + data.errors[key][0] + '</li>';
+                        }
                     }
-                    else{
-                        errorsHtml += '<li>' + key + ' - ' + data.errors[key][0] + '</li>';
-                    }
+                    errorsHtml += '</ul>';
+    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        html: errorsHtml,
+                    });
                 }
-                errorsHtml += '</ul>';
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    html: errorsHtml,
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         });
-    });
-</script>
+    </script>
+
 <script src="{% static 'assets/js/functions.js' %}"></script>
 <!-- Mirrored from zwin.io/html/stooon/contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jan 2024 17:17:50 GMT -->
 </html>
