@@ -2,6 +2,10 @@ from django.urls import path,include
 from .views import *
 from marketapp.jsonresponse import message,add_wish,add_basket,login_js,delete_order_item
 urlpatterns = [
+    path('set-language/<lang_code>/<path:url>', set_language, name='set_language'),
+    path('set_language_form/', set_language_form, name='set_language_form'),
+    
+
     path('',home,name='home'),
     path('mehsullar',shop,name='shop'),
     path('mehsullar/<slug>',shopSingle,name='shopSingle'),

@@ -154,8 +154,8 @@ from django.utils.translation import gettext_lazy as _
 
 
 LANGUAGES = (
-    ('az', 'Azerbaijan'),
-    ('ru', 'Russian'),
+    ('az', 'Az'),
+    ('ru', 'Ru'),
 )
 
 LOCALE_PATHS = [

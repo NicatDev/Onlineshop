@@ -11,6 +11,24 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.utils.translation import gettext as _
 
+def set_language(request,lang_code,url):
+    next_url = url or '/'
+    language = lang_code
+    response = redirect(next_url)
+    if language:
+        response.set_cookie('django_language', language)
+    return response
+
+def set_language_form(request):
+
+    next_url = request.POST.get('next') or '/'
+    language = request.POST.get('language')
+    response = redirect(next_url)
+    if language:
+        response.set_cookie('django_language', language)
+    return response
+
+
 def get_order_items(request):
   
     orderitems = []

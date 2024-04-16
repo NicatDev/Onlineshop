@@ -77,6 +77,19 @@
                 <div class="col-lg-3 col-8 justify-content-end d-flex order-2 order-lg-3">
                     <div class="nav-right-part">
                         <ul>
+                                                     {% get_current_language as LANGUAGE_CODE %}
+										
+												    {% get_available_languages as LANGUAGES %}
+												
+												
+													{% for lang_code, lang_name in LANGUAGES %}
+                                                        
+														<li style="{% if forloop.first %} margin-right:5px;{% endif %}" aria-haspopup="true"><a href="{% url 'set_language' lang_code=lang_code url=request.get_full_path %}" class="h-link"><div class="social-divs">{{ lang_name }}</div></a></li>
+                                                            {% if forloop.first %}<li style="margin-right:5px;font-size:20px">/</li>{% endif %}
+                                                        {% endfor %}
+												
+		
+												
                             <li>
                                 <a href="#" id="search"><i class="icon-search"></i></a>
                             </li>
@@ -238,6 +251,27 @@
             }
             
     }
+</script>
+
+<script>
+	function updateLanguageBasedOnCookie() {
+		var langCookie = document.cookie.replace(/(?:(?:^|.*;\s*)django_language\s*=\s*([^;]*).*$)|^.*$/, "$1");
+		if (langCookie) {
+			var urlParts = window.location.href.split('/');
+			urlParts.splice(3, 1, langCookie); 
+			var newURL = urlParts.join('/');
+			if (window.location.href !== newURL) {
+				document.cookie = "django_language=" + langCookie + "; path=/";
+				window.location.href = newURL
+			}
+		}
+	}
+	
+	// Sayfa yüklendiğinde çalıştır
+	window.onload = function() {
+		updateLanguageBasedOnCookie();
+	};
+	
 </script>
 <style>
     .remove i{
