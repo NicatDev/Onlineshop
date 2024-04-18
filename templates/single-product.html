@@ -600,7 +600,7 @@
                         items.forEach(function(newItemData) {
                             var li = document.createElement("li");
                             var testvar = newItemData.product.slug
-                            var pathurl = "{% url 'shopSingle' thanks %}".replace(newItemData.product.slug, tmp.toString());
+                            var pathurl = "{% url 'shopSingle' thanks %}".replace(thanks, newItemData.product.slug);
                             li.innerHTML = `
                                 <div class="d-flex">
                                     <div class="thumb">
