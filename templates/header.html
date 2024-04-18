@@ -60,6 +60,7 @@
                     <div class="logo">
                         <a href="{% url 'home' %}"><img style="max-height:50px !important" src="{% static 'assets/1.png' %}" alt=""></a>
                     </div>
+                    <ul>
                     {% get_current_language as LANGUAGE_CODE %}
 										
                     {% get_available_languages as LANGUAGES %}
@@ -70,6 +71,7 @@
                         <li style="{% if forloop.first %} margin-right:5px;{% endif %}" aria-haspopup="true"><a href="{% url 'set_language' lang_code=lang_code url=request.get_full_path %}" class="h-link"><div class="social-divs">{{ lang_name }}</div></a></li>
                             {% if forloop.first %}<li style="margin-right:5px;font-size:20px">/</li>{% endif %}
                         {% endfor %}
+                    </ul>
                 </div>
                 <div class="col-lg-6 order-3 order-lg-2">
                     <div class="collapse navbar-collapse" id="shop-menu">
