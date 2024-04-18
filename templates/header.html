@@ -106,7 +106,7 @@
                                             <img  src="{{item.product.get_main_image.url}}" alt="{{item.product.name}}">
                                         </div>
                                         <div  class="content">
-                                            <h6 style="margin-bottom:0px"  class="title"><a href="#" >{{item.product.name}} </a></h6>
+                                            <h6 style="margin-bottom:0px"  class="title"><a href="{% url 'shopSingle' item.product.slug %}" >{{item.product.name}} </a></h6>
                                             <div style="display:flex;font-size:12px;font-weight:600; gap:4px;margin-bottom:5px">
                                                  <span>Rəng: {{item.color.name}}</span> , <span>Bədən: {{item.size.name}} </span> 
                                             
@@ -202,7 +202,7 @@
                                         <img src="${newItemData.product.image.url}" alt="${newItemData.product.name}">
                                     </div>
                                     <div class="content">
-                                        <h6 class="title"><a href="#">${newItemData.product.name}</a></h6>
+                                        <h6 class="title"><a href="{% url 'shopSingle' ${newItemData.product.name} %}">${newItemData.product.name}</a></h6>
                                         <span class="price">${newItemData.product.price}</span>
                                     </div>
                                     <div class="action">
