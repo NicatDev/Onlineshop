@@ -60,6 +60,7 @@
                     <div class="logo">
                         <a href="{% url 'home' %}"><img style="max-height:50px !important" src="{% static 'assets/1.png' %}" alt=""></a>
                     </div>
+                    <div class="nav-right-part">
                     <ul>
                     {% get_current_language as LANGUAGE_CODE %}
 										
@@ -72,6 +73,7 @@
                             {% if forloop.first %}<li style="margin-right:5px;font-size:20px">/</li>{% endif %}
                         {% endfor %}
                     </ul>
+                </div>
                 </div>
                 <div class="col-lg-6 order-3 order-lg-2">
                     <div class="collapse navbar-collapse" id="shop-menu">
