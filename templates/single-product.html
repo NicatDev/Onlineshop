@@ -517,6 +517,7 @@
         function addToCartNotAuth() {
                 var id = {{ product.id }}
                 var name = "{{ product.name }}"
+                var slug = "{{ product.slug }}"
                 var image = "{{ product.get_main_image.url }}"
                 var price = "{{ product.get_discount_price }}"
                 var radioButtons = document.getElementsByName("size-select");
@@ -551,7 +552,8 @@
                         id:id,
                         name:name,
                         price:price,
-                        image:{url:image}
+                        image:{url:image},
+                        slug:slug
                     },
                     color:{
                         id:checkedValue,
@@ -604,7 +606,7 @@
                                         <img src="${newItemData.product.image.url}" alt="${newItemData.product.name}">
                                     </div>
                                     <div class="content">
-                                        <h6 class="title"><a href="#">${newItemData.product.name}</a></h6>
+                                        <h6 class="title"><a href="{% url 'shopSingle' ${newItemData.product.slug} %}">${newItemData.product.name}</a></h6>
                                         <span class="price">${newItemData.product.price}</span>
                                     </div>
                                     <div class="action">
