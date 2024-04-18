@@ -599,7 +599,7 @@
                         
                         items.forEach(function(newItemData) {
                             var li = document.createElement("li");
-                            var pathurl = "{% url 'shopSingle' thanks %}".replace(${newItemData.product.slug}, tmp.toString());
+                            var pathurl = "{% url 'shopSingle' thanks %}".replace(newItemData.product.slug, tmp.toString());
                             li.innerHTML = `
                                 <div class="d-flex">
                                     <div class="thumb">
