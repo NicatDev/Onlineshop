@@ -599,14 +599,14 @@
                         
                         items.forEach(function(newItemData) {
                             var li = document.createElement("li");
-           
+                            var pathurl = "{% url 'shopSingle' thanks %}".replace(${newItemData.product.slug}, tmp.toString());
                             li.innerHTML = `
                                 <div class="d-flex">
                                     <div class="thumb">
                                         <img src="${newItemData.product.image.url}" alt="${newItemData.product.name}">
                                     </div>
                                     <div class="content">
-                                        <h6 class="title"><a href="{% url 'shopSingle' ${newItemData.product.slug} %}">${newItemData.product.name}</a></h6>
+                                        <h6 class="title"><a href="${pathurl}">${newItemData.product.name}</a></h6>
                                         <span class="price">${newItemData.product.price}</span>
                                     </div>
                                     <div class="action">
