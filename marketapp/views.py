@@ -91,7 +91,9 @@ def shopSingle(request,slug):
     categories = Category.objects.all()
     instas = get_instagram_photos()
     products = Product.objects.all().order_by('-discount_percent')[:4]
+    product_url = reverse('shopSingle', kwargs={'slug': product.slug})
     context = {
+        'product_url':product_url,
         'categories':categories,
         'instas':instas,
         'product':product,
