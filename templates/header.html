@@ -56,23 +56,10 @@
     <nav class="navbar navbar-area navbar-expand-lg nav-style-01">
         <div class="container-fluid nav-container">
             <div class="row">
-                <div class="col-lg-3 col-4 order-1 align-self-center">
+                <div class="col-lg-2 col-4 order-1 align-self-center">
                     <div class="logo">
                         <a href="{% url 'home' %}"><img style="max-height:50px !important" src="{% static 'assets/1.png' %}" alt=""></a>
-                        <div class="nav-right-part">
-                            <ul>
-                            {% get_current_language as LANGUAGE_CODE %}
-                                                
-                            {% get_available_languages as LANGUAGES %}
                         
-                        
-                            {% for lang_code, lang_name in LANGUAGES %}
-                                
-                                <li style="{% if forloop.first %} margin-right:5px;{% endif %}" aria-haspopup="true"><a href="{% url 'set_language' lang_code=lang_code url=request.get_full_path %}" class="h-link"><div class="social-divs">{{ lang_name }}</div></a></li>
-                                    {% if forloop.first %}<li style="margin-right:5px;font-size:20px">/</li>{% endif %}
-                                {% endfor %}
-                            </ul>
-                        </div>
                     </div>
                 
                 </div>
@@ -89,10 +76,21 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-3 col-8 justify-content-end d-flex order-2 order-lg-3">
+                <div class="col-lg-4 col-8 justify-content-end d-flex order-2 order-lg-3">
                     <div class="nav-right-part">
                         <ul>
+                         
+                                {% get_current_language as LANGUAGE_CODE %}
                                                     
+                                {% get_available_languages as LANGUAGES %}
+                            
+                            
+                                {% for lang_code, lang_name in LANGUAGES %}
+                                    
+                                    <li style="{% if forloop.first %} margin-right:5px;{% endif %}" aria-haspopup="true"><a href="{% url 'set_language' lang_code=lang_code url=request.get_full_path %}" class="h-link"><div class="social-divs">{{ lang_name }}</div></a></li>
+                                        {% if forloop.first %}<li style="margin-right:5px;font-size:20px">/</li>{% endif %}
+                                    {% endfor %}
+                                        
 												
 		
 												
