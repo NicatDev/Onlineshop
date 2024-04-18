@@ -57,7 +57,7 @@
         padding-left: 25px;
     }
     .nav-right-part ul li {
-        margin-right: 17px;
+        margin-right: 10px;
     }
     .collection-style-02 .thumb .content h3 {
         font-size: 35px;
@@ -345,7 +345,7 @@
         right: 3px;
     }
     .nav-right-part ul li {
-        margin-right: 10px;
+        margin-right: 7px;
     }
     .banner-style-01 .title {
         font-size: 30px;
@@ -463,10 +463,10 @@
         min-width: 300px;
     }
     .nav-right-part ul li {
-        margin-right: 7px;
+        margin-right: 3px;
     }
     .nav-right-part ul li a {
-        font-size: 16px;
+        font-size: 19px;
     }
     .responsive-mobile-menu {
         transform: scale(.6);
