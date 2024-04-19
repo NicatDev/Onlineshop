@@ -86,7 +86,7 @@
                                 {% get_available_languages as LANGUAGES %}
                                 <li class="dropdown" >
                                     <input type="checkbox" id="languageDropdown" class="dropdown-input">
-                                    <label  for="languageDropdown" style="text-transform: uppercase;margin-bottom:0px;margin-top:3px;" class="dropbtn">{{LANGUAGE_CODE}} <span style="text-align:center;font-size:12px"> ▼</span></label>
+                                    <label   for="languageDropdown" style="text-transform: uppercase;margin-bottom:0px;margin-top:3px;" class="dropbtn">{{LANGUAGE_CODE}} <span style="text-align:center;font-size:12px"> ▼</span></label>
                                     <ul id="myDropdown" class="dropdown-content">
                                         {% for lang_code, lang_name in LANGUAGES %}
                                             <li style="margin:0px;padding:0px"><a style="display:inline-block;padding:8px 14px;" href="{% url 'set_language' lang_code=lang_code url=request.get_full_path %}">{{ lang_name }}</a></li>
