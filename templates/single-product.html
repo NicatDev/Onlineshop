@@ -358,9 +358,9 @@
                     <div class="col-lg-12">
                         <div class="related-slider">
                             {% for product in products %}
-                            <div class="product-style-03 margin-top-30" onclick="goUrl('{% url "shopSingle" product.slug %}')">
+                            <div class="product-style-03 margin-top-30" >
                                 <div class="thumb text-center">
-                                    <img src="{{ product.get_main_image.url }}" alt="">
+                                    <img onclick="goUrl('{% url "shopSingle" product.slug %}')" style="cursor:pointer;" src="{{ product.get_main_image.url }}" alt="{{product.slug}}">
                                    {% if product.discount_percent > 0 %} <span class="sale">{{ product.discount_percent }} % {% trans 'endirim' %}</span>{% endif %}
             
                                 </div>
