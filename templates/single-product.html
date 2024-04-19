@@ -32,7 +32,11 @@
      
 </head>
 <style>
-    
+    @media screen and (max-width: 800px) {
+    .wishpad{
+        padding: 14px 15px !important
+    }
+}
     .hoverable-item:hover img{
         filter:contrast(120%);
         border:1px solid gray
@@ -234,7 +238,7 @@
                         </div>
                         <div class="col-lg-7 col-md-6">
                             <div class="content-part  margin-top-20">
-                                <h1 class="product-title">{{ product.name }}  <div style="padding: 2px 14px;margin-left: 20px; " class="add-to-cart">
+                                <h1 class="product-title">{{ product.name }}  <div style="padding: 2px 14px;margin-left: 20px; " class="add-to-cart wishpad">
                                     <a  onclick="addWish('{{ product.id }}', '{% url 'add_wish' %}','{{csrf_token}}' )"  style="cursor: pointer;" > <i 
                                         {% if request.user in product.wishlist.all %} style=" font-weight:900; cursor:pointer;" {% else %} style=" font-weight:400; cursor:pointer;" {% endif %} 
                                         class="fa-regular fa-heart product-{{product.id}}">
