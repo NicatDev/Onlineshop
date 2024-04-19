@@ -222,6 +222,12 @@
                                 {% for image in product.images.all %}
                                 <div style="cursor: pointer;" class="single-item hoverable-item">
                                     <div class="img">
+                                        
+                                            <a  onclick="addWish('{{ product.id }}', '{% url 'add_wish' %}','{{csrf_token}}' )"  style="cursor: pointer;" > <i 
+                                                {% if request.user in product.wishlist.all %} style=" font-weight:900; cursor:pointer;" {% else %} style=" font-weight:400; cursor:pointer;" {% endif %} 
+                                                class="fa-regular fa-heart product-{{product.id}}">
+                                             </i> </a>
+                                    
                                         <img src="{{ image.image.url }}" alt="{{product.slug}}">
                                     </div>
                                 </div>
@@ -231,10 +237,7 @@
                         </div>
                         <div class="col-lg-7 col-md-6">
                             <div class="content-part  margin-top-20">
-                                <h1 class="product-title">{{ product.name }}</h1>   <a onclick="addWish('{{ product.id }}', '{% url 'add_wish' %}','{{csrf_token}}' )"  style="cursor: pointer;"> <i 
-                                    {% if request.user in product.wishlist.all %} style=" font-weight:900; cursor:pointer;" {% else %} style=" font-weight:400; cursor:pointer;" {% endif %} 
-                                    class="fa-regular fa-heart product-{{product.id}}">
-                                 </i> </a>
+                                <h1 class="product-title">{{ product.name }}</h1>
                                 <span style="text-decoration: line-through;font-size:24px;margin-bottom:0px" >{{ product.price }}azn</span>
                                 <p class="price">{{ product.get_discount_price }}azn</p>
                            
@@ -287,8 +290,6 @@
                                 <div class="btn-wrapper">
                                     <a onclick="addToCart(4)" class="btn btn-buy">İndİ al</a>
                                 </div>
-                               
-                                  
                            
                                 <p class="specifications">{% trans 'Brend:' %} <b>{{ product.brand.name }}</b></p>
                                 <p class="specifications">{% trans 'Kateqoriyalar' %}<b>{% for category in product.category.all %} {{ category.name }} {% endfor %}</b></p>
