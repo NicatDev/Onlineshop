@@ -218,7 +218,7 @@
                               
                                 
                             </div>
-                            {% if product.images.all|length == 1 %}
+                            {% if product.images.all|length != 1 %}
                             <div class="slider-tabnav">
                                 {% for image in product.images.all %}
                                 <div style="cursor: pointer;" class="single-item hoverable-item">
