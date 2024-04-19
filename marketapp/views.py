@@ -189,8 +189,8 @@ def blogs(request):
         blog_list = blog_list.filter(tag__name=tag)
     
         
-    paginator = Paginator(blog_list, 1)
-    page = request.GET.get("page", 3)
+    paginator = Paginator(blog_list, 3)
+    page = request.GET.get("page", 1)
     blogs = paginator.get_page(page)
     total_pages = [x+1 for x in range(paginator.num_pages)]
     blogs_not_in_current_page = Blog.objects.exclude(id__in=[x.id for x in blogs])[:3]
