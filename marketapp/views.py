@@ -165,9 +165,11 @@ def contact(request):
     return render(request,'contact.html',context)
 
 def about(request):
+    orderitems = get_order_items(request)
     instas = get_instagram_photos()
     context = {
-        'instas':instas
+        'instas':instas,
+        'orderitems':orderitems
     }
     return render(request,'about.html',context)
 
