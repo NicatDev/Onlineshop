@@ -358,7 +358,7 @@
                     <div class="col-lg-12">
                         <div class="related-slider">
                             {% for product in products %}
-                            <div class="product-style-03 margin-top-30">
+                            <div class="product-style-03 margin-top-30" onclick="goUrl('{% url "shopSingle" product.slug %}')">
                                 <div class="thumb text-center">
                                     <img src="{{ product.get_main_image.url }}" alt="">
                                    {% if product.discount_percent > 0 %} <span class="sale">{{ product.discount_percent }} % {% trans 'endirim' %}</span>{% endif %}
@@ -368,7 +368,7 @@
                                     <span class="brand">{% trans 'Brend:'%} {{ product.brand.name }}</span>
                                   
                                     <h6 class="title"><a href="{% url 'shopSingle' product.slug %}">{{ product.name }}</a></h6>
-                                    <span class="price">{{ product.get_discount_price }}</span>
+                                    <span class="price">{{ product.get_discount_price }} azn</span>
                                 </div>
                             </div>
                             {% endfor %}
@@ -384,7 +384,12 @@
     <script src="{% static 'assets/js/functions.js' %}"></script>
 
 
+<script>
+    function goUrl(arg){
+        window.location.href = arg
 
+    }
+</script>
 
    
     <script>
