@@ -276,8 +276,11 @@
                                         </div>
                                     </div>
                                     <div style="cursor: pointer;" {% if request.user.is_authenticated %} onclick="addToCart()" {% else %} onclick="addToCartNotAuth()" {% endif %} class="add-to-cart basketclick">
-                                        <a  ><i class="icon-add-to-cat"></i> {% trans 'Səbətə əlavə et' %}</a>
-
+                                        <a><i class="icon-add-to-cat"></i> {% trans 'Səbətə əlavə et' %}</a>
+                                        <a> <i onclick="addWish('{{ product.id }}', '{% url 'add_wish' %}','{{csrf_token}}' )" 
+                                        {% if request.user in product.wishlist.all %} style=" font-weight:900; cursor:pointer;" {% else %} style=" font-weight:400; cursor:pointer;" {% endif %} 
+                                        class="fa-regular fa-heart product-{{product.id}}"></a>
+                                     </i> 
                                     </div>
                                 </div>
                                 <div class="btn-wrapper">
