@@ -279,7 +279,13 @@
                                         <a><i class="icon-add-to-cat"></i> {% trans 'Səbətə əlavə et' %}</a>
                                       
                                     </div>
-                            
+                                    <div onclick="addWish('{{ product.id }}', '{% url 'add_wish' %}','{{csrf_token}}' )"  style="cursor: pointer;"  class="add-to-cart">
+                                        <a> <i 
+                                            {% if request.user in product.wishlist.all %} style=" font-weight:900; cursor:pointer;" {% else %} style=" font-weight:400; cursor:pointer;" {% endif %} 
+                                            class="fa-regular fa-heart product-{{product.id}}">
+                                         </i> </a>
+                                    </div>
+                                </div>
                                 <div class="btn-wrapper">
                                     <a onclick="addToCart(4)" class="btn btn-buy">İndİ al</a>
                                 </div>
