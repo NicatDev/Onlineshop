@@ -289,13 +289,13 @@
                                             <a class="btn btn-sm" id="plus-btn"><i class="fa fa-plus"></i></a>
                                         </div>
                                     </div>
-                                    <div style="cursor: pointer;" {% if request.user.is_authenticated %} onclick="addToCart()" {% else %} onclick="addToCartNotAuth()" {% endif %} class="add-to-cart basketclick">
-                                        <a><i class="icon-add-to-cat"></i> {% trans 'Səbətə əlavə et' %}</a>
-                                      
-                                    </div>
+                                    
                                    
                                 </div>
-                               
+                                <div style="cursor: pointer;" {% if request.user.is_authenticated %} onclick="addToCart()" {% else %} onclick="addToCartNotAuth()" {% endif %} class="add-to-cart basketclick">
+                                    <a><i class="icon-add-to-cat"></i> {% trans 'Səbətə əlavə et' %}</a>
+                                  
+                                </div>
                            
                                 <p class="specifications">{% trans 'Brend:' %} <b>{{ product.brand.name }}</b></p>
                                 <p class="specifications">{% trans 'Kateqoriyalar' %}<b>{% for category in product.category.all %} {{ category.name }} {% endfor %}</b></p>
