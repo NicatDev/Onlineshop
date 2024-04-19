@@ -238,7 +238,9 @@
                                         class="fa-regular fa-heart product-{{product.id}}">
                                      </i> </a>
                                 </div></h1>
+                                {% if product.discount_percent > 0 %}
                                 <span style="text-decoration: line-through;font-size:24px;margin-bottom:0px" >{{ product.price }}azn</span>
+                                {% endif %}
                                 <p class="price">{{ product.get_discount_price }}azn</p>
                            
                                 <p class="specifications">{% trans 'Stok:' %} <b class="color-green">{% if product.stock %}{% trans 'Stokda var' %}{% else %}{% trans 'Stokda bitib' %}{% endif %} </b></p>
