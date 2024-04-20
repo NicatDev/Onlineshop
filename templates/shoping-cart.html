@@ -389,9 +389,7 @@
                     text: "{% trans 'Sifarişiniz təsdiqləndi, sizinlə tezliklə əlaqə saxlanacaq !' %}",
                     icon: "success",
                     confirmButtonText:"{% trans 'tamam' %}"
-                  }).then((result) => {
-                    window.location.href = "{% url 'shopping' %}"
-                }
+                  });
                 return response.json();
             })
             .then(data => {
