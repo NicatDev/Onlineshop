@@ -26,6 +26,9 @@ from django.core.mail import EmailMessage
 import json
 from django.contrib.auth import get_user_model
 from .utils import createCode
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+pdfmetrics.registerFont(TTFont("Arial", "arial.ttf"))
 User = get_user_model()
 
 def pdf_generate(order_id):
@@ -35,26 +38,27 @@ def pdf_generate(order_id):
     pdf = canvas.Canvas(buffer, pagesize=letter)
     y_coordinate = 750  
 
-    pdf.setFont("ArialUnicodeMS", 14)
-
-    for index, item in order_items:
+    pdf.setFont("Arial", 14)
+    index = 1
+    for item in order_items:
         product_name = item.product.name
         quantity = item.quantity
         color = item.color
         size = item.size
     
-        pdf.drawString(100, y_coordinate, f"{index}) Product Name: {product_name}")
-        pdf.drawString(100, y_coordinate - 20, f"Quantity: {quantity}")
-        pdf.drawString(100, y_coordinate - 40, f"Color: {color}")
-        pdf.drawString(100, y_coordinate - 60, f"Size: {size}")
+        pdf.drawString(100, y_coordinate, f"{index}) Məhsul adı: {product_name}")
+        pdf.drawString(100, y_coordinate - 20, f"Məhsul sayı: {quantity}")
+        pdf.drawString(100, y_coordinate - 40, f"Rəng: {color}")
+        pdf.drawString(100, y_coordinate - 60, f"Ölçü: {size}")
         y_coordinate -= 100
-        
-    pdf.setFont("ArialUnicodeMS", 18)
+        index += 1
+
+    pdf.setFont("Arial", 18)
     pdf.drawString(100, y_coordinate, "Müştəri məlumatları")
-    pdf.setFont("ArialUnicodeMS", 14)
-    pdf.drawString(100, y_coordinate - 20, f"username: {order.user.username}")
-    pdf.drawString(100, y_coordinate - 40, f"phone: {order.phone_number}")
-    pdf.drawString(100, y_coordinate - 60, f"address: {order.address}")
+    pdf.setFont("Arial", 14)
+    pdf.drawString(100, y_coordinate - 20, f"İstifadəçi adı: {order.user.username}")
+    pdf.drawString(100, y_coordinate - 40, f"Əlaqə nömrəsi: {order.phone_number}")
+    pdf.drawString(100, y_coordinate - 60, f"Ünvan: {order.address}")
 
     pdf.showPage()
     
@@ -87,27 +91,28 @@ def pdf_generate_notAuth(data):
 
     y_coordinate = 750  
 
-    pdf.setFont("ArialUnicodeMS", 15)
-
-    for index,item in order_items:
+    pdf.setFont("Arial", 15)
+    index = 1
+    for item in order_items:
         product_name = item['product']['name']
         quantity = item['quantity']
-        pdf.drawString(100, y_coordinate, f"{index}) Product Name: {product_name}")
-        pdf.drawString(100, y_coordinate - 20, f"Quantity: {quantity}")
-        if 'color' in item:
+        pdf.drawString(100, y_coordinate, f"{index}) Məhsul adı: {product_name}")
+        pdf.drawString(100, y_coordinate - 20, f"Məhsul sayı: {quantity}")
+        if len(item['color'])>0:
+        
             color = item['color']['name']
-            pdf.drawString(100, y_coordinate - 40, f"Color: {color}")
-        if 'size' in item:
+            pdf.drawString(100, y_coordinate - 40, f"Rəng: {color}")
+        if len(item['size'])>0:
             size = item['size']['name']
-            pdf.drawString(100, y_coordinate - 60, f"Size: {size}")
+            pdf.drawString(100, y_coordinate - 60, f"Ölçü: {size}")
             
         y_coordinate -= 100
-
-    pdf.setFont("ArialUnicodeMS", 18)
+        index += 1
+    pdf.setFont("Arial", 18)
     pdf.drawString(100, y_coordinate, "Müştəri məlumatları:")
-    pdf.setFont("ArialUnicodeMS", 14)
-    pdf.drawString(100, y_coordinate - 20, f"phone: {data.get('phone')}")
-    pdf.drawString(100, y_coordinate - 40, f"address: {data.get('address')}")
+    pdf.setFont("Arial", 14)
+    pdf.drawString(100, y_coordinate - 20, f"Əlaqə nömrəsi: {data.get('phone')}")
+    pdf.drawString(100, y_coordinate - 40, f"Ünvan: {data.get('address')}")
 
     pdf.showPage()
     
