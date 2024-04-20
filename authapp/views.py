@@ -36,14 +36,19 @@ def pdf_generate(order_id):
     pdf = canvas.Canvas(buffer, pagesize=letter)
     y_coordinate = 750  
 
-    pdf.setFont(14)
+    pdf.setFontSize(14)
     index = 1
     for item in order_items:
         product_name = item.product.name.replace("ə", "e").replace("ğ", "g").replace('ı','i').replace('ö','o').replace('ü','u').replace('ç','c')
         quantity = item.quantity
-        color = item.color.replace("ə", "e").replace("ğ", "g").replace('ı','i').replace('ö','o').replace('ü','u').replace('ç','c')
+        color = item.color
+        if color is not None:
+            color = color.replace("ə", "e").replace("ğ", "g").replace('ı','i').replace('ö','o').replace('ü','u').replace('ç','c')
+        else:
+            color = 'Mehsul rengi movcud deyil'
         size = item.size
-    
+        if size is None:
+            size = 'Mehsul olcusu movcud deyil'
         pdf.drawString(100, y_coordinate, f"{index}) Mehsul adi: {product_name}")
         pdf.drawString(100, y_coordinate - 20, f"Mehsul sayi: {quantity}")
         pdf.drawString(100, y_coordinate - 40, f"Reng: {color}")
@@ -51,10 +56,10 @@ def pdf_generate(order_id):
         y_coordinate -= 100
         index += 1
 
-    pdf.setFont(18)
-    pdf.drawString(100, y_coordinate, "Muşteri melumatlari")
-    pdf.setFont(14)
-    pdf.drawString(100, y_coordinate - 20, f"İstifadeci adı: {order.user.username}")
+    pdf.setFontSize(18)
+    pdf.drawString(100, y_coordinate, "Musteri melumatlari")
+    pdf.setFontSize(14)
+    pdf.drawString(100, y_coordinate - 20, f"Istifadeci adi: {order.user.username}")
     pdf.drawString(100, y_coordinate - 40, f"Elaqe nomresi: {order.phone_number}")
     pdf.drawString(100, y_coordinate - 60, f"Unvan: {order.address}")
 
@@ -89,7 +94,7 @@ def pdf_generate_notAuth(data):
 
     y_coordinate = 750  
 
-    pdf.setFont(15)
+    pdf.setFontSize(15)
     index = 1
     for item in order_items:
         product_name = item['product']['name'].replace("ə", "e").replace("ğ", "g").replace('ı','i').replace('ö','o').replace('ü','u').replace('ç','c')
@@ -106,9 +111,9 @@ def pdf_generate_notAuth(data):
             
         y_coordinate -= 100
         index += 1
-    pdf.setFont(18)
-    pdf.drawString(100, y_coordinate, "Muşteri melumatlari:")
-    pdf.setFont(14)
+    pdf.setFontSize(18)
+    pdf.drawString(100, y_coordinate, "Musteri melumatlari:")
+    pdf.setFontSize(14)
     pdf.drawString(100, y_coordinate - 20, f"Elaqə nomresi: {data.get('phone')}")
     pdf.drawString(100, y_coordinate - 40, f"Unvan: {data.get('address')}")
 
@@ -212,11 +217,11 @@ def shopping(request,form_name=None):
             try:
     
                 order = get_object_or_404(Order,id=int(request.POST.get('order')))
-             
+                print('111')
                 check = request.POST.get('check')
                 address = request.POST.get('address')
                 phone = request.POST.get('phone')
-
+                print('2222')
                 if not order.orderitems.exists():
                     messages.error(request, f'Xəta: Səbətdə məhsul yoxdur!')
                     return redirect('shopping')
@@ -227,22 +232,23 @@ def shopping(request,form_name=None):
                     messages.error(request, f'Xəta: Ünvan daxil edin!')
                     return redirect('shopping')
                 if not check:
+                    print('check')
                     messages.error(request, f'Xəta: Məlumatların düzgünlüyünü təsdiqləyin!')
                     return redirect('shopping')
-
+                print('nese onnan')
                 order.address = address
                 order.phone_number = phone
                 order.status = True
                 order.save()
-         
+                print('gen etmeden once')
                 pdf_generate(order.id)
-           
+                print('onnan')
                 messages.success(request, 'Sifariş uğurla tamamlandı. Sizinlə tezliklə əlaqə saxlanılacaq !')
                 
                 return redirect('shopping')
                     
             except Exception as e:
-            
+                print(e)
                 messages.error(request, f'Xəta: Məlumatların düzgünlüyünü yoxlayın !')
                 return redirect('shopping')
         
