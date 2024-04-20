@@ -218,6 +218,7 @@
                     mydiv.innerHTML = ''
                     return;
         }
+    
     var localitems = JSON.parse(localStorage.getItem('items'));
     var total = localitems.reduce(function(total, current) {
 
@@ -329,7 +330,14 @@
             address = document.getElementById('address').value
    
             check = document.getElementById('check')
-   
+            if (localStorage.getItem('items').length==0){
+                Swal.fire({
+                    icon: 'error',
+                    title: "{% trans 'Xəta' %}",
+                    text: "{% trans 'Səbətdə məhsul yoxdur' %}",
+                });
+                return;
+            }
             if (phone === ""){
                 Swal.fire({
                     icon: 'error',
@@ -342,7 +350,7 @@
             else if (address === ""){
                 Swal.fire({
                     icon: 'error',
-                    title: "{% trans 'Xəta',
+                    title: "{% trans 'Xəta' %}",
                     text: "{% trans 'Zəhmət olmasa ünvanı daxil edin' %}",
                 });
                 return;
@@ -352,7 +360,7 @@
                
                 Swal.fire({
                     icon: 'error',
-                    title: "{% trans 'Xəta',
+                    title: "{% trans 'Xəta' %}",
                     text: "{% trans 'Zəhmət olmasa formun düzgünlüyünü təsdiqləyin' %}",
                 });
                 return;
@@ -375,11 +383,14 @@
             })
             .then(response => {
                 if (!response.ok) {
+
                     Swal.fire({
                         icon: 'error',
-                        title: "{% trans 'Xəta',
+                        title: "{% trans 'Xəta' %}",
                         text: "{% trans 'Zəhmət olmasa formun düzgünlüyünü yoxlayın' %}",
-                    });
+                    }).then(() => {
+                    window.location.reload
+                    })
                     throw new Error('Network response was not ok');
                 }
                 localStorage.setItem('items','');
@@ -387,7 +398,7 @@
                 Swal.fire({
                     title: "",
                     text: "{% trans 'Sifarişiniz təsdiqləndi, sizinlə tezliklə əlaqə saxlanacaq !' %}",
-                    icon: "success"
+                    icon: "success",
                   });
                 return response.json();
             })
