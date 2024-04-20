@@ -60,7 +60,7 @@ def pdf_generate(order_id):
     pdf.setFontSize(14)
     pdf.drawString(100, y_coordinate - 20, f"Istifadeci adi: {order.user.username}")
     pdf.drawString(100, y_coordinate - 40, f"Elaqe nomresi: {order.phone_number}")
-    pdf.drawString(100, y_coordinate - 60, f"Unvan: {order.address.replace("ə", "e").replace("ğ", "g").replace('ı','i').replace('ö','o').replace('ü','u').replace('ç','c')}")
+    pdf.drawString(100, y_coordinate - 60, f"Unvan: {order.address.replace('ə', 'e').replace('ğ', 'g').replace('ı','i').replace('ö','o').replace('ü','u').replace('ç','c')}")
 
     pdf.showPage()
     
@@ -114,7 +114,7 @@ def pdf_generate_notAuth(data):
     pdf.drawString(100, y_coordinate, "Musteri melumatlari:")
     pdf.setFontSize(14)
     pdf.drawString(100, y_coordinate - 20, f"Elaqə nomresi: {data.get('phone')}")
-    pdf.drawString(100, y_coordinate - 40, f"Unvan: {data.get('address').replace("ə", "e").replace("ğ", "g").replace('ı','i').replace('ö','o').replace('ü','u').replace('ç','c')}")
+    pdf.drawString(100, y_coordinate - 40, f'Unvan: {data.get('address').replace('ə', 'e').replace('ğ', 'g').replace('ı','i').replace('ö','o').replace('ü','u').replace('ç','c')}')
 
     pdf.showPage()
     
