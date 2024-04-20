@@ -262,14 +262,14 @@
                 // Display SweetAlert for empty fields
                 Swal.fire({
                     icon: 'error',
-                    title: 'Xəta',
-                    text: 'Zəhmət olmasa formun düzgünlüyünü yoxlayın',
+                    title: "{% trans 'Xəta' %}",
+                    text: "{% trans 'Zəhmət olmasa formun düzgünlüyünü yoxlayın' %}",
                 });
             }else if (!emailRegex.test($("#email").val())){
                 Swal.fire({
                     icon: 'error',
-                    title: 'Xəta',
-                    text: 'E-poçtun düzgünlüyünü yoxlayın',
+                    title: "{% trans 'Xəta' %}",
+                    text: "{% trans 'E-poçtun düzgünlüyünü yoxlayın' %}",
                 });
               
             } else {
@@ -286,25 +286,23 @@
                     if (!response.ok) {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Xəta',
-                            text: 'Zəhmət olmasa formun düzgünlüyünü yoxlayın',
+                            title: "{% trans 'Xəta' %}",
+                            text: "{% trans 'Zəhmət olmasa formun düzgünlüyünü yoxlayın' %}",
                         });
                         throw new Error('Network response was not ok');
                     }
                     Swal.fire({
                         title: "",
-                        text: "Məktub uğurla göndərildi",
+                        text: "{% trans 'Məktub uğurla göndərildi' %}",
                         icon: "success"
                       });
                     return response.json();
                 })
                 .then(data => {
-                    // Handle successful response if needed
-                    console.log(data);
+        
                 })
                 .catch(error => {
-                    // Handle error if needed
-                    console.error('There was a problem with the fetch operation:', error);
+                  
                 });
             }
         });

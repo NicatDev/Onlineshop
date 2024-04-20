@@ -133,7 +133,7 @@ class Product(MetaMixin,BaseMixin):
     name = models.CharField(max_length = 200)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discount_percent = models.SmallIntegerField(default=0)
-    description = models.TextField()
+    description = models.TextField(null=True,blank=True)
     stock = models.BooleanField(default=True)
     color = models.ManyToManyField(Color,blank=True)
     size = models.ManyToManyField(Size,blank=True)

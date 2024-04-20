@@ -224,8 +224,8 @@
     if (!auth){
         Swal.fire({
             icon: 'info',
-            text: 'Bu xidmətdən istifadə etmək üçün hesabınıza daxil olmanız rica olunur',
-            confirmButtonText: 'Ana səhifə',
+            text: "{% trans 'Bu xidmətdən istifadə etmək üçün hesabınıza daxil olmanız rica olunur' %}",
+            confirmButtonText: "{% trans 'Ana səhifə' %}",
             preConfirm: () => {
                 window.location.href = '{% url "home" %}';
                 }

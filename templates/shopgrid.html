@@ -424,12 +424,12 @@
     
 
     $(document).ready(function() {
-        console.log('2')
+       
         $(".wishclick").on("click", function(e) {
-            console.log('4')
+           
             e.preventDefault();
             const product_id = $(this).data('target');
-            console.log(product_id,'--------------')
+  
     
             const formData = {   
             };
@@ -447,7 +447,7 @@
                     var elementsWithDataTarget = $(`[data-target="${product_id}"]`);
                     if(response.status===200){
                     elementsWithDataTarget.each(function() {
-                        console.log($(this),response.status,'--200')
+                      
                         $(this).find('i').css('font-weight', '900');
                         $(this).find('i').css('color','red')
                       });
@@ -455,7 +455,7 @@
                     }
                     else if(response.status===201){
                         elementsWithDataTarget.each(function() {
-                            console.log($(this),response.status,'--201')
+                     
                             $(this).find('i').css('font-weight', '400');
                             $(this).find('i').css('color','black') 
                           });
@@ -464,10 +464,10 @@
                     if (!response.ok) {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Xəta',
-                            text: 'Hesaba daxil olmağınız xahiş olunur',
+                            title: "{% trans 'Xəta' %}",
+                            text: "{% trans 'Hesaba daxil olmağınız xahiş olunur' %}",
                             showCancelButton: true,
-                            confirmButtonText: 'Qeydiyyat',
+                            confirmButtonText: "{% trans 'Qeydiyyat' %}",
                             cancelButtonText: 'Daxil ol',
                             showCloseButton: true,
                        
@@ -518,7 +518,7 @@
     
         inputs.forEach(function (input) {
             const value = urlParams.get(input.name);
-            console.log(value);
+  
 
              if (input.type === 'number') {
                 if (value !== null) {
@@ -532,7 +532,7 @@
     function handleSubmit(event) {
         if (event.key === "Enter") {
         const input = document.getElementById('searchInput')
-        console.log(input.value,'0---------------------------------------------')
+       
         const url = new URL(window.location.href);
         const urlParams = new URLSearchParams(url.search);
         urlParams.set(input.name, input.value);
@@ -546,8 +546,7 @@
     
         inputs.forEach(function (input) {
             const value = urlParams.get(input.name);
-            console.log(value);
-            
+        
              if (input.type === 'text') {
                 if (value !== null) {
                     input.value = value;
@@ -571,7 +570,7 @@
     
         checkboxes.forEach(function (checkbox) {
             const value = urlParams.get(checkbox.name);
-            console.log(value)
+        
             if (checkbox.value===value) {
                 checkbox.checked = true;
             }
@@ -584,14 +583,14 @@
         const input = event.target
         const url = new URL(window.location.href);
          const urlParams = new URLSearchParams(url.search);
-         console.log(urlParams,'-----Params')
+
         if (input.type == 'checkbox'){
             if (input.checked){
                 urlParams.set(event.target.name, event.target.value);
             } else {
                 urlParams.delete(event.target.name);
             }
-            console.log(url,urlParams,'-ikiside')
+     
         }
 
         url.search = urlParams.toString();
@@ -599,14 +598,14 @@
     }
     document.addEventListener('DOMContentLoaded', function () {
         const checkboxes = document.querySelectorAll('.sort-select');
-        console.log(checkboxes)
+   
         const urlParams = new URLSearchParams(window.location.search);
-    console.log(urlParams)
+
         checkboxes.forEach(function (checkbox) {
             const value = urlParams.get('order');
-            console.log(value)
+    
                 if (value){
-                console.log(checkbox)
+         
                 checkbox.value = value
                 }       
         });

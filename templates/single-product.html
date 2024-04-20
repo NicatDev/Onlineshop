@@ -304,6 +304,7 @@
                             </div>
                         </div>
                     </div>
+                    {% if product.description %}
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="product-tab">
@@ -325,6 +326,7 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
                 <div class="col-lg-3 col-md-12">
                     <div class="widget delivery-widget margin-top-20">
@@ -444,7 +446,7 @@
                 'product':product,
         
             };
-           console.log(postData)
+        
               $.ajax({
                   type: 'POST',
                   url: "{% url 'add_basket' %}",
@@ -465,7 +467,7 @@
                         
                         mydata.forEach(function(newItemData) {
                             var li = document.createElement("li");
-                            console.log(newItemData,'aaa')
+                         
                             li.innerHTML = `
                                 <div class="d-flex">
                                     <div class="thumb">
@@ -496,13 +498,13 @@
     
                           Swal.fire({
                               icon: 'success',
-                              title: 'Uğurla tamamlandı'
+                              title: "{% trans 'Uğurla tamamlandı' %}"
                           })
                       } else {
                           Swal.fire({
                               icon: 'error',
-                              title: 'Xəta',
-                              text: 'Bu özəllikdən istifadə etmək üçün hesaba daxil olmalısınız    !',
+                              title: "{% trans 'Xəta' %}",
+                              text: "{% trans 'Bu özəllikdən istifadə etmək üçün hesaba daxil olmalısınız !' %}",
                               confirmButtonText: 'Tamam'
                           })
                       }
@@ -567,7 +569,7 @@
                         colorName = $(this).data('color')
                     }
                 });
-                console.log(colorName)
+    
                 var quantity = $("#qty_input").val();
                 
                
@@ -614,7 +616,7 @@
                             }
                     });
                 }
-                console.log(JSON.stringify(items))
+               
                 localStorage.setItem("items", JSON.stringify(items));
                 var sum = items.reduce(function(total, current) {
                     return total + parseInt(current.quantity);
@@ -654,7 +656,7 @@
                             $('.basketbadge').text(sum);
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Uğurla tamamlandı'
+                                title: "{% trans 'Uğurla tamamlandı' %}"
                             })
                             
         }

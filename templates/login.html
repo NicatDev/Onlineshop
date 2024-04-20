@@ -141,16 +141,16 @@
                 // Display SweetAlert for empty fields
                 Swal.fire({
                     icon: 'error',
-                    title: 'Xəta',
-                    text: 'Zəhmət olmasa formun düzgünlüyünü yoxlayın',
+                    title: "{% trans 'Xəta' %}",
+                    text: "{% trans 'Zəhmət olmasa formun düzgünlüyünü yoxlayın' %}",
                 });
                 return;
             }else if (!emailRegex.test($("#username").val())){
-                console.log($("#username").val())
+       
                 Swal.fire({
                     icon: 'error',
-                    title: 'Xəta',
-                    text: 'E-poçtun düzgünlüyünü yoxlayın',
+                    title: "{% trans 'Xəta' %}",
+                    text: "{% trans 'E-poçtun düzgünlüyünü yoxlayın' %}",
                 });
                 return;
               
@@ -187,26 +187,26 @@
                     Swal.fire({
                         icon: 'error',
                        
-                        text: 'Yanlış ad və ya şifrə !',
-                        confirmButtonText: 'Təkrar yoxla',
+                        text: "{% trans 'Yanlış ad və ya şifrə !' %}",
+                        confirmButtonText: "{% trans 'Təkrar yoxla' %}",
                         preConfirm: () => {
                             window.location.href = '{% url "login" %}';
                             }
                     }).then((result) => {
-                        // Check if the result.dismiss property is present, indicating a click outside the modal
+      
                         if (result.dismiss) {
-                          // Redirect to the homepage
+                     
                           window.location.href = '{% url "login" %}';
                         }
                       });
                   } 
                 })
                 .then(data => {
-                    // Handle successful response if needed
+         
                   
                 })
                 .catch(error => {
-                    // Handle error if needed
+                 
                     console.error('There was a problem with the fetch operation:', error);
                 });
             }
@@ -218,9 +218,9 @@
   <script>
     Swal.fire({
         icon: 'success',
-        title: 'Siz artıq daxil olmusunuz',
+        title: "{% trans 'Siz artıq daxil olmusunuz' %}",
     
-        confirmButtonText: 'Ana səhifəyə qayıt',
+        confirmButtonText: "{% trans 'Ana səhifəyə qayıt' %}",
         preConfirm: () => {
             window.location.href = '{% url "login" %}';
             }

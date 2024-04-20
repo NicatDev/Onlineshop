@@ -34,8 +34,7 @@ def pdf_generate(order_id):
     order_items = order.orderitems.all()
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer, pagesize=letter)
-    y_coordinate = 750  
-
+    y_coordinate = 750   
     pdf.setFontSize(14)
     index = 1
     for item in order_items:
@@ -61,7 +60,7 @@ def pdf_generate(order_id):
     pdf.setFontSize(14)
     pdf.drawString(100, y_coordinate - 20, f"Istifadeci adi: {order.user.username}")
     pdf.drawString(100, y_coordinate - 40, f"Elaqe nomresi: {order.phone_number}")
-    pdf.drawString(100, y_coordinate - 60, f"Unvan: {order.address}")
+    pdf.drawString(100, y_coordinate - 60, f"Unvan: {order.address.replace("ə", "e").replace("ğ", "g").replace('ı','i').replace('ö','o').replace('ü','u').replace('ç','c')}")
 
     pdf.showPage()
     
@@ -77,7 +76,7 @@ def pdf_generate(order_id):
         'Sifariş N #{}'.format(order.id),
         'Sifarişin detalları əlavə edilmişdir.',
         settings.EMAIL_HOST_USER,
-        ['viktoriassirri@gmail.com'],  # Replace with the recipient email address
+        ['viktoriassirri@gmail.com'], 
     )
     email.attach(pdf_filename, pdf_data, 'application/pdf')
     email.send()
@@ -115,7 +114,7 @@ def pdf_generate_notAuth(data):
     pdf.drawString(100, y_coordinate, "Musteri melumatlari:")
     pdf.setFontSize(14)
     pdf.drawString(100, y_coordinate - 20, f"Elaqə nomresi: {data.get('phone')}")
-    pdf.drawString(100, y_coordinate - 40, f"Unvan: {data.get('address')}")
+    pdf.drawString(100, y_coordinate - 40, f"Unvan: {data.get('address').replace("ə", "e").replace("ğ", "g").replace('ı','i').replace('ö','o').replace('ü','u').replace('ç','c')}")
 
     pdf.showPage()
     
@@ -217,39 +216,39 @@ def shopping(request,form_name=None):
             try:
     
                 order = get_object_or_404(Order,id=int(request.POST.get('order')))
-                print('111')
+           
                 check = request.POST.get('check')
                 address = request.POST.get('address')
                 phone = request.POST.get('phone')
-                print('2222')
+           
                 if not order.orderitems.exists():
-                    messages.error(request, f'Xəta: Səbətdə məhsul yoxdur!')
+                    messages.error(request, "{% trans 'Xəta: Səbətdə məhsul yoxdur!' %}")
                     return redirect('shopping')
                 if not phone or not len(phone)>6:
-                    messages.error(request, f'Xəta: Əlaqə nömrəsinin düzgünlüyünü yoxlayın!')
+                    messages.error(request, "{% trans 'Xəta: Əlaqə nömrəsinin düzgünlüyünü yoxlayın!' %}")
                     return redirect('shopping')
                 if not address:
-                    messages.error(request, f'Xəta: Ünvan daxil edin!')
+                    messages.error(request, "{% trans 'Xəta: Ünvan daxil edin!' %}")
                     return redirect('shopping')
                 if not check:
-                    print('check')
-                    messages.error(request, f'Xəta: Məlumatların düzgünlüyünü təsdiqləyin!')
+           
+                    messages.error(request, "{% trans 'Xəta: Məlumatların düzgünlüyünü təsdiqləyin!' %}")
                     return redirect('shopping')
-                print('nese onnan')
+           
                 order.address = address
                 order.phone_number = phone
                 order.status = True
                 order.save()
-                print('gen etmeden once')
+          
                 pdf_generate(order.id)
-                print('onnan')
-                messages.success(request, 'Sifariş uğurla tamamlandı. Sizinlə tezliklə əlaqə saxlanılacaq !')
+         
+                messages.success(request, "{% trans 'Sifariş uğurla tamamlandı. Sizinlə tezliklə əlaqə saxlanılacaq !' %}")
                 
                 return redirect('shopping')
                     
             except Exception as e:
-                print(e)
-                messages.error(request, f'Xəta: Məlumatların düzgünlüyünü yoxlayın !')
+     
+                messages.error(request, "{% trans 'Xəta: Məlumatların düzgünlüyünü yoxlayın !' %}")
                 return redirect('shopping')
         
         else:

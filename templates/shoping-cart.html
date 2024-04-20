@@ -230,7 +230,7 @@
                     localitems.forEach(function(item) {
                         total = parseInt(item.product.price)*parseInt(item.quantity)
                         total_price += total
-                        console.log(item);
+                   
                         var tr = document.createElement('tr')
                         size_name = "{% trans 'Ölçü' %}"
                         color_name = "{% trans 'Rəng' %}"
@@ -333,8 +333,8 @@
             if (phone === ""){
                 Swal.fire({
                     icon: 'error',
-                    title: 'Xəta',
-                    text: 'Zəhmət olmasa əlaqə nömrənizi daxil edin',
+                    title: "{% trans 'Xəta' %}",
+                    text: "{% trans 'Zəhmət olmasa əlaqə nömrənizi daxil edin' %}",
                 });
                 return;
             }
@@ -342,18 +342,18 @@
             else if (address === ""){
                 Swal.fire({
                     icon: 'error',
-                    title: 'Xəta',
-                    text: 'Zəhmət olmasa ünvanı daxil edin',
+                    title: "{% trans 'Xəta',
+                    text: "{% trans 'Zəhmət olmasa ünvanı daxil edin' %}",
                 });
                 return;
             }
             
             else if (!check.checked){
-                console.log(check)
+               
                 Swal.fire({
                     icon: 'error',
-                    title: 'Xəta',
-                    text: 'Zəhmət olmasa formun düzgünlüyünü təsdiqləyin',
+                    title: "{% trans 'Xəta',
+                    text: "{% trans 'Zəhmət olmasa formun düzgünlüyünü təsdiqləyin' %}",
                 });
                 return;
             }
@@ -377,8 +377,8 @@
                 if (!response.ok) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Xəta',
-                        text: 'Zəhmət olmasa formun düzgünlüyünü yoxlayın',
+                        title: "{% trans 'Xəta',
+                        text: "{% trans 'Zəhmət olmasa formun düzgünlüyünü yoxlayın' %}",
                     });
                     throw new Error('Network response was not ok');
                 }
@@ -386,18 +386,17 @@
                 getShoppingCartNotAuth();
                 Swal.fire({
                     title: "",
-                    text: "Sifarişiniz təsdiqləndi, sizinlə tezliklə əlaqə saxlanacaq !",
+                    text: "{% trans 'Sifarişiniz təsdiqləndi, sizinlə tezliklə əlaqə saxlanacaq !' %}",
                     icon: "success"
                   });
                 return response.json();
             })
             .then(data => {
                 // Handle successful response if needed
-                console.log(data);
+           
             })
             .catch(error => {
-                // Handle error if needed
-                console.error('There was a problem with the fetch operation:', error);
+               
             });
    
         });
@@ -439,16 +438,16 @@
                 // Display SweetAlert for empty fields
                 Swal.fire({
                     icon: 'error',
-                    title: 'Xəta',
-                    text: 'Zəhmət olmasa formun düzgünlüyünü yoxlayın',
+                    title: "{% trans 'Xəta' %}",
+                    text: "{% trans 'Zəhmət olmasa formun düzgünlüyünü yoxlayın' %}",
                 });
                 return;
             }else if (!emailRegex.test($("#username").val())){
-                console.log($("#username").val())
+         
                 Swal.fire({
                     icon: 'error',
-                    title: 'Xəta',
-                    text: 'E-poçtun düzgünlüyünü yoxlayın',
+                    title: "{% trans 'Xəta' %}",
+                    text: "{% trans 'E-poçtun düzgünlüyünü yoxlayın' %}",
                 });
                 return;
               
@@ -467,8 +466,8 @@
                     Swal.fire({
                         icon: 'success',
                        
-                        text: 'Uğurla daxil oldunuz !',
-                        confirmButtonText: 'Ana səhifəyə qayıt',
+                        text: "{% trans 'Uğurla daxil oldunuz !' %}",
+                        confirmButtonText: "{% trans 'Ana səhifəyə qayıt' %}",
                         preConfirm: () => {
                             window.location.href = '{% url "home" %}';
                             }
@@ -482,8 +481,8 @@
                   else{
                     Swal.fire({
                         icon: 'error',
-                        text: 'Yanlış ad və ya şifrə !',
-                        confirmButtonText: 'Təkrar yoxla',
+                        text: "{% trans 'Yanlış ad və ya şifrə !' %}",
+                        confirmButtonText: "{% trans 'Təkrar yoxla' %}",
                         preConfirm: () => {
                             window.location.href = '{% url "login" %}';
                             }
