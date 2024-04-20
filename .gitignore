@@ -9,7 +9,7 @@ __pycache__/
 locale
 # C extensions
 *.so
-
+order_details.pdf
 # Distribution / packaging
 .Python
 build/
