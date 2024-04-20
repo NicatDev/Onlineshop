@@ -41,6 +41,11 @@
     }
 }
 </style>
+<style>
+    .collection-item .thumb img{
+        min-height:auto !important
+    }
+</style>
 <body>
 
     
@@ -132,7 +137,7 @@
                         <div class="thumb">
                             <div class="thumb-slider">
                                 {% for image in product.images.all %}
-                                <a href="{% url 'shopSingle' product.slug %}"><img src="{{ image.image.url }}" loading="lazy" alt="{{ product.name }}"></a>
+                            <img src="{{ image.image.url }}" loading="lazy" alt="{{ product.name }}">
                                 {% endfor %}
                             </div>
                             <ul class="cart-action" style="background-color:rgba(255, 255, 255, 0.705);padding:6px 6px 0px 4px;text-align:center">
@@ -498,11 +503,7 @@
     <!-- delivery area end  -->
 
     {% include 'footer.html' %}
-<style>
-    .collection-item .thumb img{
-        min-height:auto !important
-    }
-</style>
+
     <script>
 
         const currentUrl = window.location.href;
