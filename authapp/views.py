@@ -43,7 +43,7 @@ def pdf_generate(order_id):
         quantity = item.quantity
         color = item.color
         if color is not None:
-            color = color.replace("ə", "e").replace("ğ", "g").replace('ı','i').replace('ö','o').replace('ü','u').replace('ç','c')
+            color = color.name.replace("ə", "e").replace("ğ", "g").replace('ı','i').replace('ö','o').replace('ü','u').replace('ç','c')
         else:
             color = 'Mehsul rengi movcud deyil'
         size = item.size
