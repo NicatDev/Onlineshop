@@ -33,23 +33,28 @@ def pdf_generate(order_id):
     order_items = order.orderitems.all()
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer, pagesize=letter)
-    y_coordinate = 750  # Starting Y coordinate
+    y_coordinate = 750  
 
-    for item in order_items:
+    pdf.setFont("ArialUnicodeMS", 14)
+
+    for index, item in order_items:
         product_name = item.product.name
         quantity = item.quantity
         color = item.color
         size = item.size
     
-        pdf.drawString(100, y_coordinate, f"Product Name: {product_name}")
+        pdf.drawString(100, y_coordinate, f"{index}) Product Name: {product_name}")
         pdf.drawString(100, y_coordinate - 20, f"Quantity: {quantity}")
         pdf.drawString(100, y_coordinate - 40, f"Color: {color}")
         pdf.drawString(100, y_coordinate - 60, f"Size: {size}")
         y_coordinate -= 100
-
-    pdf.drawString(100, y_coordinate, f"username: {order.user.username}")
-    pdf.drawString(100, y_coordinate - 20, f"phone: {order.phone_number}")
-    pdf.drawString(100, y_coordinate - 40, f"address: {order.address}")
+        
+    pdf.setFont("ArialUnicodeMS", 18)
+    pdf.drawString(100, y_coordinate, "Müştəri məlumatları")
+    pdf.setFont("ArialUnicodeMS", 14)
+    pdf.drawString(100, y_coordinate - 20, f"username: {order.user.username}")
+    pdf.drawString(100, y_coordinate - 40, f"phone: {order.phone_number}")
+    pdf.drawString(100, y_coordinate - 60, f"address: {order.address}")
 
     pdf.showPage()
     
@@ -82,10 +87,12 @@ def pdf_generate_notAuth(data):
 
     y_coordinate = 750  
 
-    for item in order_items:
+    pdf.setFont("ArialUnicodeMS", 15)
+
+    for index,item in order_items:
         product_name = item['product']['name']
         quantity = item['quantity']
-        pdf.drawString(100, y_coordinate, f"Product Name: {product_name}")
+        pdf.drawString(100, y_coordinate, f"{index}) Product Name: {product_name}")
         pdf.drawString(100, y_coordinate - 20, f"Quantity: {quantity}")
         if 'color' in item:
             color = item['color']['name']
@@ -96,7 +103,9 @@ def pdf_generate_notAuth(data):
             
         y_coordinate -= 100
 
-
+    pdf.setFont("ArialUnicodeMS", 18)
+    pdf.drawString(100, y_coordinate, "Müştəri məlumatları:")
+    pdf.setFont("ArialUnicodeMS", 14)
     pdf.drawString(100, y_coordinate - 20, f"phone: {data.get('phone')}")
     pdf.drawString(100, y_coordinate - 40, f"address: {data.get('address')}")
 
