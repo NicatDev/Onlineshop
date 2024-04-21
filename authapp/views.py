@@ -26,7 +26,7 @@ from django.core.mail import EmailMessage
 import json
 from django.contrib.auth import get_user_model
 from .utils import createCode
-
+from django.utils.translation import gettext as _
 User = get_user_model()
 
 def pdf_generate(order_id):
@@ -222,17 +222,17 @@ def shopping(request,form_name=None):
                 phone = request.POST.get('phone')
            
                 if not order.orderitems.exists():
-                    messages.error(request, "{% trans 'Xəta: Səbətdə məhsul yoxdur!' %}")
+                    messages.error(request, _('Xəta: Səbətdə məhsul yoxdur!'))
                     return redirect('shopping')
                 if not phone or not len(phone)>6:
-                    messages.error(request, "{% trans 'Xəta: Əlaqə nömrəsinin düzgünlüyünü yoxlayın!' %}")
+                    messages.error(request, _('Xəta: Əlaqə nömrəsinin düzgünlüyünü yoxlayın!'))
                     return redirect('shopping')
                 if not address:
-                    messages.error(request, "{% trans 'Xəta: Ünvan daxil edin!' %}")
+                    messages.error(request, _('Xəta: Ünvan daxil edin!'))
                     return redirect('shopping')
                 if not check:
            
-                    messages.error(request, "{% trans 'Xəta: Məlumatların düzgünlüyünü təsdiqləyin!' %}")
+                    messages.error(request, _('Xəta: Məlumatların düzgünlüyünü təsdiqləyin!'))
                     return redirect('shopping')
            
                 order.address = address
@@ -242,13 +242,13 @@ def shopping(request,form_name=None):
           
                 pdf_generate(order.id)
          
-                messages.success(request, "{% trans 'Sifariş uğurla tamamlandı. Sizinlə tezliklə əlaqə saxlanılacaq !' %}")
+                messages.success(request,  _('Sifariş uğurla tamamlandı. Sizinlə tezliklə əlaqə saxlanılacaq !'))
                 
                 return redirect('shopping')
                     
             except Exception as e:
      
-                messages.error(request, "{% trans 'Xəta: Məlumatların düzgünlüyünü yoxlayın !' %}")
+                messages.error(request,  _('Xəta: Məlumatların düzgünlüyünü yoxlayın !'))
                 return redirect('shopping')
         
         else:
