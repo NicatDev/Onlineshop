@@ -28,8 +28,12 @@ from django.contrib.auth import get_user_model
 from .utils import createCode
 from django.utils.translation import gettext as _
 User = get_user_model()
+from django.utils.translation import activate
 
 def pdf_generate(order_id):
+    target_language = 'az'
+    activate(target_language)
+
     order = Order.objects.get(id=order_id)
     order_items = order.orderitems.all()
     buffer = BytesIO()
@@ -84,7 +88,9 @@ def pdf_generate(order_id):
 
 
 def pdf_generate_notAuth(data):
-
+    target_language = 'az'
+    activate(target_language)
+    
     order_items = data.get('items')
  
     buffer = BytesIO()
