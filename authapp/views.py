@@ -218,10 +218,9 @@ def shopping(request,form_name=None):
 
         elif form_name == 'order':
             try:
-                print('-------')
-                current_language = get_language()
-                activate(settings.LANGUAGE_CODE)
-                print('activate')
+           
+                
+
                 order = get_object_or_404(Order,id=int(request.POST.get('order')))
                 
                 check = request.POST.get('check')
@@ -230,31 +229,32 @@ def shopping(request,form_name=None):
            
                 if not order.orderitems.exists():
                     messages.error(request, _('Xəta: Səbətdə məhsul yoxdur!'))
-                    activate(current_language)
+               
                     return redirect('shopping')
                 if not phone or not len(phone)>6:
                     messages.error(request, _('Xəta: Əlaqə nömrəsinin düzgünlüyünü yoxlayın!'))
-                    activate(current_language)
+                    
                     return redirect('shopping')
                 if not address:
                     messages.error(request, _('Xəta: Ünvan daxil edin!'))
-                    activate(current_language)
+           
                     return redirect('shopping')
                 if not check:
            
                     messages.error(request, _('Xəta: Məlumatların düzgünlüyünü təsdiqləyin!'))
-                    activate(current_language)
+                 
                     return redirect('shopping')
-                print('get ')
+                
                 order.address = address
                 order.phone_number = phone
                 order.status = True
                 order.save()
-                print('gendeen evvel')
+                current_language = get_language()
+                activate(settings.LANGUAGE_CODE)
                 pdf_generate(order.id)
-                print('sonra')
-                messages.success(request,  _('Sifariş uğurla tamamlandı. Sizinlə tezliklə əlaqə saxlanılacaq !'))
                 activate(current_language)
+                messages.success(request,  _('Sifariş uğurla tamamlandı. Sizinlə tezliklə əlaqə saxlanılacaq !'))
+                
                 return redirect('shopping')
                     
             except Exception as e:
