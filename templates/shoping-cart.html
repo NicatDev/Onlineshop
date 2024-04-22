@@ -123,8 +123,8 @@
                                     </div>
                                     <div class="right responsivetitle">
                                         <h6 class="name">{{ item.product.name }}</h6>
-                                        <h6 style="display:flex" class="title">Ölçü: <span class="values">&nbsp; {{ item.size }}</span></h6>
-                                        <h6 style="display:flex" class="title">Rəng: <span class="values">&nbsp; {{ item.color }}</span></h6>
+                                        <h6 style="display:flex" class="title">{% trans 'Ölçü:' %} <span class="values">&nbsp; {{ item.size }}</span></h6>
+                                        <h6 style="display:flex" class="title">{% trans 'Rəng:' %} <span class="values">&nbsp; {{ item.color }}</span></h6>
                                     </div>
                                 </th>
                                 <td>{{ item.product.price }} azn</td>
@@ -177,8 +177,8 @@
                             <form id="myForm" {% if request.user.is_authenticated %} method="POST" action="{% url 'shopping' form_name='order' %}"  {% endif %}>
                                 {% csrf_token %}
                                 
-                            <input name="phone" id="phone" placeholder="Əlaqə nömrəsi" type="text" style="margin-top:15px;margin-bottom:5px">
-                            <input name="address" id="address" placeholder="Ünvan" type="text" style="margin-top:10px;margin-bottom:5px">
+                            <input name="phone" id="phone" placeholder="{% trans 'Əlaqə nömrəsi' %}" type="text" style="margin-top:15px;margin-bottom:5px">
+                            <input name="address" id="address" placeholder="{% trans 'Ünvan' %}" type="text" style="margin-top:10px;margin-bottom:5px">
                             <input name="order" value="{{ order }}" hidden>
                             <div style="display:flex; align-items:center;justify-content:center;margin-top:5px;margin-bottom:5px;">
                                 <input type="checkbox" id="check" name="check" style="height:20px;width:20px;gap:10px">&nbsp; {% trans 'Sifarişi təsdiqlə və göndər' %}</input>
