@@ -2973,7 +2973,7 @@ ul {
       -o-transition: all .3s;
       transition: all .3s; }
   .product-style-01 .content-hover {
-    opacity: 100;
+    opacity: 0;
     background-color: #fff;
     z-index: 99;
     -webkit-transition: all .3s;
@@ -3046,7 +3046,7 @@ ul {
     -o-transition: all .5s;
     transition: all .5s; }
   .product-style-01:hover .content-bottom {
-    opacity: 0;
+    
     -webkit-transition: all .3s;
     -o-transition: all .3s;
     transition: all .3s; }
