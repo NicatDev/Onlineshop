@@ -396,6 +396,8 @@
                 localStorage.setItem('items','');
                 getShoppingCartNotAuth();
                 GetLocalItem();
+                document.getElementById('phone').value = ""
+                document.getElementById('address').value = ""
                 Swal.fire({
                     title: "",
                     text: "{% trans 'Sifarişiniz təsdiqləndi, sizinlə tezliklə əlaqə saxlanacaq !' %}",
