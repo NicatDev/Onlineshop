@@ -230,6 +230,8 @@
     <script>
         function GetLocalItem(){
             if (localStorage.getItem('items').length==0){
+                var ul = document.getElementById("orderitems");
+                        ul.innerHTML = "";
                 return;
             }
         var localitems = JSON.parse(localStorage.getItem('items'))
