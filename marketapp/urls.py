@@ -19,3 +19,6 @@ urlpatterns = [
     path('delete_order_item',delete_order_item,name='delete_order_item'),
     path('about',about,name='about'),
 ]
+from django.conf.urls import handler500
+
+handler500 = 'marketapp.views.server_error'

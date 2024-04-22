@@ -11,6 +11,10 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.utils.translation import gettext as _
 
+
+def server_error(request, *args, **kwargs):
+    return render(request, 'error.html', status=500)
+
 def set_language(request,lang_code,url):
     next_url = url or '/'
     language = lang_code
