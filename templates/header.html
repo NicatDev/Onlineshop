@@ -231,7 +231,17 @@
         function GetLocalItem(){
             if (localStorage.getItem('items').length==0){
                 var ul = document.getElementById("orderitems");
+             
                         ul.innerHTML = "";
+                        var li = document.createElement('li')
+                        li.innerHTML = `
+                            <div class="d-flex">
+                                <a href="{% url 'shopping' %}" style="width:100%;padding:10px 50px;color:white;" class="btn btn-contact" style="color:white">Səbətə bax</a>
+                            </div>`
+                      
+                            ul.appendChild(li);
+                            $('.basketbadge').text(0);
+                   
                 return;
             }
         var localitems = JSON.parse(localStorage.getItem('items'))

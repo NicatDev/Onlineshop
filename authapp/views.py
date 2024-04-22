@@ -355,11 +355,13 @@ def order(request):
         product = Product.objects.get(id=data.get('items')[0]['product']['id'])
         if data.get('items')[0]['color']:
             color = Color.objects.get(id=data.get('items')[0]['color']['id'])
+            data.get('items')[i]['color']['name'] = color.name
         if data.get('items')[0]['size']: 
             size = Size.objects.get(id=data.get('items')[0]['size']['id'])
+            data.get('items')[i]['color']['name'] = size.name
         data.get('items')[i]['product']['name'] = product.name
-        data.get('items')[i]['color']['name'] = color.name
-        data.get('items')[i]['color']['name'] = size.name
+        
+        
     pdf_generate_notAuth(data)
     activate(current_language)
     return JsonResponse({'message':'ok'})
