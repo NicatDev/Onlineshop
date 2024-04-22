@@ -353,8 +353,10 @@ def order(request):
     data = json.loads(request.body)
     for i in range(len(data.get('items'))):
         product = Product.objects.get(id=data.get('items')[0]['product']['id'])
-        color = Color.objects.get(id=data.get('items')[0]['color']['id'])
-        size = Size.objects.get(id=data.get('items')[0]['size']['id'])
+        if data.get('items')[0]['color']:
+            color = Color.objects.get(id=data.get('items')[0]['color']['id'])
+        if data.get('items')[0]['size']: 
+            size = Size.objects.get(id=data.get('items')[0]['size']['id'])
         data.get('items')[i]['product']['name'] = product.name
         data.get('items')[i]['color']['name'] = color.name
         data.get('items')[i]['color']['name'] = size.name
