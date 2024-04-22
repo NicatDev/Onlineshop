@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.shortcuts import redirect,HttpResponse, HttpResponseRedirect, get_object_or_404
-from marketapp.models import Order,OrderItem,Product,Category
+from marketapp.models import Order,OrderItem,Product,Category,Color,Size
 from authapp.models import Code
 from django.db import transaction
 from django.urls import reverse
@@ -347,9 +347,17 @@ def wish(request):
     }
     return render(request,'wishlist.html',context)
 
-def order(request):
-    target_language = 'az'
-    activate(target_language)
+def order(request): 
+    current_language = get_language()
+    activate(settings.LANGUAGE_CODE)
     data = json.loads(request.body)
+    for i in range(len(data.get('items'))):
+        product = Product.objects.get(id=data.get('items')[0]['product']['id'])
+        color = Color.objects.get(id=data.get('items')[0]['color']['id'])
+        size = Size.objects.get(id=data.get('items')[0]['size']['id'])
+        data.get('items')[i]['product']['name'] = product.name
+        data.get('items')[i]['color']['name'] = color.name
+        data.get('items')[i]['color']['name'] = size.name
     pdf_generate_notAuth(data)
+    activate(current_language)
     return JsonResponse({'message':'ok'})
