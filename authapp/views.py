@@ -28,11 +28,11 @@ from django.contrib.auth import get_user_model
 from .utils import createCode
 from django.utils.translation import gettext as _
 User = get_user_model()
-from django.utils.translation import activate
+from django.utils.translation import activate, get_language
+from django.conf import settings
 
 def pdf_generate(order_id):
-    target_language = 'az'
-    activate(target_language)
+
 
     order = Order.objects.get(id=order_id)
     order_items = order.orderitems.all()
@@ -88,9 +88,7 @@ def pdf_generate(order_id):
 
 
 def pdf_generate_notAuth(data):
-    target_language = 'az'
-    activate(target_language)
-    
+   
     order_items = data.get('items')
  
     buffer = BytesIO()
@@ -220,41 +218,50 @@ def shopping(request,form_name=None):
 
         elif form_name == 'order':
             try:
-    
+                print('-------')
+                current_language = get_language()
+                activate(settings.LANGUAGE_CODE)
+                print('activate')
                 order = get_object_or_404(Order,id=int(request.POST.get('order')))
-           
+                
                 check = request.POST.get('check')
                 address = request.POST.get('address')
                 phone = request.POST.get('phone')
            
                 if not order.orderitems.exists():
                     messages.error(request, _('Xəta: Səbətdə məhsul yoxdur!'))
+                    activate(current_language)
                     return redirect('shopping')
                 if not phone or not len(phone)>6:
                     messages.error(request, _('Xəta: Əlaqə nömrəsinin düzgünlüyünü yoxlayın!'))
+                    activate(current_language)
                     return redirect('shopping')
                 if not address:
                     messages.error(request, _('Xəta: Ünvan daxil edin!'))
+                    activate(current_language)
                     return redirect('shopping')
                 if not check:
            
                     messages.error(request, _('Xəta: Məlumatların düzgünlüyünü təsdiqləyin!'))
+                    activate(current_language)
                     return redirect('shopping')
-           
+                print('get ')
                 order.address = address
                 order.phone_number = phone
                 order.status = True
                 order.save()
-          
+                print('gendeen evvel')
                 pdf_generate(order.id)
-         
+                print('sonra')
                 messages.success(request,  _('Sifariş uğurla tamamlandı. Sizinlə tezliklə əlaqə saxlanılacaq !'))
-                
+                activate(current_language)
                 return redirect('shopping')
                     
             except Exception as e:
      
                 messages.error(request,  _('Xəta: Məlumatların düzgünlüyünü yoxlayın !'))
+
+                activate(current_language)
                 return redirect('shopping')
         
         else:
@@ -341,6 +348,8 @@ def wish(request):
     return render(request,'wishlist.html',context)
 
 def order(request):
+    target_language = 'az'
+    activate(target_language)
     data = json.loads(request.body)
     pdf_generate_notAuth(data)
     return JsonResponse({'message':'ok'})
