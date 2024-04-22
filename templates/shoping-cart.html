@@ -393,7 +393,7 @@
                     })
                     throw new Error('Network response was not ok');
                 }
-                localStorage.setItem('items','');
+                localStorage.setItem('items',[]);
                 getShoppingCartNotAuth();
                 GetLocalItem();
                 Swal.fire({
