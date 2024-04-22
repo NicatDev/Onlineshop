@@ -155,7 +155,7 @@
                             <div class="content-bottom">
                                 <span class="brand">{% trans 'BREND:' %} {{ product.brand }}</span>
                   
-                                <h6 class="title"><a href="#">{{ product.name }}</a></h6>
+                                <h6 class="title"><a href="{% url 'singleShop' product.slug %}">{{ product.name }}</a></h6>
                                 <div class="content-price d-flex align-self-center justify-content-center">
                                     <span class="new-price">{{ product.price }} azn</span>
                                 </div>
