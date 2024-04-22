@@ -13,7 +13,7 @@ from django.utils.translation import gettext as _
 
 
 def server_error(request, *args, **kwargs):
-    return render(request, 'error.html', status=500)
+    return render(request, '404.html', status=500)
 
 def set_language(request,lang_code,url):
     next_url = url or '/'
