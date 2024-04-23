@@ -14,6 +14,9 @@ class BlogSiteMap(Sitemap):
     def lastmod(self, obj):
         return obj.created_at
 
+    def location(self, obj: Blog) -> str:
+        return obj.get_absolute_url()
+
 class ProductSiteMap(Sitemap):
     changefreq = "daily"
     priority = 0.6
@@ -24,6 +27,9 @@ class ProductSiteMap(Sitemap):
 
     def lastmod(self, obj):
         return obj.created_at
+
+    def location(self, obj: Product) -> str:
+        return obj.get_absolute_url()
 
 class StaticSitemap(Sitemap):
     protocol = 'https'
