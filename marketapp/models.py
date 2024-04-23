@@ -225,7 +225,7 @@ class Blog(BaseMixin,MetaMixin):
     def __str__(self):
         return self.title
 
-    class META:
+    class Meta:
         ordering = ['-created_at']
         
     def save(self, *args, **kwargs):

@@ -26,7 +26,7 @@ class ProductSiteMap(Sitemap):
         return obj.created_at
 
 class StaticSitemap(Sitemap):
-
+    protocol = 'https'
     priority = 0.5
     changefreq = "daily"
 
