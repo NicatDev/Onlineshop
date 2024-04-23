@@ -7,6 +7,12 @@ from django.contrib.sitemaps.views import sitemap
 # from marketapp.sitemap import BlogSiteMap,ServiceSitemap, StaticSitemap
 from django.views.generic import TemplateView
 from django.conf.urls.i18n import i18n_patterns
+from marketapp.sitemap import *
+sitemaps = {
+    'blog_sitemap': BlogSiteMap,
+    'product_sitemap': ProductSiteMap,
+    'static_sitemap': StaticSitemap,
+}
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -18,6 +24,9 @@ urlpatterns = [
 
 urlpatterns += i18n_patterns(
     path('i18n/', include('django.conf.urls.i18n')),
+    path(
+        'sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'
+    ),
     re_path(r'^rosetta/', include('rosetta.urls')),
     path('', include("marketapp.urls")),
     path('auth/', include("authapp.urls")),
