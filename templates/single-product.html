@@ -10,9 +10,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ product.seo_title }}</title>
+    <title>{{ product.slug }}</title>
 
-    <meta name="description" content="{{ product.seo_description }}">
+    <meta name="description" content="{{ product.name }} - {{ product.seo_description }}">
+    <meta name="keyword" content="{{ product.name }},{{ product.seo_description }}">
     <meta itemprop="name" content="{{ product.name }}">
     <meta itemprop="description" content="{{ product.description }}">
     <meta itemprop="image" content="{{ product.get_main_image.url }}">
