@@ -54,9 +54,9 @@ def get_instagram_photos():
 def home(request):
     
     products = Product.objects.all().order_by('-created_at')[0:3]
-    best_seller = Product.objects.filter(best_seller=True)[:3]
-    most_searched = Product.objects.filter(most_searched=True)[:3]
-    new = Product.objects.filter(new=True)[:6]
+    best_seller = Product.objects.filter(best_seller=True)[0:3]
+    most_searched = Product.objects.filter(most_searched=True)[0:3]
+    new = Product.objects.filter(new=True)[0:3]
     slider_collections = Category.objects.filter(in_slide=True)
     three_collections = Collection.objects.filter(in_slide=True)[:3]   
     products = Product.objects.filter(discount_percent__gte=0).order_by('-discount_percent')[:3]
