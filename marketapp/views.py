@@ -7,31 +7,34 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.db.models import Count
 from django.conf import settings
-from django.conf import settings
+from django.urls import resolve, reverse
 from django.core.files.storage import FileSystemStorage
 from django.utils.translation import gettext as _
+from django.utils import translation
+from django.urls.exceptions import Resolver404
+from urllib.parse import urlparse
 
 
 def server_error(request, *args, **kwargs):
     return render(request, '404.html', status=500)
 
-def set_language(request,lang_code,url):
-    next_url = url or '/'
-    language = lang_code
-    response = redirect(next_url)
-    if language:
-        response.set_cookie('django_language', language)
+def set_language(request, language):
+    for lang, _ in settings.LANGUAGES:
+        translation.activate(lang)
+        try:
+            view = resolve(urlparse(request.META.get("HTTP_REFERER")).path)
+        except Resolver404:
+            view = None
+        if view:
+            break
+    if view:
+        translation.activate(language)
+        next_url = reverse(view.url_name, args=view.args, kwargs=view.kwargs)
+        response = HttpResponseRedirect(next_url)
+        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
+    else:
+        response = HttpResponseRedirect("/")
     return response
-
-def set_language_form(request):
-
-    next_url = request.POST.get('next') or '/'
-    language = request.POST.get('language')
-    response = redirect(next_url)
-    if language:
-        response.set_cookie('django_language', language)
-    return response
-
 
 def get_order_items(request):
   
