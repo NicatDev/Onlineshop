@@ -143,7 +143,9 @@
                                                     </a></div>
                                                 <div class="content-cart"><a href="#"><i class="icon-add-to-cat"></i></a></div>
                                                 <div class="content-price d-flex flex-column align-self-center">
+                                                    {% if product.discount_percent > 0 %}
                                                     <span class="old-price">{{ product.price }} azn</span>
+                                                    {% endif %}
                                                     <span class="new-price">{{ product.get_discount_price}} azn</span>
                                                 </div>
                                             </div>
