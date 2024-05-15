@@ -63,13 +63,6 @@
     </div>
     <!-- preloader area end -->
 
-    <!-- search Popup -->
-
-    <!-- search Popup end -->
-
-    <!--sidebar menu start-->
-   
-    <!--sidebar menu end-->
 
     <!-- navbar start -->
     {% include 'header.html' %}
@@ -353,7 +346,7 @@
                                 <div class="thumb-content">
                                     <h2>{{ collection.name }}</h2>
                                     <div class="btn-wrapper">
-                                        <a href="{% url 'shop' %}?collection={{ collection.slug }}" class="btn btn-white">{% trans 'Alış verişə başla' %} <i class="icon-arrow-buttom"></i></a>
+                                        <a href="{% url 'shop' %}?category={{ collection.slug }}" class="btn btn-white">{% trans 'Alış verişə başla' %} <i class="icon-arrow-buttom"></i></a>
                                     </div>
                                 </div>
                             </div>

@@ -311,26 +311,7 @@
     }
 </script>
 
-<script>
-	function updateLanguageBasedOnCookie() {
-		var langCookie = document.cookie.replace(/(?:(?:^|.*;\s*)django_language\s*=\s*([^;]*).*$)|^.*$/, "$1");
-		if (langCookie) {
-			var urlParts = window.location.href.split('/');
-			urlParts.splice(3, 1, langCookie); 
-			var newURL = urlParts.join('/');
-			if (window.location.href !== newURL) {
-				document.cookie = "django_language=" + langCookie + "; path=/";
-				window.location.href = newURL
-			}
-		}
-	}
-	
-	// Sayfa yüklendiğinde çalıştır
-	window.onload = function() {
-		updateLanguageBasedOnCookie();
-	};
-	
-</script>
+
 <style>
     .remove i{
         color:black !important; font-size:20px; padding-top:5px

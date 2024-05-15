@@ -4,8 +4,6 @@ from marketapp.jsonresponse import message,add_wish,add_basket,login_js,delete_o
 urlpatterns = [
     path('set-language/<lang_code>/<path:url>', set_language, name='set_language'),
     path('set_language_form/', set_language_form, name='set_language_form'),
-    
-
     path('',home,name='home'),
     path('mehsullar',shop,name='shop'),
     path('mehsullar/<slug>',shopSingle,name='shopSingle'),
@@ -19,6 +17,7 @@ urlpatterns = [
     path('delete_order_item',delete_order_item,name='delete_order_item'),
     path('about',about,name='about'),
 ]
+
 from django.conf.urls import handler500
 
 handler500 = 'marketapp.views.server_error'
