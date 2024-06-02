@@ -84,6 +84,7 @@ class Category(MetaMixin,BaseMixin):
     name = models.CharField(max_length = 200)
     image = models.ImageField(null=True,blank=True)
     in_slide = models.BooleanField(default = False)
+    in_bottom_slide = models.BooleanField(default = False)
     
     def __str__(self):
         return self.name + '--'

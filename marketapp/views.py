@@ -63,7 +63,7 @@ def home(request):
     slider_collections = Category.objects.filter(in_slide=True)
     three_collections = Collection.objects.filter(in_slide=True)[:3]   
     products = Product.objects.filter(discount_percent__gte=0).order_by('-discount_percent')[:3]
-    all_collections = Category.objects.all().exclude(pk__in=slider_collections.values('pk'))
+    all_collections = Category.objects.filter(in_bottom_slide=True)
     blogs = Blog.objects.all()[0:3]
     partners = Partner.objects.all()
     orderitems = get_order_items(request)
