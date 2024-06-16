@@ -31,8 +31,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   
 </head>
-<body>
-   <style>
+<style>
+    .visuallyhidden {
+        position: absolute;
+        clip: rect(1px, 1px, 1px, 1px);
+        -webkit-clip-path: inset(0px 0px 99.9% 99.9%);
+        clip-path: inset(0px 0px 99.9% 99.9%);
+        overflow: hidden;
+        height: 1px;
+        width: 1px;
+        padding: 0;
+        border: 0;
+      }
+</style>
+<style>
     @media (max-width: 768px) {
         .lastclass{
         width:100%;display:flex !important;align-items:center;justify-content:center
@@ -66,7 +78,9 @@
             color:white !important;
         }
    </style>
-    
+
+<body>
+   
     <!-- preloader area start -->
     <div class="preloader" id="preloader">
         <div class="preloader-inner">

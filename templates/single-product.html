@@ -177,8 +177,21 @@
         box-shadow:0 0 0 2px white, 0 0 0 4px black;
     }
 </style>
+<style>
+    .visuallyhidden {
+        position: absolute;
+        clip: rect(1px, 1px, 1px, 1px);
+        -webkit-clip-path: inset(0px 0px 99.9% 99.9%);
+        clip-path: inset(0px 0px 99.9% 99.9%);
+        overflow: hidden;
+        height: 1px;
+        width: 1px;
+        padding: 0;
+        border: 0;
+      }
+</style>
 <body>
- 
+    <h1 class="visuallyhidden">{{ product.name }}</h1>
     <!-- preloader area start -->
     <div class="preloader" id="preloader">
         <div class="preloader-inner">
