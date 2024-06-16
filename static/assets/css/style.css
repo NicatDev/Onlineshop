@@ -7228,4 +7228,15 @@ ul.filter-main-nav > li:hover > a {
   bottom:7px;
   width:25px
 }
+.visuallyhidden {
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  -webkit-clip-path: inset(0px 0px 99.9% 99.9%);
+  clip-path: inset(0px 0px 99.9% 99.9%);
+  overflow: hidden;
+  height: 1px;
+  width: 1px;
+  padding: 0;
+  border: 0;
+}
 /*# sourceMappingURL=style.css.map */
