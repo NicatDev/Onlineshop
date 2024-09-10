@@ -378,15 +378,7 @@
                 return;
             }
             
-            else if (!check.checked){
-               
-                Swal.fire({
-                    icon: 'error',
-                    title: "{% trans 'Xəta' %}",
-                    text: "{% trans 'Zəhmət olmasa formun düzgünlüyünü təsdiqləyin' %}",
-                });
-                return;
-            }
+            
             const csrfToken = "{{ csrf_token }}";
             items = JSON.parse(localStorage.getItem('items'))
             formData = {
