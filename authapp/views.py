@@ -349,19 +349,24 @@ def wish(request):
 
 def order(request): 
     current_language = get_language()
-    activate(settings.LANGUAGE_CODE)
-    data = json.loads(request.body)
-    for i in range(len(data.get('items'))):
-        product = Product.objects.get(id=data.get('items')[0]['product']['id'])
-        if data.get('items')[0]['color']:
-            color = Color.objects.get(id=data.get('items')[0]['color']['id'])
-            data.get('items')[i]['color']['name'] = color.name
-        if data.get('items')[0]['size']: 
-            size = Size.objects.get(id=data.get('items')[0]['size']['id'])
-            data.get('items')[i]['color']['name'] = size.name
-        data.get('items')[i]['product']['name'] = product.name
-        
-        
-    pdf_generate_notAuth(data)
-    activate(current_language)
+    try:
+        activate(settings.LANGUAGE_CODE)
+        data = json.loads(request.body)
+        print(data)
+        for i in range(len(data.get('items'))):
+            product = Product.objects.get(id=data.get('items')[0]['product']['id'])
+            if data.get('items')[0]['color']:
+                color = Color.objects.get(id=data.get('items')[0]['color']['id'])
+                data.get('items')[i]['color']['name'] = color.name
+            if data.get('items')[0]['size']: 
+                size = Size.objects.get(id=data.get('items')[0]['size']['id'])
+                data.get('items')[i]['color']['name'] = size.name
+            data.get('items')[i]['product']['name'] = product.name
+            
+            
+        pdf_generate_notAuth(data)
+        activate(current_language)
+    except Exception as e:
+        print(e,'99999999999')
+
     return JsonResponse({'message':'ok'})
