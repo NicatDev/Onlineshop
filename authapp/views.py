@@ -226,7 +226,7 @@ def shopping(request,form_name=None):
                 check = request.POST.get('check')
                 address = request.POST.get('address')
                 phone = request.POST.get('phone')
-           
+                print(request.POST)
                 if not order.orderitems.exists():
                     messages.error(request, _('Xəta: Səbətdə məhsul yoxdur!'))
                
@@ -258,7 +258,7 @@ def shopping(request,form_name=None):
                 return redirect('shopping')
                     
             except Exception as e:
-     
+                print(e,'--------------------')
                 messages.error(request,  _('Xəta: Məlumatların düzgünlüyünü yoxlayın !'))
 
                 activate(current_language)
