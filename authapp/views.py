@@ -173,7 +173,7 @@ def register(request):
             code = Code.objects.create(user=user,code=createCode(user.username))
             
             email = EmailMessage(
-                '{% trans "Qeydiyyatı tamamlamaq üçün linkə daxil olun" %}',
+                'Qeydiyyatı tamamlamaq üçün linkə daxil olun',
                 f'https://victoriassirri.az/auth/tesdiq/{user.username}/{code.code}',
                 settings.EMAIL_HOST_USER,
                 [user.email],  
