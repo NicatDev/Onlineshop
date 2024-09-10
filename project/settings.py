@@ -276,7 +276,7 @@ CKEDITOR_5_CONFIGS = {
 
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_USER = 'viktoriassirri@gmail.com'
-EMAIL_HOST_PASSWORD = 'uvtksuzdowzuahlh'
+EMAIL_HOST_PASSWORD = 'imdc xpeh oatu qgej'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
